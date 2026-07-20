@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tech Pages - 技术分享</title>
+  <style>
+    :root {
+      --bg: #f7f7f9;
+      --card-bg: #ffffff;
+      --text: #222;
+      --muted: #666;
+      --accent: #ff9900;
+      --border: #e5e5e8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      padding: 48px 24px 24px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+    }
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+    section.category {
+      margin-top: 32px;
+    }
+    section.category h2 {
+      font-size: 1.25rem;
+      border-left: 4px solid var(--accent);
+      padding-left: 10px;
+      margin-bottom: 16px;
+    }
+    ul.article-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    ul.article-list li {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+    ul.article-list li:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      transform: translateY(-1px);
+    }
+    ul.article-list a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    ul.article-list a:hover {
+      color: var(--accent);
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      padding: 24px;
+    }
+    footer a {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tech Pages</h1>
+    <p>技术分享文章合集</p>
+  </header>
+  <main>
+    <section class="category">
+      <h2>EMR</h2>
+      <ul class="article-list">
+        <li><a href="emr/EMR%20Managed%20Scaling%20%E7%BC%A9%E5%AE%B9%E8%A7%84%E5%88%99%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html">EMR Managed Scaling 缩容规则与最佳实践</a></li>
+      </ul>
+    </section>
+  </main>
+  <footer>
+    &copy; <span id="year"></span> Tech Pages &middot; Powered by <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
+  </footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

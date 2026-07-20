@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><style id="qw-theme">:root {
+  --color-bg: #f2f1f4;
+  --color-text: #352f3d;
+  --color-navbar-bg: #eae8ed;
+  --color-bg-chat-view: #fcfcfd;
+  --color-bg-secondary: #fff;
+  --color-bg-tertiary: #eae8ed;
+  --color-bg-hover: #dcdadf;
+  --color-surface: #eae8ed;
+  --color-surface-hover: #dcdadf;
+  --color-surface-active: #c1bec6;
+  --color-border: #c1bec6;
+  --color-border-light: #dcdadf;
+  --color-border-strong: #c1bec6;
+  --color-primary: #4200db;
+  --color-primary-dark: #35009e;
+  --color-primary-light: #8575ff;
+  --color-primary-bg: #e8e6ff;
+  --color-primary-hover-border: #35009e;
+  --color-nav-icon-active: #4200db;
+  --color-nav-hover-border: #4200db;
+  --color-primary-alpha-3: color-mix(in srgb, #4200db 3%, transparent);
+  --color-primary-alpha-5: color-mix(in srgb, #4200db 5%, transparent);
+  --color-primary-alpha-8: color-mix(in srgb, #4200db 8%, transparent);
+  --color-primary-alpha-12: color-mix(in srgb, #4200db 12%, transparent);
+  --color-primary-alpha-15: color-mix(in srgb, #4200db 15%, transparent);
+  --color-primary-alpha-20: color-mix(in srgb, #4200db 20%, transparent);
+  --color-primary-alpha-25: color-mix(in srgb, #4200db 25%, transparent);
+  --color-primary-alpha-30: color-mix(in srgb, #4200db 30%, transparent);
+  --color-primary-alpha-40: color-mix(in srgb, #4200db 40%, transparent);
+  --color-primary-alpha-50: color-mix(in srgb, #4200db 50%, transparent);
+  --color-primary-alpha-60: color-mix(in srgb, #4200db 60%, transparent);
+  --color-primary-subtle: color-mix(in srgb, #4200db 18%, transparent);
+  --color-primary-border: #8575ff;
+  --color-focus-ring: color-mix(in srgb, #4200db 50%, transparent);
+  --color-sidebar-hover: color-mix(in srgb, #4200db 12%, transparent);
+  --block-hover-outline: 1px dashed color-mix(in srgb, #4200db 50%, transparent);
+  --block-selected-outline: 1px solid #8575ff;
+  --block-selection-outline-offset: 2px;
+  --block-selected-halo: 0 0 8px color-mix(in srgb, #4200db 40%, transparent);
+  --color-accent: #4200db;
+  --color-accent-foreground: #4200db;
+  --color-accent-dark: #35009e;
+  --color-accent-light: #e8e6ff;
+  --color-accent-inverse: #fff;
+  --color-link: #4200db;
+  --color-primary-gradient-end: #e8e6ff;
+  --color-primary-bg-solid: #eae8ed;
+  --color-user-bubble: #f3f3f7;
+  --color-user-bubble-text: #352f3d;
+  --color-text-secondary: #5e5966;
+  --color-text-tertiary: #7a7582;
+  --color-text-muted: #938f9b;
+  --color-text-on-primary: #f2f1f4;
+  --color-success: #00802f;
+  --color-success-dark: #00471e;
+  --color-success-light: #d9ffd6;
+  --color-success-hover: #005c26;
+  --color-success-bg: #e6f4eb;
+  --color-success-border: #c4dccb;
+  --color-success-foreground: #00802f;
+  --color-success-dark-foreground: #00471e;
+  --color-success-text: #00471e;
+  --color-error: #db0000;
+  --color-error-dark: #700000;
+  --color-error-light: #ffe0e0;
+  --color-error-hover: #ffe0e0;
+  --color-error-bg: #fbe9ea;
+  --color-error-border: #eecbcd;
+  --color-error-active-border: #db0000;
+  --color-error-foreground: #db0000;
+  --color-error-dark-foreground: #700000;
+  --color-error-inverse: #fff;
+  --color-error-text: #700000;
+  --color-warning: #f2b100;
+  --color-warning-dark: #573a00;
+  --color-warning-light: #fffbbd;
+  --color-warning-hover: #db9200;
+  --color-warning-bg: #fdf6e4;
+  --color-warning-border: #f5dda6;
+  --color-warning-foreground: #f2b100;
+  --color-warning-dark-foreground: #573a00;
+  --color-warning-inverse: #573a00;
+  --color-surface-warning: #fffbbd;
+  --color-text-warning: #573a00;
+  --color-info: #006ce0;
+  --color-info-dark: #002a66;
+  --color-info-light: #d1f1ff;
+  --color-info-hover: #003b8f;
+  --color-info-bg: #e6f0fb;
+  --color-info-border: #c0d5ec;
+  --color-info-foreground: #006ce0;
+  --color-info-dark-foreground: #002a66;
+  --color-info-inverse: #fff;
+  --color-overlay: #dcdadf80;
+  --color-shadow: #352f3d40;
+  --color-hover: #352f3d0d;
+  --color-tooltip-bg: #eae8ed;
+  --color-tooltip-text: #352f3d;
+  --color-voice-purple: #8575ff;
+  --color-voice-purple-dark: #4200db;
+  --color-voice-purple-light: #8575ff;
+  --color-voice-red: #db0000;
+  --color-voice-red-dark: #700000;
+  --color-voice-amber: #f2b100;
+  --color-voice-purple-glow: #4200db66;
+  --color-voice-red-glow: #db000066;
+  --font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Monaco", "Menlo", "Consolas", monospace;
+  --text-2xs: .5625rem;
+  --text-xs: .625rem;
+  --text-sm: .6875rem;
+  --text-base: .75rem;
+  --text-md: .8125rem;
+  --text-lg: .875rem;
+  --text-xl: 1rem;
+  --text-2xl: 1.125rem;
+  --text-3xl: 1.25rem;
+  --text-4xl: 1.5rem;
+  --text-5xl: 2rem;
+  --spacing-1: calc(.25rem * 1);
+  --spacing-1-5: calc(.25rem * 1.5);
+  --spacing-2: calc(.25rem * 2);
+  --spacing-3: calc(.25rem * 3);
+  --spacing-4: calc(.25rem * 4);
+  --spacing-5: calc(.25rem * 5);
+  --spacing-6: calc(.25rem * 6);
+  --spacing-7: calc(.25rem * 7);
+  --spacing-8: calc(.25rem * 8);
+  --spacing-9: calc(.25rem * 9);
+  --spacing-10: calc(.25rem * 10);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-card: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 8px;
+  --shadow-sm: 0 1px 2px #352f3d0f;
+  --shadow-md: 0 4px 12px #352f3d1a;
+  --color-success-bg-solid: #d9ffd6;
+  --color-error-bg-solid: #ffe0e0;
+  --color-error-border-solid: #ffe0e0;
+  --color-warning-bg-solid: #fffbbd;
+  --color-warning-text: #573a00;
+  --color-info-bg-solid: #d1f1ff;
+  --color-info-bg-solid-alt: #d1f1ff;
+  --color-info-text: #002a66;
+  --color-info-text-alt: #002a66;
+  --color-emerald: #367c53;
+  --color-teal: #0c9aa7;
+  --color-code-bg: #eae8ed;
+  --color-code-header-bg: #dcdadf;
+  --color-code-text: #352f3d;
+  --color-code-border: #c1bec6;
+  --color-code-muted: #5e5966;
+  --color-inline-code-bg: #eae8ed;
+  --color-inline-code-text: #352f3d;
+  --color-inline-code-border: #c1bec6;
+  --color-scrollbar-thumb: #c1bec6;
+  --color-scrollbar-track: transparent;
+  --color-graph-node-text: #352f3d;
+  --color-graph-node-text-dim: #938f9b;
+  --color-graph-edge-default: #938f9b;
+  --color-graph-edge-cross: #d08025;
+  --color-graph-edge-text: #5e5966;
+  --color-graph-edge-stroke: #f2f1f4;
+  --color-graph-highlight-bg: #ff6b6b;
+  --color-graph-highlight-border: #e74c3c;
+  --color-graph-search-bg: gold;
+  --color-graph-search-border: orange;
+  --color-graph-focus-border: #c0392b;
+  --color-graph-external-border: #938f9b;
+  --color-graph-cat-file: #3878b0;
+  --color-graph-cat-folder: #5e5966;
+  --color-graph-cat-file-aggregate: #2d6a9f;
+  --color-graph-cat-class: #7138cc;
+  --color-graph-cat-function: #367c53;
+  --color-graph-cat-method: #0c9aa7;
+  --color-graph-cat-variable: #d08025;
+  --color-graph-cat-import: #b06a1a;
+  --color-graph-cat-module: #5e35a8;
+  --color-graph-cat-concept: #933;
+  --color-graph-cat-person: #c44d4d;
+  --color-graph-cat-org: #0c9aa7;
+  --color-graph-cat-organization: #0c9aa7;
+  --color-graph-cat-product: #8e47ff;
+  --color-graph-cat-metric: #c44d78;
+  --color-graph-cat-location: #34495e;
+  --color-graph-cat-date: #b34d8a;
+  --color-graph-cat-code: #3878b0;
+  --color-graph-cat-doc: #5e5966;
+  --color-graph-cat-url: #367c53;
+  --color-graph-cat-email: #5e35a8;
+  --color-graph-cat-unknown: #938f9b;
+  --color-graph-rel-contains: #938f9b;
+  --color-graph-rel-extends: #7138cc;
+  --color-graph-rel-implements: #3878b0;
+  --color-graph-rel-imports: #d08025;
+  --color-graph-rel-uses: #367c53;
+  --color-graph-rel-calls: #367c53;
+  --color-graph-rel-references: #d08025;
+  --color-graph-rel-related-to: #938f9b;
+  --color-graph-rel-works-on: #933;
+  --color-graph-rel-owns: #0c9aa7;
+  --color-graph-rel-depends-on: #b06a1a;
+  --color-graph-rel-parent-of: #938f9b;
+  --qs-content: #fff;
+  --qs-main: #fff;
+  --qs-primary-foreground: #131920;
+  --qs-secondary-foreground: #656871;
+  --qs-tertiary-foreground: #938f9b;
+  --qs-placeholder-foreground: #8c8c94;
+  --qs-divider: #dedee3;
+  --qs-default-border: #8c8c94;
+  --qs-neutral-soft: #b4b4bb;
+  --qs-neutral-gray-50: #eae8ed;
+  --qs-tertiary-background: #eae8ed;
+  --qs-action-hover: #f3f3f7;
+  --qs-primary-default: #4200db;
+  --qs-primary-dark: #35009e;
+  --qs-primary-light: #e8e6ff;
+  --qs-success-default: #00802f;
+  --qs-error-default: #db0000;
+  --qs-font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --safe-top: 0px;
+  --safe-bottom: 0px;
+  --safe-left: 0px;
+  --safe-right: 0px;
+  --qs-font-family: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --qs-font-base-letter-spacing: .15px;
+  --qs-shadow-sm: 0 0 2px 0 #00000029, 0 0 4px 0 #00000029;
+  --qs-shadow-md: 0 0 2px 0 #00000029, 0 2px 8px 1px #00000029;
+  --qs-shadow-lg: 0 4px 16px 4px #00000029, 0 2px 6px 1px #00000029;
+  --qs-shadow-xl: 0 4px 8px 2px #00000029, 0 6px 20px 4px #00000029;
+  --qs-width-modal-sm: 384px;
+  --qs-width-modal-md: 600px;
+  --qs-width-modal-lg: 1136px;
+  --qs-grid-gap: 16px;
+  --qs-grid-gap-xl: 24px;
+  --qs-primary-medium: #8575ff;
+  --qs-primary-inverse: #fff;
+  --qs-neutral-lightest: #f9f9fb;
+  --qs-neutral-light: #f3f3f7;
+  --qs-neutral-default: #dedee3;
+  --qs-neutral-medium: #8c8c94;
+  --qs-neutral-deep: #656871;
+  --qs-neutral-dark: #333843;
+  --qs-neutral-strong: #131920;
+  --qs-neutral-white: #fff;
+  --qs-neutral-black: #000;
+  --qs-success-medium: #005c26;
+  --qs-success-dark: #00471e;
+  --qs-success-light: #d9ffd6;
+  --qs-success-inverse: #fff;
+  --qs-info-default: #006ce0;
+  --qs-info-medium: #003b8f;
+  --qs-info-dark: #002a66;
+  --qs-info-light: #d1f1ff;
+  --qs-info-inverse: #fff;
+  --qs-warning-default: #f2b100;
+  --qs-warning-medium: #db9200;
+  --qs-warning-dark: #573a00;
+  --qs-warning-light: #fffbbd;
+  --qs-warning-inverse: #573a00;
+  --qs-warning-experimental: #f2b100;
+  --qs-warning-experimental-light: #fffbbd;
+  --qs-warning-experimental-light-foreground: #fffbbd;
+  --qs-error-medium: #900;
+  --qs-error-dark: #700000;
+  --qs-error-light: #ffe0e0;
+  --qs-error-inverse: #fff;
+  --qs-connection-default: #db3300;
+  --qs-connection-soft: #ff997a;
+  --qs-connection-light: #ffe0d6;
+  --qs-connection-dark: #661800;
+  --qs-automation-default: #b3008f;
+  --qs-automation-medium: #d600ba;
+  --qs-automation-soft: #ff94f1;
+  --qs-automation-light: #ffe0fb;
+  --qs-automation-dark: #660052;
+  --qs-insight-default: #a000b8;
+  --qs-insight-soft: #f299ff;
+  --qs-insight-light: #fce6ff;
+  --qs-insight-dark: #590066;
+  --qs-visualization-default: #7300e5;
+  --qs-visualization-soft: #d4a8ff;
+  --qs-visualization-light: #f2e5ff;
+  --qs-visualization-dark: #45008a;
+  --qs-spice: #ff9800;
+  --qs-coachmark: #006ce0;
+  --qs-brand: #fff;
+  --qs-brand-foreground: #131920;
+  --qs-brand-navbar: #131920;
+  --qs-brand-navbar-foreground: #fff;
+  --qs-brand-navbar-light: #dedee3;
+  --qs-brand-navbar-dark: #000;
+  --qs-application-navbar: #4200db;
+  --qs-application-navbar-foreground: #fff;
+  --qs-application-navbar-light: #e8e6ff;
+  --qs-application-navbar-dark: #35009e;
+  --qs-dimension: #4200db;
+  --qs-dimension-foreground: #fff;
+  --qs-dimension-experimental: #4200db;
+  --qs-dimension-experimental-foreground: #4200db;
+  --qs-measure: #00802f;
+  --qs-measure-foreground: #fff;
+  --qs-measure-experimental: #f2b100;
+  --qs-measure-experimental-foreground: #f2b100;
+  --qs-content-inverse: #333843;
+  --qs-content-inverse-active: #131920;
+  --qs-secondary: #dedee3;
+  --qs-disabled: #8c8c94;
+  --qs-divider-light: #f3f3f7;
+  --qs-hover-border: #333843;
+  --qs-active-border: #4200db;
+  --qs-disabled-border: #dedee3;
+  --qs-error-border: #ffe0e0;
+  --qs-error-active-border: #db0000;
+  --qs-disabled-foreground: #b4b4bb;
+  --qs-primary-inverse-foreground: #fff;
+  --qs-error-foreground: #db0000;
+  --qs-contrast-foreground: #131920;
+  --qs-main-foreground: #131920;
+  --qs-main-secondary-foreground: #656871;
+  --qs-action-disabled: #f3f3f7;
+  --qs-action-active: #e8e6ff;
+  --qs-default-badge: #dedee3;
+  --qs-tag-default: #dedee3;
+  --qs-tag-soft-border: #b4b4bb;
+  --qs-focus-offset: 1px;
+  --qs-toggle-tile-sm: calc(.25rem * 8);
+  --qs-toggle-tile-md: calc(.25rem * 12);
+  --qs-toggle-tile-lg: calc(.25rem * 15);
+  --qs-shadow-pin-right: inset 4px 0 4px -4px #00000029;
+  --qs-shadow-pin-left: inset -4px 0 4px -4px #00000029;
+  --react-pdf-text-layer: 1;
+  --highlight-bg-color: #b400aa;
+  --highlight-selected-bg-color: #006400;
+  --react-pdf-annotation-layer: 1;
+  --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+  --input-focus-border-color: Highlight;
+  --input-focus-outline: 1px solid Canvas;
+  --input-unfocused-border-color: transparent;
+  --input-disabled-border-color: transparent;
+  --input-hover-border-color: black;
+  --link-outline: none;
+  color-scheme: light;
+}
+body { background: var(--color-bg); color: var(--color-text); }
+a { color: var(--color-link, var(--color-primary)); }</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>深入理解 Amazon EMR Managed Scaling 的缩容机制与最佳实践</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-bg-secondary: #f7f8fa;
+      --color-text: #1a1a2e;
+      --color-text-secondary: #3d4f5f;
+      --color-text-muted: #6b7c8a;
+      --color-border-light: #e8ecf0;
+      --color-border: #d0d7de;
+      --color-primary: #0073bb;
+      --color-primary-light: #e6f3fb;
+      --color-success: #1e8e3e;
+      --color-error: #d93025;
+      --color-warning: #e37400;
+      --color-info: #1a73e8;
+      --color-purple: #7b2ff7;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      --font-mono: 'SF Mono', 'Fira Code', Consolas, monospace;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      line-height: 1.8;
+      padding: 40px 32px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* --- Header --- */
+    .blog-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .blog-header .category {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-primary);
+      margin-bottom: 12px;
+    }
+
+    .blog-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 16px;
+      color: var(--color-text);
+    }
+
+    .blog-header .meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--color-text-muted);
+    }
+
+    .blog-header .meta .tag {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+    }
+
+    /* --- Abstract --- */
+    .abstract {
+      background: var(--color-bg-secondary);
+      border-left: 4px solid var(--color-primary);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+      font-size: 15px;
+      color: var(--color-text-secondary);
+    }
+
+    /* --- TOC --- */
+    .toc {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      margin-bottom: 40px;
+    }
+
+    .toc h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .toc ol {
+      padding-left: 20px;
+      font-size: 14px;
+      line-height: 2;
+    }
+
+    .toc a {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    /* --- Section headers --- */
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-top: 48px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--color-border-light);
+      color: var(--color-text);
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-top: 28px;
+      margin-bottom: 12px;
+      color: var(--color-text);
+    }
+
+    /* --- Body text --- */
+    p {
+      margin-bottom: 16px;
+      font-size: 15px;
+      color: var(--color-text-secondary);
+    }
+
+    ul, ol {
+      padding-left: 24px;
+      margin-bottom: 16px;
+      font-size: 15px;
+      color: var(--color-text-secondary);
+    }
+
+    li {
+      margin-bottom: 8px;
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-sm);
+      padding: 1px 6px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+
+    pre {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      overflow-x: auto;
+      margin: 16px 0 24px;
+      line-height: 1.6;
+    }
+
+    /* --- Info boxes --- */
+    .info-box {
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+
+    .info-box.tip {
+      background: #e8f5e9;
+      border-left: 4px solid var(--color-success);
+    }
+
+    .info-box.warning {
+      background: #fff8e1;
+      border-left: 4px solid var(--color-warning);
+    }
+
+    .info-box.note {
+      background: var(--color-primary-light);
+      border-left: 4px solid var(--color-primary);
+    }
+
+    .info-box strong {
+      color: var(--color-text);
+    }
+
+    /* --- Tables --- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 16px 0 24px;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    th {
+      text-align: left;
+      font-weight: 600;
+      padding: 10px 14px;
+      background: var(--color-bg-secondary);
+      border-bottom: 2px solid var(--color-border);
+      color: var(--color-text);
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--color-border-light);
+      color: var(--color-text-secondary);
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* --- Timeline --- */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+      margin: 20px 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: var(--color-border);
+    }
+
+    .timeline-step {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .timeline-step::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-primary);
+    }
+
+    .timeline-step h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 4px;
+    }
+
+    .timeline-step p {
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    /* --- Highlight --- */
+    .highlight {
+      background: #fef3cd;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+
+    /* --- Diagram box --- */
+    .diagram-box {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--color-text-secondary);
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    /* --- Conclusion --- */
+    .conclusion {
+      background: linear-gradient(135deg, #e6f3fb, #f0f4ff);
+      border: 1px solid #b3d9f2;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-top: 40px;
+    }
+
+    .conclusion h2 {
+      border-bottom: none;
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    /* --- Footer refs --- */
+    .references {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--color-border-light);
+    }
+
+    .references h2 {
+      font-size: 16px;
+      border-bottom: none;
+      margin-top: 0;
+    }
+
+    .references ol {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      line-height: 2;
+    }
+
+    .references li a {
+      color: var(--color-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== HEADER ====== -->
+  <div class="blog-header">
+    <div class="category">Amazon EMR · 大数据</div>
+    <h1>深入理解 Amazon EMR Managed Scaling 的缩容机制与最佳实践</h1>
+    <div class="meta">
+      <span>Xiao Huang</span>
+      <span>·</span>
+      <span>2026 年 7 月</span>
+      <span>·</span>
+      <span>阅读时间约 15 分钟</span>
+      <span class="tag">EMR 7.x</span>
+      <span class="tag">Advanced Scaling</span>
+    </div>
+  </div>
+
+  <!-- ====== ABSTRACT ====== -->
+  <div class="abstract">
+    Amazon EMR Managed Scaling 可以根据工作负载自动扩缩集群节点，但在缩容场景下，如何在释放资源的同时不中断正在运行的任务，是许多用户关心的核心问题。本文将系统性地解析 Managed Scaling 的缩容决策逻辑，介绍 2024-2026 年的关键新特性（包括 Advanced Scaling 利用率/性能滑块、AM Placement Awareness、Shuffle Graceful Decommission 增强等），并提供一份面向生产环境的配置最佳实践指南。
+  </div>
+
+  <!-- ====== TOC ====== -->
+  <div class="toc">
+    <h3>目录</h3>
+    <ol>
+      <li><a href="#problem">问题引入：缩容为什么难</a></li>
+      <li><a href="#mechanism">缩容决策机制详解</a></li>
+      <li><a href="#walkthrough">一个典型场景的缩容过程</a></li>
+      <li><a href="#new-features">近两年关键更新</a></li>
+      <li><a href="#advanced-scaling">Advanced Scaling 深度剖析</a></li>
+      <li><a href="#best-practices">生产环境最佳实践</a></li>
+      <li><a href="#conclusion">总结</a></li>
+    </ol>
+  </div>
+
+  <!-- ====== 1. 问题引入 ====== -->
+  <h2 id="problem">1. 问题引入：缩容为什么难</h2>
+
+  <p>假设你的 EMR 集群正在并发执行多个 Spark 任务，Managed Scaling 已经将集群从最小规模扩展到了数十个节点。当部分任务完成后，集群实际只需要原来 1/5 的算力——但剩余任务的 executor 和 shuffle 数据可能分散在大量节点上。</p>
+
+  <p>此时 EMR 面临一个两难选择：</p>
+
+  <ul>
+    <li><strong>快速缩容</strong>意味着可能中断正在运行的 container、丢失 shuffle 中间数据，导致 stage 重算甚至任务失败</li>
+    <li><strong>等待缩容</strong>意味着大量节点处于空闲状态，用户在为未使用的算力付费</li>
+  </ul>
+
+  <p>EMR Managed Scaling 的解决方案是：<span class="highlight">渐进式智能缩容</span>——通过多层保护机制，在保障任务完整性的前提下，尽可能快速地释放不需要的节点。下面我们逐层拆解这个机制。</p>
+
+  <!-- ====== 2. 缩容决策机制 ====== -->
+  <h2 id="mechanism">2. 缩容决策机制详解</h2>
+
+  <h3>2.1 缩容优先级</h3>
+
+  <p>Managed Scaling 遵循一个明确的优先级规则：<span class="highlight">先移除 Task 节点，再移除 Core 节点</span>。集群永远不会缩到低于策略中设置的 <code>MinimumCapacityUnits</code>。如果启用了 <a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/managed-scaling-allocation-strategy.html">YARN Node Labels</a>（EMR 7.2+），缩容还会基于标签（ON_DEMAND / SPOT）分别进行决策。</p>
+
+  <h3>2.2 节点保护机制</h3>
+
+  <p>EMR 不会盲目地移除节点，而是通过以下四层保护机制确保安全：</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>保护层</th>
+        <th>机制</th>
+        <th>适用版本</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Shuffle Data 感知</strong></td>
+        <td>不缩掉存有当前或上一 stage 活跃 shuffle 数据的节点，保护最长 30 分钟。EMR 7.4+ 可启用 YARN 级别的 shuffle 等待，直到 shuffle 文件完全清除才移除节点。</td>
+        <td>EMR 5.34+ / 6.4+</td>
+      </tr>
+      <tr>
+        <td><strong>ApplicationMaster 保护</strong></td>
+        <td>运行 Spark ApplicationMaster（驱动程序）的节点，在该应用还有活跃 stage 时不会被缩掉。</td>
+        <td>EMR 5.34+ / 6.4+</td>
+      </tr>
+      <tr>
+        <td><strong>YARN Graceful Decommission</strong></td>
+        <td>被选中缩容的节点进入 decommissioning 状态：停止接收新 container，等待已有 container 完成。超过超时时间（默认 1 小时）才强制终止。</td>
+        <td>所有版本</td>
+      </tr>
+      <tr>
+        <td><strong>HDFS 副本保护</strong></td>
+        <td>Core 节点的缩容必须确保 HDFS 容量仍能存放所有 block。集群不会缩减到低于 <code>dfs.replication</code> 设置值。</td>
+        <td>所有版本</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info-box note">
+    <strong>注意：</strong>Shuffle Data 保护是"尽最大努力"而非"保证"。对于 shuffle 密集型任务，建议同时启用 <code>yarn.resourcemanager.decommissioning-nodes-watcher.wait-for-shuffle-data=true</code>（EMR 7.4+）以获得 YARN 级别的硬性保护。
+  </div>
+
+  <!-- ====== 3. 典型场景 ====== -->
+  <h2 id="walkthrough">3. 一个典型场景的缩容过程</h2>
+
+  <p>以下是一个常见场景的缩容过程还原：集群因并发任务扩展到了大量节点，随后部分任务完成，但剩余任务仍分布在多数节点上。</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <h4>Step 1：移除空闲节点</h4>
+      <p>EMR 首先识别没有运行中 container、没有 shuffle 数据、没有 AM 的完全空闲节点，<strong>立即移除</strong>。</p>
+    </div>
+    <div class="timeline-step">
+      <h4>Step 2：标记 Decommissioning</h4>
+      <p>对仍有 container 运行的节点标记为 decommissioning。YARN ResourceManager 不再向这些节点调度新 task（加入 deny list）。</p>
+    </div>
+    <div class="timeline-step">
+      <h4>Step 3：Spark DRA 配合释放</h4>
+      <p>Spark Dynamic Resource Allocation（默认开启）主动识别空闲 executor 并释放，加速节点变空。</p>
+    </div>
+    <div class="timeline-step">
+      <h4>Step 4：Shuffle 保护等待</h4>
+      <p>即使 executor 已空，存有活跃 shuffle 数据的节点仍暂不移除。Managed Scaling 最多保护 30 分钟；启用 YARN Shuffle Decommission 后则等到 shuffle 文件清除。</p>
+    </div>
+    <div class="timeline-step">
+      <h4>Step 5：超时兜底</h4>
+      <p>超过 <code>yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs</code>（默认 3600s）后，YARN 强制终止残留 container 并将其重新调度到其他节点。</p>
+    </div>
+  </div>
+
+  <p>整个过程意味着：<strong>缩容是渐进式的</strong>，不会一步到位。从触发缩容到完全到达目标节点数，通常需要数分钟到 1 小时，取决于剩余任务的 task 分布和 shuffle 数据持有情况。</p>
+
+  <!-- ====== 4. 近两年更新 ====== -->
+  <h2 id="new-features">4. 近两年关键更新</h2>
+
+  <p>2024-2026 年间，EMR Managed Scaling 经历了一系列重要增强，对缩容行为有直接影响：</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>时间</th>
+        <th>特性</th>
+        <th>对缩容的影响</th>
+        <th>版本要求</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2026.07</td>
+        <td><strong><a href="https://aws.amazon.com/blogs/big-data/high-performance-remote-shuffle-service-on-amazon-emr-with-apache-celeborn/">Apache Celeborn RSS 支持</a></strong></td>
+        <td>Shuffle 数据外置到独立集群，executor 节点可自由缩容而不丢失 shuffle</td>
+        <td>EMR 7.x</td>
+      </tr>
+      <tr>
+        <td>2026.03</td>
+        <td><strong><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/managed-scaling-allocation-strategy-optimized.html">Advanced Scaling 利用率/性能滑块</a></strong></td>
+        <td>用户可精细控制扩缩激进度——低值缩容更保守（保留 buffer），高值缩容更快</td>
+        <td>EMR 7.0+</td>
+      </tr>
+      <tr>
+        <td>2024.08</td>
+        <td><strong><a href="https://aws.amazon.com/about-aws/whats-new/2024/08/amazon-emr-managed-scaling-application-master-placement-aware">AM Placement Awareness + Node Labels</a></strong></td>
+        <td>AM 固定在 On-Demand，Executor 跑 Spot，缩容时可独立决策各标签组</td>
+        <td>EMR 7.2+</td>
+      </tr>
+      <tr>
+        <td>2024.H1</td>
+        <td><strong>Spark Shuffle Graceful Decommission 增强</strong></td>
+        <td>YARN 等待 shuffle 数据完全清除后才移除节点；配合 <code>removeShuffle=true</code> 加速释放</td>
+        <td>EMR 7.4+</td>
+      </tr>
+      <tr>
+        <td>2023.H2</td>
+        <td><strong>4 个新 CloudWatch 利用率指标</strong></td>
+        <td>Memory/vCPU GB-seconds 精确衡量利用率，可驱动更精准的缩容决策</td>
+        <td>EMR 7.3+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ====== 5. Advanced Scaling 深度剖析 ====== -->
+  <h2 id="advanced-scaling">5. Advanced Scaling 深度剖析</h2>
+
+  <h3>5.1 核心原理</h3>
+
+  <p>Advanced Scaling 于 2024 年 11 月发布，2026 年 3 月随博客详细介绍。它在原有 Managed Scaling 基础上引入了 <code>UtilizationPerformanceIndex</code>（简称 UPI），取值为 1、25、50、75、100 五个离散档位。</p>
+
+  <p>UPI <strong>不是</strong>简单的"阈值"或"冷却时间"参数——它是一个<span class="highlight">意图驱动的元旋钮</span>，EMR 内部会将用户意图翻译为算法内部多个维度的调整：</p>
+
+  <ul>
+    <li><strong>扩容激进度</strong>：UPI=100 时看到 pending containers 立刻大量扩容；UPI=1 时观察趋势后保守扩容</li>
+    <li><strong>缩容速度</strong>：UPI=100 时任务结束后迅速释放节点；UPI=1 时保留节点更长时间以备下一波任务</li>
+    <li><strong>目标节点数计算</strong>：高值按需求上限提供节点，低值尽量用更少节点完成相同工作</li>
+    <li><strong>振荡抑制</strong>：低值强力抑制频繁 churn，高值允许更积极地追踪实时需求</li>
+  </ul>
+
+  <h3>5.2 算法输入信号</h3>
+
+  <p>EMR Managed Scaling 的决策引擎（EMSv2，详见 <a href="https://assets.amazon.science/ed/cc/615c681c43c7b255ccce57f51258/managed-resource-scaling-in-amazon-emr.pdf">SIGMOD'25 论文</a>）每 5-10 秒采样一次集群关键指标：</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>信号类别</th>
+        <th>具体指标</th>
+        <th>决策作用</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Container 需求</td>
+        <td>YARN pending / allocated containers</td>
+        <td>是否需要扩容、扩多少</td>
+      </tr>
+      <tr>
+        <td>资源利用率</td>
+        <td>Memory GB-seconds, vCPU-seconds</td>
+        <td>是否过度分配</td>
+      </tr>
+      <tr>
+        <td>数据位置</td>
+        <td>Shuffle data 所在节点</td>
+        <td>保护哪些节点不可缩</td>
+      </tr>
+      <tr>
+        <td>应用拓扑</td>
+        <td>AM 位置、活跃 stage 数</td>
+        <td>保护 AM 节点</td>
+      </tr>
+      <tr>
+        <td>集群拓扑</td>
+        <td>Provisioning lag、decommission 延迟</td>
+        <td>预判提前量</td>
+      </tr>
+      <tr>
+        <td>历史行为</td>
+        <td>过去的扩缩决策和效果</td>
+        <td>趋势识别、抑制震荡</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>5.3 实测数据：三种策略的差异</h3>
+
+  <p>以下数据来自 <a href="https://aws.amazon.com/blogs/big-data/introducing-enhancements-to-amazon-emr-managed-scaling/">AWS 官方博客</a>中使用 3TB TPC-DS 数据集的测试（min=2, max=50 instances）：</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>策略</th>
+        <th>UPI 值</th>
+        <th>峰值运行节点</th>
+        <th>峰值请求节点</th>
+        <th>任务耗时</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>利用率优先</td>
+        <td>1</td>
+        <td>16</td>
+        <td>16</td>
+        <td>12 min 39s</td>
+      </tr>
+      <tr>
+        <td>平衡</td>
+        <td>50</td>
+        <td>43</td>
+        <td>32</td>
+        <td>7 min 01s</td>
+      </tr>
+      <tr>
+        <td>性能优先</td>
+        <td>100</td>
+        <td>50</td>
+        <td>46</td>
+        <td>6 min 16s</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>相同任务在不同策略下，利用率优先需要约 2x 时间，但峰值节点数仅为性能优先的 1/3。性能优先模式的缩容延迟最短（任务结束后快速释放），而利用率优先模式在任务结束后仍保留节点约 15 分钟以备后续任务。</p>
+
+  <h3>5.4 各策略的行为特征</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>行为维度</th>
+        <th>利用率优先 (1)</th>
+        <th>平衡 (50)</th>
+        <th>性能优先 (100)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>扩容触发</strong></td>
+        <td>确认持续需求后才扩</td>
+        <td>适度响应 pending</td>
+        <td>看到 pending 立刻大幅扩</td>
+      </tr>
+      <tr>
+        <td><strong>扩容幅度</strong></td>
+        <td>小步递增</td>
+        <td>中等幅度</td>
+        <td>尽可能接近 max</td>
+      </tr>
+      <tr>
+        <td><strong>缩容触发</strong></td>
+        <td>保留节点 ~15min</td>
+        <td>适度延迟</td>
+        <td>紧跟需求指标下降</td>
+      </tr>
+      <tr>
+        <td><strong>缩容幅度</strong></td>
+        <td>保守，保留 buffer</td>
+        <td>中等幅度</td>
+        <td>大幅缩到实际需求值</td>
+      </tr>
+      <tr>
+        <td><strong>节点 churn</strong></td>
+        <td>低</td>
+        <td>中</td>
+        <td>高</td>
+      </tr>
+      <tr>
+        <td><strong>最佳场景</strong></td>
+        <td>连续批处理序列<br>有规律性波峰</td>
+        <td>混合负载<br>稳态 + 偶尔峰值</td>
+        <td>SLA 敏感<br>交互式查询</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>5.5 运维建议：按时段切换策略</h3>
+
+  <p>由于 <code>UtilizationPerformanceIndex</code> 可以通过 <code>put-managed-scaling-policy</code> API 在运行时动态修改，建议结合 Amazon EventBridge 按业务时段自动切换：</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>时段</th>
+        <th>推荐 UPI</th>
+        <th>原因</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>清晨（数据准备）</td>
+        <td>25</td>
+        <td>保守预热，避免资源空转</td>
+      </tr>
+      <tr>
+        <td>工作时段高峰</td>
+        <td>75 - 100</td>
+        <td>保障 SLA，快速响应查询</td>
+      </tr>
+      <tr>
+        <td>傍晚（收尾处理）</td>
+        <td>50</td>
+        <td>平衡模式</td>
+      </tr>
+      <tr>
+        <td>夜间（批处理窗口）</td>
+        <td>1</td>
+        <td>最大化利用率，最低成本</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info-box warning">
+    <strong>限制：</strong>Advanced Scaling 与 YARN Node Labels 不能同时使用。如果两者都开启，集群会回退到默认 Managed Scaling 行为。此外，Advanced Scaling 更适合批处理场景；对于 SQL/数据仓库和流处理，AWS 建议使用默认策略。
+  </div>
+
+  <!-- ====== 6. 最佳实践 ====== -->
+  <h2 id="best-practices">6. 生产环境最佳实践</h2>
+
+  <h3>6.1 使用最新 EMR 版本</h3>
+
+  <p>AWS 强烈推荐使用 EMR 7.13.0 或更高版本。最新版本包含所有缩容优化：Shuffle Data 增强保护、AM 保护、Node Labels、Advanced Scaling。早期版本存在已知的扩缩延迟和间歇性失败问题。</p>
+
+  <h3>6.2 启用 Node Labels 分离 AM 和 Executor</h3>
+
+  <p>将 ApplicationMaster 固定在 On-Demand Core 节点，Executor 运行在 Spot Task 节点。这样缩容 Spot 节点时不会杀掉 AM：</p>
+
+  <pre>[
+  {
+    "Classification": "yarn-site",
+    "Properties": {
+      "yarn.node-labels.enabled": "true",
+      "yarn.node-labels.am.default-node-label-expression": "ON_DEMAND"
+    }
+  }
+]</pre>
+
+  <p>配合 <code>spark.yarn.executor.nodeLabelExpression=SPOT</code> 可强制 executor 只运行在 Spot 节点。</p>
+
+  <h3>6.3 启用 Shuffle Graceful Decommission（EMR 7.4+）</h3>
+
+  <p>确保缩容时 shuffle 数据不丢失：</p>
+
+  <pre>[
+  {
+    "Classification": "yarn-site",
+    "Properties": {
+      "yarn.resourcemanager.decommissioning-nodes-watcher.wait-for-shuffle-data": "true"
+    }
+  },
+  {
+    "Classification": "spark-defaults",
+    "Properties": {
+      "spark.dynamicAllocation.enabled": "true",
+      "spark.shuffle.service.removeShuffle": "true"
+    }
+  }
+]</pre>
+
+  <p><code>removeShuffle=true</code> 确保不再使用的 shuffle 数据被立即清除，避免"已完成的应用的 shuffle 文件"阻止节点 decommission。</p>
+
+  <h3>6.4 调整 Decommission 和 Blacklist 超时</h3>
+
+  <ul>
+    <li><strong>延长 decommission 超时</strong>：设为不小于最长 Spark Task 的运行时间。例如最长 task 可能跑 2 小时，设 <code>yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs=7200</code></li>
+    <li><strong>缩短 blacklist 超时</strong>：将 <code>spark.blacklist.decommissioning.timeout</code> 从默认 1 小时降到 1 分钟，让 decommissioning 节点更快允许 pending containers 继续调度，避免 YARN 任务卡住</li>
+  </ul>
+
+  <h3>6.5 保持 Spark DRA 开启</h3>
+
+  <p><code>spark.dynamicAllocation.enabled=true</code> 是 Managed Scaling 正确工作的前提。关闭 DRA 会导致集群扩到最大值后无法有效缩容。对并发多应用的集群，还应设置 <code>spark.dynamicAllocation.maxExecutors</code> 限制单应用资源占用。</p>
+
+  <h3>6.6 考虑 Remote Shuffle Service（大规模 Spot 场景）</h3>
+
+  <p>对于大量使用 Spot Instance 且 shuffle 数据量大的场景，Apache Celeborn 可以从根本上解决"shuffle 数据锁住节点"的问题：</p>
+
+  <ul>
+    <li>Shuffle 数据存储在独立的 Celeborn 集群，与 executor 生命周期完全解耦</li>
+    <li>节点可以自由缩容，Spot 中断不导致 shuffle 丢失</li>
+    <li>集群可以 100% 使用 Spot Instance</li>
+    <li>代价是需要额外部署和维护 Celeborn 集群（推荐独立 EKS 集群）</li>
+  </ul>
+
+  <h3>6.7 其他注意事项</h3>
+
+  <ul>
+    <li><strong>EBS 利用率</strong>：保持低于 90%，超过会导致 Managed Scaling 行为异常</li>
+    <li><strong>网络连通性</strong>：确保 metrics-collector 能连通 API Gateway 端点。私有 VPC 需禁用 API Gateway 的 private DNS 或使用私有子网</li>
+    <li><strong>Core 节点用 On-Demand</strong>：避免 Spot 回收导致 HDFS 数据丢失</li>
+    <li><strong>CloudWatch 监控</strong>：配置 CloudWatch 告警检测 metrics 缺失，指标中断会导致扩缩停止工作</li>
+  </ul>
+
+  <h3>6.8 关键配置速查表</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>参数</th>
+        <th>推荐值</th>
+        <th>作用</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs</code></td>
+        <td>≥ 最长 task 耗时</td>
+        <td>防止强制终止未完成的任务</td>
+      </tr>
+      <tr>
+        <td><code>spark.blacklist.decommissioning.timeout</code></td>
+        <td>60s</td>
+        <td>减少 decommissioning 节点对调度的阻塞</td>
+      </tr>
+      <tr>
+        <td><code>spark.dynamicAllocation.enabled</code></td>
+        <td>true</td>
+        <td>Spark 自动释放空闲 executor</td>
+      </tr>
+      <tr>
+        <td><code>yarn.node-labels.enabled</code></td>
+        <td>true</td>
+        <td>启用 On-Demand/Spot 标签</td>
+      </tr>
+      <tr>
+        <td><code>yarn.node-labels.am.default-node-label-expression</code></td>
+        <td>ON_DEMAND</td>
+        <td>AM 只运行在 On-Demand 节点</td>
+      </tr>
+      <tr>
+        <td><code>yarn.resourcemanager.decommissioning-nodes-watcher.wait-for-shuffle-data</code></td>
+        <td>true</td>
+        <td>YARN 等 shuffle 清除后才移除节点</td>
+      </tr>
+      <tr>
+        <td><code>spark.shuffle.service.removeShuffle</code></td>
+        <td>true</td>
+        <td>及时清除废弃 shuffle 文件</td>
+      </tr>
+      <tr>
+        <td><code>ScalingStrategy</code></td>
+        <td>ADVANCED</td>
+        <td>启用 Advanced Scaling</td>
+      </tr>
+      <tr>
+        <td><code>UtilizationPerformanceIndex</code></td>
+        <td>按场景选择 1-100</td>
+        <td>控制扩缩激进度</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ====== 7. 总结 ====== -->
+  <div class="conclusion" id="conclusion">
+    <h2>总结</h2>
+    <p>EMR Managed Scaling 的缩容不是简单的"节点数减少"——它是一个多层级、渐进式的智能决策过程。理解这些机制可以帮助你：</p>
+    <ul>
+      <li>合理设置预期——缩容不是瞬时的，配置合理的超时和保护策略</li>
+      <li>正确利用新特性——Node Labels、Shuffle Graceful Decommission 和 Advanced Scaling 三者配合可以显著优化缩容效率</li>
+      <li>根据业务特点选择策略——批处理用低 UPI 省钱，交互式查询用高 UPI 保 SLA</li>
+      <li>在极致场景考虑架构变更——Remote Shuffle Service（Celeborn）可以从根本上消除 shuffle 对缩容的阻碍</li>
+    </ul>
+    <p style="margin-top: 16px; margin-bottom: 0;">建议从 EMR 7.4+ 起步，结合本文最佳实践配置，在实际工作负载上逐步验证和调优。</p>
+  </div>
+
+  <!-- ====== 参考文献 ====== -->
+  <div class="references">
+    <h2>参考资料</h2>
+    <ol>
+      <li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/managed-scaling-allocation-strategy.html">Understanding Amazon EMR node allocation strategy and scenarios</a> — AWS Documentation</li>
+      <li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-scaledown-behavior.html">Cluster scale-down options for Amazon EMR clusters</a> — AWS Documentation</li>
+      <li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-managed-scaling.html">Using managed scaling in Amazon EMR</a> — AWS Documentation</li>
+      <li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/managed-scaling-allocation-strategy-optimized.html">Advanced Scaling for Amazon EMR</a> — AWS Documentation</li>
+      <li><a href="https://aws.amazon.com/blogs/big-data/introducing-enhancements-to-amazon-emr-managed-scaling/">Introducing enhancements to Amazon EMR Managed Scaling</a> — AWS Big Data Blog, 2026-03-26</li>
+      <li><a href="https://aws.amazon.com/blogs/big-data/high-performance-remote-shuffle-service-on-amazon-emr-with-apache-celeborn/">High-performance Remote Shuffle Service on Amazon EMR with Apache Celeborn</a> — AWS Big Data Blog, 2026-07-15</li>
+      <li><a href="https://aws.amazon.com/about-aws/whats-new/2024/08/amazon-emr-managed-scaling-application-master-placement-aware">Amazon EMR Managed Scaling is now Application Master placement aware</a> — AWS What's New, 2024-08-30</li>
+      <li><a href="https://aws.amazon.com/jp/blogs/big-data/enhance-amazon-emr-scaling-capabilities-with-application-master-placement/">Enhance Amazon EMR scaling capabilities with Application Master Placement</a> — AWS Big Data Blog, 2024-10-14</li>
+      <li><a href="https://aws.amazon.com/about-aws/whats-new/2024/11/introducing-advanced-scaling-amazon-emr-managed-scaling">Introducing Advanced Scaling in Amazon EMR Managed Scaling</a> — AWS What's New, 2024-11-26</li>
+      <li><a href="https://assets.amazon.science/ed/cc/615c681c43c7b255ccce57f51258/managed-resource-scaling-in-amazon-emr.pdf">Managed Resource Scaling in Amazon EMR</a> — SIGMOD-Companion'25, Amazon Science</li>
+    </ol>
+  </div>
+
+
+</body></html>
