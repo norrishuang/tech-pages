@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><style id="qw-theme">:root {
+  --color-bg: #f2f1f4;
+  --color-text: #352f3d;
+  --color-navbar-bg: #eae8ed;
+  --color-bg-chat-view: #fcfcfd;
+  --color-bg-secondary: #fff;
+  --color-bg-tertiary: #eae8ed;
+  --color-bg-hover: #dcdadf;
+  --color-surface: #eae8ed;
+  --color-surface-hover: #dcdadf;
+  --color-surface-active: #c1bec6;
+  --color-border: #c1bec6;
+  --color-border-light: #dcdadf;
+  --color-border-strong: #c1bec6;
+  --color-primary: #4200db;
+  --color-primary-dark: #35009e;
+  --color-primary-light: #8575ff;
+  --color-primary-bg: #e8e6ff;
+  --color-primary-hover-border: #35009e;
+  --color-nav-icon-active: #4200db;
+  --color-nav-hover-border: #4200db;
+  --color-primary-alpha-3: color-mix(in srgb, #4200db 3%, transparent);
+  --color-primary-alpha-5: color-mix(in srgb, #4200db 5%, transparent);
+  --color-primary-alpha-8: color-mix(in srgb, #4200db 8%, transparent);
+  --color-primary-alpha-12: color-mix(in srgb, #4200db 12%, transparent);
+  --color-primary-alpha-15: color-mix(in srgb, #4200db 15%, transparent);
+  --color-primary-alpha-20: color-mix(in srgb, #4200db 20%, transparent);
+  --color-primary-alpha-25: color-mix(in srgb, #4200db 25%, transparent);
+  --color-primary-alpha-30: color-mix(in srgb, #4200db 30%, transparent);
+  --color-primary-alpha-40: color-mix(in srgb, #4200db 40%, transparent);
+  --color-primary-alpha-50: color-mix(in srgb, #4200db 50%, transparent);
+  --color-primary-alpha-60: color-mix(in srgb, #4200db 60%, transparent);
+  --color-primary-subtle: color-mix(in srgb, #4200db 18%, transparent);
+  --color-primary-border: #8575ff;
+  --color-focus-ring: color-mix(in srgb, #4200db 50%, transparent);
+  --color-sidebar-hover: color-mix(in srgb, #4200db 12%, transparent);
+  --block-hover-outline: 1px dashed color-mix(in srgb, #4200db 50%, transparent);
+  --block-selected-outline: 1px solid #8575ff;
+  --block-selection-outline-offset: 2px;
+  --block-selected-halo: 0 0 8px color-mix(in srgb, #4200db 40%, transparent);
+  --color-accent: #4200db;
+  --color-accent-foreground: #4200db;
+  --color-accent-dark: #35009e;
+  --color-accent-light: #e8e6ff;
+  --color-accent-inverse: #fff;
+  --color-link: #4200db;
+  --color-primary-gradient-end: #e8e6ff;
+  --color-primary-bg-solid: #eae8ed;
+  --color-user-bubble: #f3f3f7;
+  --color-user-bubble-text: #352f3d;
+  --color-text-secondary: #5e5966;
+  --color-text-tertiary: #7a7582;
+  --color-text-muted: #938f9b;
+  --color-text-on-primary: #f2f1f4;
+  --color-success: #00802f;
+  --color-success-dark: #00471e;
+  --color-success-light: #d9ffd6;
+  --color-success-hover: #005c26;
+  --color-success-bg: #e6f4eb;
+  --color-success-border: #c4dccb;
+  --color-success-foreground: #00802f;
+  --color-success-dark-foreground: #00471e;
+  --color-success-text: #00471e;
+  --color-error: #db0000;
+  --color-error-dark: #700000;
+  --color-error-light: #ffe0e0;
+  --color-error-hover: #ffe0e0;
+  --color-error-bg: #fbe9ea;
+  --color-error-border: #eecbcd;
+  --color-error-active-border: #db0000;
+  --color-error-foreground: #db0000;
+  --color-error-dark-foreground: #700000;
+  --color-error-inverse: #fff;
+  --color-error-text: #700000;
+  --color-warning: #f2b100;
+  --color-warning-dark: #573a00;
+  --color-warning-light: #fffbbd;
+  --color-warning-hover: #db9200;
+  --color-warning-bg: #fdf6e4;
+  --color-warning-border: #f5dda6;
+  --color-warning-foreground: #f2b100;
+  --color-warning-dark-foreground: #573a00;
+  --color-warning-inverse: #573a00;
+  --color-surface-warning: #fffbbd;
+  --color-text-warning: #573a00;
+  --color-info: #006ce0;
+  --color-info-dark: #002a66;
+  --color-info-light: #d1f1ff;
+  --color-info-hover: #003b8f;
+  --color-info-bg: #e6f0fb;
+  --color-info-border: #c0d5ec;
+  --color-info-foreground: #006ce0;
+  --color-info-dark-foreground: #002a66;
+  --color-info-inverse: #fff;
+  --color-overlay: #dcdadf80;
+  --color-shadow: #352f3d40;
+  --color-hover: #352f3d0d;
+  --color-tooltip-bg: #eae8ed;
+  --color-tooltip-text: #352f3d;
+  --color-voice-purple: #8575ff;
+  --color-voice-purple-dark: #4200db;
+  --color-voice-purple-light: #8575ff;
+  --color-voice-red: #db0000;
+  --color-voice-red-dark: #700000;
+  --color-voice-amber: #f2b100;
+  --color-voice-purple-glow: #4200db66;
+  --color-voice-red-glow: #db000066;
+  --font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Monaco", "Menlo", "Consolas", monospace;
+  --text-2xs: .5625rem;
+  --text-xs: .625rem;
+  --text-sm: .6875rem;
+  --text-base: .75rem;
+  --text-md: .8125rem;
+  --text-lg: .875rem;
+  --text-xl: 1rem;
+  --text-2xl: 1.125rem;
+  --text-3xl: 1.25rem;
+  --text-4xl: 1.5rem;
+  --text-5xl: 2rem;
+  --spacing-1: calc(.25rem * 1);
+  --spacing-1-5: calc(.25rem * 1.5);
+  --spacing-2: calc(.25rem * 2);
+  --spacing-3: calc(.25rem * 3);
+  --spacing-4: calc(.25rem * 4);
+  --spacing-5: calc(.25rem * 5);
+  --spacing-6: calc(.25rem * 6);
+  --spacing-7: calc(.25rem * 7);
+  --spacing-8: calc(.25rem * 8);
+  --spacing-9: calc(.25rem * 9);
+  --spacing-10: calc(.25rem * 10);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-card: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 8px;
+  --shadow-sm: 0 1px 2px #352f3d0f;
+  --shadow-md: 0 4px 12px #352f3d1a;
+  --color-success-bg-solid: #d9ffd6;
+  --color-error-bg-solid: #ffe0e0;
+  --color-error-border-solid: #ffe0e0;
+  --color-warning-bg-solid: #fffbbd;
+  --color-warning-text: #573a00;
+  --color-info-bg-solid: #d1f1ff;
+  --color-info-bg-solid-alt: #d1f1ff;
+  --color-info-text: #002a66;
+  --color-info-text-alt: #002a66;
+  --color-emerald: #367c53;
+  --color-teal: #0c9aa7;
+  --color-code-bg: #eae8ed;
+  --color-code-header-bg: #dcdadf;
+  --color-code-text: #352f3d;
+  --color-code-border: #c1bec6;
+  --color-code-muted: #5e5966;
+  --color-inline-code-bg: #eae8ed;
+  --color-inline-code-text: #352f3d;
+  --color-inline-code-border: #c1bec6;
+  --color-scrollbar-thumb: #c1bec6;
+  --color-scrollbar-track: transparent;
+  --color-graph-node-text: #352f3d;
+  --color-graph-node-text-dim: #938f9b;
+  --color-graph-edge-default: #938f9b;
+  --color-graph-edge-cross: #d08025;
+  --color-graph-edge-text: #5e5966;
+  --color-graph-edge-stroke: #f2f1f4;
+  --color-graph-highlight-bg: #ff6b6b;
+  --color-graph-highlight-border: #e74c3c;
+  --color-graph-search-bg: gold;
+  --color-graph-search-border: orange;
+  --color-graph-focus-border: #c0392b;
+  --color-graph-external-border: #938f9b;
+  --color-graph-cat-file: #3878b0;
+  --color-graph-cat-folder: #5e5966;
+  --color-graph-cat-file-aggregate: #2d6a9f;
+  --color-graph-cat-class: #7138cc;
+  --color-graph-cat-function: #367c53;
+  --color-graph-cat-method: #0c9aa7;
+  --color-graph-cat-variable: #d08025;
+  --color-graph-cat-import: #b06a1a;
+  --color-graph-cat-module: #5e35a8;
+  --color-graph-cat-concept: #933;
+  --color-graph-cat-person: #c44d4d;
+  --color-graph-cat-org: #0c9aa7;
+  --color-graph-cat-organization: #0c9aa7;
+  --color-graph-cat-product: #8e47ff;
+  --color-graph-cat-metric: #c44d78;
+  --color-graph-cat-location: #34495e;
+  --color-graph-cat-date: #b34d8a;
+  --color-graph-cat-code: #3878b0;
+  --color-graph-cat-doc: #5e5966;
+  --color-graph-cat-url: #367c53;
+  --color-graph-cat-email: #5e35a8;
+  --color-graph-cat-unknown: #938f9b;
+  --color-graph-rel-contains: #938f9b;
+  --color-graph-rel-extends: #7138cc;
+  --color-graph-rel-implements: #3878b0;
+  --color-graph-rel-imports: #d08025;
+  --color-graph-rel-uses: #367c53;
+  --color-graph-rel-calls: #367c53;
+  --color-graph-rel-references: #d08025;
+  --color-graph-rel-related-to: #938f9b;
+  --color-graph-rel-works-on: #933;
+  --color-graph-rel-owns: #0c9aa7;
+  --color-graph-rel-depends-on: #b06a1a;
+  --color-graph-rel-parent-of: #938f9b;
+  --qs-content: #fff;
+  --qs-main: #fff;
+  --qs-primary-foreground: #131920;
+  --qs-secondary-foreground: #656871;
+  --qs-tertiary-foreground: #938f9b;
+  --qs-placeholder-foreground: #8c8c94;
+  --qs-divider: #dedee3;
+  --qs-default-border: #8c8c94;
+  --qs-neutral-soft: #b4b4bb;
+  --qs-neutral-gray-50: #eae8ed;
+  --qs-tertiary-background: #eae8ed;
+  --qs-action-hover: #f3f3f7;
+  --qs-primary-default: #4200db;
+  --qs-primary-dark: #35009e;
+  --qs-primary-light: #e8e6ff;
+  --qs-success-default: #00802f;
+  --qs-error-default: #db0000;
+  --qs-font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --safe-top: 0px;
+  --safe-bottom: 0px;
+  --safe-left: 0px;
+  --safe-right: 0px;
+  --qs-font-family: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --qs-font-base-letter-spacing: .15px;
+  --qs-shadow-sm: 0 0 2px 0 #00000029, 0 0 4px 0 #00000029;
+  --qs-shadow-md: 0 0 2px 0 #00000029, 0 2px 8px 1px #00000029;
+  --qs-shadow-lg: 0 4px 16px 4px #00000029, 0 2px 6px 1px #00000029;
+  --qs-shadow-xl: 0 4px 8px 2px #00000029, 0 6px 20px 4px #00000029;
+  --qs-width-modal-sm: 384px;
+  --qs-width-modal-md: 600px;
+  --qs-width-modal-lg: 1136px;
+  --qs-grid-gap: 16px;
+  --qs-grid-gap-xl: 24px;
+  --qs-primary-medium: #8575ff;
+  --qs-primary-inverse: #fff;
+  --qs-neutral-lightest: #f9f9fb;
+  --qs-neutral-light: #f3f3f7;
+  --qs-neutral-default: #dedee3;
+  --qs-neutral-medium: #8c8c94;
+  --qs-neutral-deep: #656871;
+  --qs-neutral-dark: #333843;
+  --qs-neutral-strong: #131920;
+  --qs-neutral-white: #fff;
+  --qs-neutral-black: #000;
+  --qs-success-medium: #005c26;
+  --qs-success-dark: #00471e;
+  --qs-success-light: #d9ffd6;
+  --qs-success-inverse: #fff;
+  --qs-info-default: #006ce0;
+  --qs-info-medium: #003b8f;
+  --qs-info-dark: #002a66;
+  --qs-info-light: #d1f1ff;
+  --qs-info-inverse: #fff;
+  --qs-warning-default: #f2b100;
+  --qs-warning-medium: #db9200;
+  --qs-warning-dark: #573a00;
+  --qs-warning-light: #fffbbd;
+  --qs-warning-inverse: #573a00;
+  --qs-warning-experimental: #f2b100;
+  --qs-warning-experimental-light: #fffbbd;
+  --qs-warning-experimental-light-foreground: #fffbbd;
+  --qs-error-medium: #900;
+  --qs-error-dark: #700000;
+  --qs-error-light: #ffe0e0;
+  --qs-error-inverse: #fff;
+  --qs-connection-default: #db3300;
+  --qs-connection-soft: #ff997a;
+  --qs-connection-light: #ffe0d6;
+  --qs-connection-dark: #661800;
+  --qs-automation-default: #b3008f;
+  --qs-automation-medium: #d600ba;
+  --qs-automation-soft: #ff94f1;
+  --qs-automation-light: #ffe0fb;
+  --qs-automation-dark: #660052;
+  --qs-insight-default: #a000b8;
+  --qs-insight-soft: #f299ff;
+  --qs-insight-light: #fce6ff;
+  --qs-insight-dark: #590066;
+  --qs-visualization-default: #7300e5;
+  --qs-visualization-soft: #d4a8ff;
+  --qs-visualization-light: #f2e5ff;
+  --qs-visualization-dark: #45008a;
+  --qs-spice: #ff9800;
+  --qs-coachmark: #006ce0;
+  --qs-brand: #fff;
+  --qs-brand-foreground: #131920;
+  --qs-brand-navbar: #131920;
+  --qs-brand-navbar-foreground: #fff;
+  --qs-brand-navbar-light: #dedee3;
+  --qs-brand-navbar-dark: #000;
+  --qs-application-navbar: #4200db;
+  --qs-application-navbar-foreground: #fff;
+  --qs-application-navbar-light: #e8e6ff;
+  --qs-application-navbar-dark: #35009e;
+  --qs-dimension: #4200db;
+  --qs-dimension-foreground: #fff;
+  --qs-dimension-experimental: #4200db;
+  --qs-dimension-experimental-foreground: #4200db;
+  --qs-measure: #00802f;
+  --qs-measure-foreground: #fff;
+  --qs-measure-experimental: #f2b100;
+  --qs-measure-experimental-foreground: #f2b100;
+  --qs-content-inverse: #333843;
+  --qs-content-inverse-active: #131920;
+  --qs-secondary: #dedee3;
+  --qs-disabled: #8c8c94;
+  --qs-divider-light: #f3f3f7;
+  --qs-hover-border: #333843;
+  --qs-active-border: #4200db;
+  --qs-disabled-border: #dedee3;
+  --qs-error-border: #ffe0e0;
+  --qs-error-active-border: #db0000;
+  --qs-disabled-foreground: #b4b4bb;
+  --qs-primary-inverse-foreground: #fff;
+  --qs-error-foreground: #db0000;
+  --qs-contrast-foreground: #131920;
+  --qs-main-foreground: #131920;
+  --qs-main-secondary-foreground: #656871;
+  --qs-action-disabled: #f3f3f7;
+  --qs-action-active: #e8e6ff;
+  --qs-default-badge: #dedee3;
+  --qs-tag-default: #dedee3;
+  --qs-tag-soft-border: #b4b4bb;
+  --qs-focus-offset: 1px;
+  --qs-toggle-tile-sm: calc(.25rem * 8);
+  --qs-toggle-tile-md: calc(.25rem * 12);
+  --qs-toggle-tile-lg: calc(.25rem * 15);
+  --qs-shadow-pin-right: inset 4px 0 4px -4px #00000029;
+  --qs-shadow-pin-left: inset -4px 0 4px -4px #00000029;
+  --react-pdf-text-layer: 1;
+  --highlight-bg-color: #b400aa;
+  --highlight-selected-bg-color: #006400;
+  --react-pdf-annotation-layer: 1;
+  --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+  --input-focus-border-color: Highlight;
+  --input-focus-outline: 1px solid Canvas;
+  --input-unfocused-border-color: transparent;
+  --input-disabled-border-color: transparent;
+  --input-hover-border-color: black;
+  --link-outline: none;
+  color-scheme: light;
+}
+body { background: var(--color-bg); color: var(--color-text); }
+a { color: var(--color-link, var(--color-primary)); }</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Redshift 上的 Iceberg 物化视图 - 技术深度指南</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-bg-secondary: #f8f9fb;
+      --color-text: #1a1a2e;
+      --color-text-secondary: #44546f;
+      --color-text-muted: #8993a4;
+      --color-border-light: #e8ecf0;
+      --color-border: #dfe1e6;
+      --color-primary: #0052CC;
+      --color-primary-light: #e6f0ff;
+      --color-success: #36b37e;
+      --color-success-light: #e3fcef;
+      --color-error: #de350b;
+      --color-error-light: #ffebe6;
+      --color-warning: #ff991f;
+      --color-warning-light: #fff7e6;
+      --color-info: #0065ff;
+      --color-info-light: #e6f0ff;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Roboto, sans-serif;
+      --font-mono: 'SF Mono', 'JetBrains Mono', Consolas, 'Source Code Pro', monospace;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.7;
+      padding: 0;
+    }
+
+    /* Header */
+    .hero {
+      background: linear-gradient(135deg, #0052CC 0%, #2684FF 50%, #00b8d9 100%);
+      color: white;
+      padding: 60px 40px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .hero .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .hero .badges {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero .badge {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: var(--radius-sm);
+      padding: 4px 12px;
+      font-size: 0.85rem;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* Navigation */
+    .toc {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-lg);
+      padding: 24px 32px;
+      margin-bottom: 48px;
+    }
+    .toc h2 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: var(--color-text-secondary);
+    }
+    .toc ol {
+      list-style: none;
+      counter-reset: toc-counter;
+      padding: 0;
+    }
+    .toc ol li {
+      counter-increment: toc-counter;
+      margin-bottom: 8px;
+    }
+    .toc ol li::before {
+      content: counter(toc-counter) ".";
+      color: var(--color-primary);
+      font-weight: 600;
+      margin-right: 8px;
+    }
+    .toc a {
+      color: var(--color-text);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .toc a:hover { color: var(--color-primary); }
+
+    /* Sections */
+    .section {
+      margin-bottom: 56px;
+    }
+    .section h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--color-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section h2 i { color: var(--color-primary); font-size: 1.2rem; }
+    .section h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: var(--color-text);
+    }
+    .section h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 20px 0 8px;
+      color: var(--color-text-secondary);
+    }
+    p { margin-bottom: 14px; }
+
+    /* Code blocks */
+    pre {
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 16px 0;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+    }
+    p code, li code, td code {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-sm);
+      padding: 2px 6px;
+      color: #d63384;
+    }
+    pre .comment { color: #94a3b8; }
+    pre .keyword { color: #93c5fd; }
+    pre .string { color: #86efac; }
+    pre .function { color: #fbbf24; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 0.9rem;
+    }
+    th {
+      background: var(--color-bg-secondary);
+      color: var(--color-text-secondary);
+      font-weight: 600;
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--color-border);
+    }
+    td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--color-border-light);
+      vertical-align: top;
+    }
+    tr:hover td { background: var(--color-bg-secondary); }
+
+    /* Cards */
+    .card {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .card.info {
+      background: var(--color-info-light);
+      border-color: #b3d4ff;
+    }
+    .card.warning {
+      background: var(--color-warning-light);
+      border-color: #ffe0b2;
+    }
+    .card.success {
+      background: var(--color-success-light);
+      border-color: #b9f6ca;
+    }
+    .card.error {
+      background: var(--color-error-light);
+      border-color: #ffcdd2;
+    }
+    .card-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Lists */
+    ul, ol { margin: 12px 0; padding-left: 24px; }
+    li { margin-bottom: 6px; }
+
+    /* Architecture diagram */
+    .arch-diagram {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin: 24px 0;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      text-align: left;
+    }
+    .arch-layer.compute { background: #e3f2fd; border: 1px solid #90caf9; }
+    .arch-layer.catalog { background: #f3e5f5; border: 1px solid #ce93d8; }
+    .arch-layer.storage { background: #e8f5e9; border: 1px solid #a5d6a7; }
+    .arch-layer-icon { font-size: 1.8rem; min-width: 40px; text-align: center; }
+    .arch-layer-content h4 { margin: 0 0 4px; font-size: 0.95rem; }
+    .arch-layer-content p { margin: 0; font-size: 0.85rem; color: var(--color-text-secondary); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--color-text-muted);
+      font-size: 1.2rem;
+    }
+
+    /* Performance metrics */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .metric-card {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      font-family: var(--font-mono);
+    }
+    .metric-label {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Flow steps */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 24px 0;
+    }
+    .step {
+      display: flex;
+      gap: 16px;
+      position: relative;
+      padding-bottom: 24px;
+    }
+    .step:last-child { padding-bottom: 0; }
+    .step::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 40px;
+      bottom: 0;
+      width: 2px;
+      background: var(--color-border-light);
+    }
+    .step:last-child::before { display: none; }
+    .step-num {
+      min-width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      z-index: 1;
+    }
+    .step-content { flex: 1; padding-top: 8px; }
+    .step-content h4 { margin: 0 0 6px; }
+    .step-content p { margin: 0; color: var(--color-text-secondary); font-size: 0.9rem; }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--color-border-light);
+      padding: 32px 0;
+      text-align: center;
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+    }
+    .footer a { color: var(--color-primary); text-decoration: none; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero { padding: 40px 20px; }
+      .hero h1 { font-size: 1.8rem; }
+      .container { padding: 24px 16px; }
+      .metrics { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Amazon Redshift 上的 Iceberg 物化视图</h1>
+  <p class="subtitle">增量刷新 (Incremental Refresh) 技术深度指南 — 架构原理、完整实践、性能优化与注意事项</p>
+  <div class="badges">
+    <span class="badge"><i class="fa-solid fa-calendar"></i> 更新于 2026-07</span>
+    <span class="badge"><i class="fa-brands fa-aws"></i> Amazon Redshift</span>
+    <span class="badge"><i class="fa-solid fa-snowflake"></i> Apache Iceberg</span>
+    <span class="badge"><i class="fa-solid fa-bolt"></i> Incremental Refresh</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <nav class="toc">
+    <h2><i class="fa-solid fa-list"></i> 目录</h2>
+    <ol>
+      <li><a href="#overview">概述与核心价值</a></li>
+      <li><a href="#architecture">架构原理</a></li>
+      <li><a href="#supported-ops">支持的操作与增量刷新范围</a></li>
+      <li><a href="#prerequisites">前置条件与权限配置</a></li>
+      <li><a href="#hands-on">完整动手实践（Step-by-Step）</a></li>
+      <li><a href="#auto-refresh">自动刷新 (Auto Refresh) 配置</a></li>
+      <li><a href="#s3-tables">与 S3 Tables 结合使用</a></li>
+      <li><a href="#performance">性能基准与优化建议</a></li>
+      <li><a href="#monitoring">监控与运维</a></li>
+      <li><a href="#limitations">限制与注意事项</a></li>
+      <li><a href="#best-practices">最佳实践总结</a></li>
+      <li><a href="#references">参考文档</a></li>
+    </ol>
+  </nav>
+
+  <!-- Section 1: Overview -->
+  <section class="section" id="overview">
+    <h2><i class="fa-solid fa-lightbulb"></i> 概述与核心价值</h2>
+    <p>物化视图 (Materialized View, MV) 是 Amazon Redshift 的一项核心优化能力——它将复杂查询的结果<strong>预计算并持久化存储</strong>在 Redshift 本地，后续查询直接读取预计算结果，跳过昂贵的扫描和聚合。</p>
+    <p>自 2024 年 10 月 GA 起，Amazon Redshift 支持在 <strong>Apache Iceberg 外部表</strong>上创建物化视图，并支持<strong>增量刷新 (Incremental Refresh)</strong>——Redshift 能够利用 Iceberg 的 snapshot 机制，只读取自上次刷新后发生变化的数据，而非全表扫描，大幅降低刷新成本和时间。</p>
+
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="metric-value">13.5×</div>
+        <div class="metric-label">INSERT 后增量刷新平均加速比</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">15×</div>
+        <div class="metric-label">DELETE 后增量刷新平均加速比</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">43.8×</div>
+        <div class="metric-label">最大加速比 (INSERT 场景)</div>
+      </div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--color-text-muted);">* 基准: AWS 官方 TPC-DS 3TB 测试，Iceberg CoW 模式，ra3.4xl × 4 节点，34 个物化视图，1% 数据变更</p>
+
+    <h3>适用场景</h3>
+    <ul>
+      <li><strong>BI Dashboard 加速</strong>：将频繁运行的仪表盘聚合查询物化，用户查询直接命中 MV</li>
+      <li><strong>跨数据湖-数仓查询加速</strong>：Iceberg 外表数据留在 S3，Redshift MV 本地缓存聚合结果</li>
+      <li><strong>实时 ETL 中间层</strong>：对 Flink/Spark 持续写入的 Iceberg 表建立增量 MV，替代定时全量 ETL</li>
+      <li><strong>多引擎共享数据</strong>：底层 Iceberg 表由 Athena/EMR/Spark 共同操作，Redshift MV 为分析层提速</li>
+    </ul>
+  </section>
+
+  <!-- Section 2: Architecture -->
+  <section class="section" id="architecture">
+    <h2><i class="fa-solid fa-layer-group"></i> 架构原理</h2>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer compute">
+          <div class="arch-layer-icon">⚡</div>
+          <div class="arch-layer-content">
+            <h4>Compute 层 — Amazon Redshift</h4>
+            <p>创建 MV、执行增量/全量刷新、存储预计算结果、响应分析查询</p>
+          </div>
+        </div>
+        <div class="arch-arrow">↕ Spectrum / 本地引擎读取变化数据</div>
+        <div class="arch-layer catalog">
+          <div class="arch-layer-icon">📋</div>
+          <div class="arch-layer-content">
+            <h4>Catalog 层 — AWS Glue Data Catalog</h4>
+            <p>维护 Iceberg 表元数据、snapshot 列表、manifest 文件位置</p>
+          </div>
+        </div>
+        <div class="arch-arrow">↕ 读取 manifest &amp; data files</div>
+        <div class="arch-layer storage">
+          <div class="arch-layer-icon">🪣</div>
+          <div class="arch-layer-content">
+            <h4>Storage 层 — Amazon S3 / S3 Tables</h4>
+            <p>存储 Iceberg 数据文件 (Parquet)、metadata.json、manifest list</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>增量刷新的工作机制</h3>
+    <p>Iceberg 的 snapshot-based 事务管理是增量刷新的关键。当 Redshift 刷新 MV 时：</p>
+    <ol>
+      <li><strong>对比 Snapshot</strong>：Redshift 记录上次刷新时的 Iceberg snapshot ID，刷新时读取当前最新 snapshot</li>
+      <li><strong>差异计算</strong>：通过对比两个 snapshot 之间的 manifest 差异，精确定位新增/删除/修改的 data files</li>
+      <li><strong>增量读取</strong>：仅从 S3 读取变化的 data files（而非全表扫描）</li>
+      <li><strong>本地更新</strong>：将增量数据合并到 Redshift 本地存储的 MV 数据中</li>
+    </ol>
+
+    <div class="card info">
+      <div class="card-title"><i class="fa-solid fa-circle-info"></i> 关键区别：Copy-on-Write vs Merge-on-Read</div>
+      <p>Iceberg 的两种写模式都被支持：</p>
+      <ul>
+        <li><strong>Copy-on-Write (CoW)</strong>：更新时重写整个数据文件。Redshift 对比 manifest 即可定位变化文件。</li>
+        <li><strong>Merge-on-Read (MoR)</strong>：更新时写入 delete files。Redshift 需读取 delete files + data files 合并处理。</li>
+      </ul>
+      <p>两种模式均支持增量刷新，但 CoW 模式的增量刷新效率通常更高。</p>
+    </div>
+  </section>
+
+  <!-- Section 3: Supported Operations -->
+  <section class="section" id="supported-ops">
+    <h2><i class="fa-solid fa-check-double"></i> 支持的操作与增量刷新范围</h2>
+
+    <h3>MV 创建（初始化）的增量支持</h3>
+    <table>
+      <thead>
+        <tr><th>基表类型</th><th>增量创建</th><th>备注</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Iceberg 表（分区/非分区）</td><td>✅ 支持</td><td>Copy-on-Write &amp; Merge-on-Read 均可</td></tr>
+        <tr><td>Standard data lake 表</td><td>✅ 支持</td><td>任何格式 (Parquet, Avro, CSV 等)</td></tr>
+        <tr><td>Spectrum 外表 JOIN Redshift 本地表</td><td>✅ 支持</td><td>-</td></tr>
+        <tr><td>Hudi / Delta Lake 表</td><td>❌ 不支持</td><td>只能全量创建</td></tr>
+      </tbody>
+    </table>
+
+    <h3>MV 刷新的增量支持（基于 Iceberg 表）</h3>
+    <table>
+      <thead>
+        <tr><th>基表操作</th><th>增量刷新</th><th>备注</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>INSERT（追加数据）</td><td>✅ 支持</td><td>最高效的场景</td></tr>
+        <tr><td>DELETE（删除数据）</td><td>✅ 支持</td><td>-</td></tr>
+        <tr><td>UPDATE（更新数据）</td><td>✅ 支持</td><td>-</td></tr>
+        <tr><td>Table Compaction（表压缩）</td><td>✅ 支持</td><td>-</td></tr>
+        <tr><td>Snapshot 过期 + 带聚合的 MV</td><td>⚠️ 退化为全量刷新</td><td>需确保 snapshot 未被清理</td></tr>
+      </tbody>
+    </table>
+
+    <h3>SQL 构造的增量刷新支持</h3>
+    <table>
+      <thead>
+        <tr><th>SQL 构造</th><th>增量刷新</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>SELECT, FROM, INNER JOIN, WHERE, GROUP BY, HAVING</td><td>✅ 支持</td></tr>
+        <tr><td>聚合：SUM, MIN, MAX, AVG, COUNT</td><td>✅ 支持</td></tr>
+        <tr><td>OUTER JOIN (LEFT/RIGHT/FULL)</td><td>❌ 不支持</td></tr>
+        <tr><td>UNION / INTERSECT / EXCEPT</td><td>❌ 不支持</td></tr>
+        <tr><td>DISTINCT 聚合 (COUNT DISTINCT 等)</td><td>❌ 不支持</td></tr>
+        <tr><td>MEDIAN, PERCENTILE_CONT, LISTAGG</td><td>❌ 不支持</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 4: Prerequisites -->
+  <section class="section" id="prerequisites">
+    <h2><i class="fa-solid fa-key"></i> 前置条件与权限配置</h2>
+
+    <h3>环境要求</h3>
+    <ul>
+      <li>Amazon Redshift Provisioned 集群或 Redshift Serverless 工作组</li>
+      <li>Iceberg 表已注册在 AWS Glue Data Catalog 中</li>
+      <li>IAM Role 挂载到 Redshift 集群，具备 Spectrum 最小权限</li>
+    </ul>
+
+    <h3>IAM 最小权限策略</h3>
+    <pre><span class="comment">-- Redshift 需要的 IAM 权限（用于访问 Glue Catalog + S3 数据）</span>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "GlueCatalogAccess",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabase",
+        "glue:GetDatabases",
+        "glue:GetTable",
+        "glue:GetTables",
+        "glue:GetPartition",
+        "glue:GetPartitions",
+        "glue:BatchGetPartition"
+      ],
+      "Resource": [
+        "arn:aws:glue:&lt;REGION&gt;:&lt;ACCOUNT_ID&gt;:catalog",
+        "arn:aws:glue:&lt;REGION&gt;:&lt;ACCOUNT_ID&gt;:database/*",
+        "arn:aws:glue:&lt;REGION&gt;:&lt;ACCOUNT_ID&gt;:table/*/*"
+      ]
+    },
+    {
+      "Sid": "S3DataAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": [
+        "arn:aws:s3:::&lt;YOUR_BUCKET&gt;",
+        "arn:aws:s3:::&lt;YOUR_BUCKET&gt;/*"
+      ]
+    }
+  ]
+}</pre>
+
+    <h3>设置默认 IAM Role</h3>
+    <pre><span class="comment">-- 在 Redshift 中设置默认 IAM Role</span>
+<span class="keyword">ALTER</span> CLUSTER SET DEFAULT IAM_ROLE 'arn:aws:iam::&lt;ACCOUNT_ID&gt;:role/&lt;ROLE_NAME&gt;';</pre>
+  </section>
+
+  <!-- Section 5: Hands-on -->
+  <section class="section" id="hands-on">
+    <h2><i class="fa-solid fa-terminal"></i> 完整动手实践（Step-by-Step）</h2>
+
+    <h3>步骤一：在 Athena / EMR 中创建 Iceberg 表并写入数据</h3>
+    <pre><span class="comment">-- 在 Athena 中操作</span>
+<span class="keyword">CREATE</span> DATABASE iceberg_demo;
+
+<span class="keyword">CREATE</span> TABLE iceberg_demo.sales (
+  sale_id     BIGINT,
+  sale_date   DATE,
+  region      STRING,
+  product     STRING,
+  quantity    INT,
+  amount      DECIMAL(12,2)
+)
+PARTITIONED BY (region, bucket(16, sale_id))
+LOCATION <span class="string">'s3://your-bucket/iceberg/sales/'</span>
+TBLPROPERTIES (
+  'table_type' = 'iceberg',
+  'write_compression' = 'snappy',
+  'format' = 'parquet'
+);
+
+<span class="comment">-- 插入初始数据</span>
+<span class="keyword">INSERT INTO</span> iceberg_demo.sales <span class="keyword">VALUES</span>
+(1, DATE '2024-01-15', 'APAC', 'Laptop',    10, 9500.00),
+(2, DATE '2024-01-15', 'APAC', 'Monitor',    5, 2500.00),
+(3, DATE '2024-01-16', 'EMEA', 'Laptop',    15, 14250.00),
+(4, DATE '2024-02-01', 'AMER', 'Keyboard',  30, 1800.00),
+(5, DATE '2024-02-01', 'AMER', 'Mouse',     50, 1250.00);</pre>
+
+    <h3>步骤二：在 Redshift 中创建外部 Schema</h3>
+    <pre><span class="comment">-- 在 Redshift Query Editor v2 中执行</span>
+<span class="keyword">CREATE</span> EXTERNAL SCHEMA iceberg_schema
+<span class="keyword">FROM</span> DATA CATALOG
+DATABASE <span class="string">'iceberg_demo'</span>
+REGION <span class="string">'us-east-1'</span>
+IAM_ROLE DEFAULT;</pre>
+
+    <h3>步骤三：验证外部表可查询</h3>
+    <pre><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> iceberg_schema.sales <span class="keyword">LIMIT</span> 10;</pre>
+
+    <h3>步骤四：创建物化视图</h3>
+    <pre><span class="comment">-- 创建带聚合的物化视图</span>
+<span class="keyword">CREATE MATERIALIZED VIEW</span> mv_sales_summary
+<span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+    region,
+    product,
+    <span class="function">COUNT</span>(*) <span class="keyword">AS</span> order_count,
+    <span class="function">SUM</span>(quantity) <span class="keyword">AS</span> total_qty,
+    <span class="function">SUM</span>(amount) <span class="keyword">AS</span> total_amount,
+    <span class="function">AVG</span>(amount) <span class="keyword">AS</span> avg_amount
+<span class="keyword">FROM</span> iceberg_schema.sales
+<span class="keyword">GROUP BY</span> region, product;</pre>
+
+    <h3>步骤五：在基表中插入新数据（模拟增量）</h3>
+    <pre><span class="comment">-- 回到 Athena 插入增量数据</span>
+<span class="keyword">INSERT INTO</span> iceberg_demo.sales <span class="keyword">VALUES</span>
+(6, DATE '2024-02-15', 'APAC', 'Laptop',     8, 7600.00),
+(7, DATE '2024-02-15', 'EMEA', 'Monitor',   12, 6000.00);</pre>
+
+    <h3>步骤六：增量刷新物化视图</h3>
+    <pre><span class="comment">-- 在 Redshift 中执行增量刷新</span>
+<span class="keyword">REFRESH MATERIALIZED VIEW</span> mv_sales_summary;</pre>
+
+    <h3>步骤七：验证增量刷新状态</h3>
+    <pre><span class="comment">-- 查看刷新历史</span>
+<span class="keyword">SELECT</span>
+    mv_name,
+    status,
+    refresh_type,   <span class="comment">-- 'Incremental' 表示增量刷新成功</span>
+    start_time,
+    end_time,
+    rows_inserted,
+    rows_deleted
+<span class="keyword">FROM</span> SYS_MV_REFRESH_HISTORY
+<span class="keyword">WHERE</span> mv_name = 'mv_sales_summary'
+<span class="keyword">ORDER BY</span> start_time <span class="keyword">DESC</span>
+<span class="keyword">LIMIT</span> 5;</pre>
+
+    <h3>步骤八：测试 DELETE / UPDATE 后的增量刷新</h3>
+    <pre><span class="comment">-- 在 Athena 中执行 DELETE</span>
+<span class="keyword">DELETE FROM</span> iceberg_demo.sales <span class="keyword">WHERE</span> sale_id = 4;
+
+<span class="comment">-- 在 Athena 中执行 UPDATE</span>
+<span class="keyword">UPDATE</span> iceberg_demo.sales
+<span class="keyword">SET</span> amount = 10000.00
+<span class="keyword">WHERE</span> sale_id = 1;
+
+<span class="comment">-- 回到 Redshift 刷新</span>
+<span class="keyword">REFRESH MATERIALIZED VIEW</span> mv_sales_summary;
+
+<span class="comment">-- 验证数据已更新</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> mv_sales_summary <span class="keyword">ORDER BY</span> region, product;</pre>
+  </section>
+
+  <!-- Section 6: Auto Refresh -->
+  <section class="section" id="auto-refresh">
+    <h2><i class="fa-solid fa-rotate"></i> 自动刷新 (Auto Refresh) 配置</h2>
+
+    <h3>创建时启用自动刷新</h3>
+    <pre><span class="keyword">CREATE MATERIALIZED VIEW</span> mv_sales_summary
+<span class="keyword">AUTO REFRESH YES</span>
+<span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+    region,
+    product,
+    <span class="function">SUM</span>(amount) <span class="keyword">AS</span> total_amount
+<span class="keyword">FROM</span> iceberg_schema.sales
+<span class="keyword">GROUP BY</span> region, product;</pre>
+
+    <h3>对已有 MV 开启自动刷新</h3>
+    <pre><span class="keyword">ALTER MATERIALIZED VIEW</span> mv_sales_summary <span class="keyword">AUTO REFRESH YES</span>;</pre>
+
+    <h3>自动刷新行为说明</h3>
+    <div class="card info">
+      <div class="card-title"><i class="fa-solid fa-circle-info"></i> 自动刷新机制</div>
+      <ul>
+        <li>Redshift 在检测到基表变化后会<strong>尽快</strong>触发刷新，但不是实时的</li>
+        <li>系统会综合考虑：当前集群负载、刷新所需资源、MV 使用频率</li>
+        <li>用户工作负载优先级高于自动刷新——高负载时可能延迟刷新</li>
+        <li>自 2026 年 2 月起（Patch 198+），Auto REFRESH 以用户查询优先级执行（仅限 Provisioned）</li>
+        <li>Iceberg 外表上的 MV 支持 Auto Refresh（但不支持与 datasharing 表组合使用）</li>
+      </ul>
+    </div>
+
+    <div class="card warning">
+      <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> 注意</div>
+      <p>如果物化视图定义中包含<strong>外部 schema</strong>引用，则 <code>AUTO REFRESH YES</code> 不支持与 <strong>Automated MV (AutoMV)</strong> 和 <strong>自动查询重写 (Auto Query Rewrite)</strong> 结合使用。即：</p>
+      <ul>
+        <li>Iceberg 外表上的 MV <strong>不支持</strong>自动查询重写 (AQMV)</li>
+        <li>需要用户显式查询 MV 名称来获取加速效果</li>
+      </ul>
+    </div>
+
+    <h3>确定性刷新（替代方案）</h3>
+    <p>如果需要严格的刷新周期，可使用 Redshift Scheduler API 或 Amazon EventBridge 定时触发：</p>
+    <pre><span class="comment">-- 使用 Redshift Data API + EventBridge 实现定时刷新</span>
+<span class="comment">-- EventBridge Rule: 每小时执行一次</span>
+<span class="comment">-- Target: Redshift Data API → ExecuteStatement</span>
+
+<span class="comment">-- SQL Statement:</span>
+<span class="keyword">REFRESH MATERIALIZED VIEW</span> mv_sales_summary;</pre>
+  </section>
+
+  <!-- Section 7: S3 Tables -->
+  <section class="section" id="s3-tables">
+    <h2><i class="fa-solid fa-database"></i> 与 Amazon S3 Tables 结合使用</h2>
+
+    <p>Amazon S3 Tables 提供完全托管的 Iceberg 表体验，自带自动 compaction 和 snapshot 管理。结合 Redshift MV 使用时，架构如下：</p>
+
+    <h3>配置步骤</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>创建 S3 Table Bucket 并集成 Glue Catalog</h4>
+          <p>在 S3 控制台创建 Table Bucket，勾选 "Enable Integration" 以自动集成 Glue Data Catalog</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>创建 Glue Database Resource Link</h4>
+          <p>在 Glue Console 中创建一个 Resource Link Database 指向 S3 Tables Catalog</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>在 Redshift 中创建外部 Schema</h4>
+          <p>通过 Resource Link 访问 S3 Tables 中的 Iceberg 表</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>创建物化视图 &amp; 增量刷新</h4>
+          <p>与普通 Iceberg 表操作完全一致</p>
+        </div>
+      </div>
+    </div>
+
+    <pre><span class="comment">-- Redshift 中创建指向 S3 Tables 的外部 Schema</span>
+<span class="keyword">CREATE</span> EXTERNAL SCHEMA salesdb
+<span class="keyword">FROM</span> DATA CATALOG DATABASE <span class="string">'salesdb'</span>
+IAM_ROLE <span class="string">'arn:aws:iam::&lt;ACCOUNT_ID&gt;:role/&lt;ROLE_NAME&gt;'</span>
+REGION <span class="string">'&lt;REGION&gt;'</span>
+CATALOG_ID <span class="string">'&lt;ACCOUNT_ID&gt;'</span>;
+
+<span class="comment">-- 物化视图可存储在 S3 Tables 中或普通 S3 Bucket 中</span>
+<span class="comment">-- 取决于你的访问模式和成本考量</span></pre>
+
+    <div class="card success">
+      <div class="card-title"><i class="fa-solid fa-check-circle"></i> S3 Tables 的优势</div>
+      <ul>
+        <li>自动 Compaction：S3 Tables 自动合并小文件，减少 Redshift MV 刷新时遇到 delete files 过多的问题</li>
+        <li>自动 Snapshot 管理：无需手动清理过期 snapshot</li>
+        <li>可调频率：通过 <code>put-table-maintenance-configuration</code> 调高 compaction 频率</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Section 8: Performance -->
+  <section class="section" id="performance">
+    <h2><i class="fa-solid fa-chart-line"></i> 性能基准与优化建议</h2>
+
+    <h3>官方 TPC-DS 基准测试结果</h3>
+    <p>测试条件：3TB TPC-DS，Iceberg Copy-on-Write，ra3.4xl × 4 节点，34 个 MV，1% 数据变更</p>
+
+    <table>
+      <thead>
+        <tr><th>场景</th><th>平均加速比</th><th>最大加速比</th><th>最小加速比</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>INSERT 后增量刷新 vs 全量刷新</td><td><strong>13.5×</strong></td><td>43.8×</td><td>1.8×</td></tr>
+        <tr><td>DELETE 后增量刷新 vs 全量刷新</td><td><strong>15×</strong></td><td>47×</td><td>1.2×</td></tr>
+      </tbody>
+    </table>
+
+    <h3>优化建议</h3>
+    <ol>
+      <li><strong>优先使用 Copy-on-Write 模式</strong>：CoW 模式下增量刷新效率更高，避免 delete files 累积</li>
+      <li><strong>定期 Compaction</strong>：如果使用 Merge-on-Read (如 Flink upsert 写入)，定期执行 <code>rewrite_data_files</code> 避免 delete files 过多</li>
+      <li><strong>控制 Snapshot 保留</strong>：确保 Redshift 上次刷新对应的 snapshot 未被过期清理，否则退化为全量刷新</li>
+      <li><strong>选择合适的 MV 粒度</strong>：MV 聚合粒度越粗，增量刷新的效率优势越大</li>
+      <li><strong>利用分布键 (DISTKEY) 和排序键 (SORTKEY)</strong>：为 MV 指定与查询模式匹配的分布和排序</li>
+      <li><strong>监控单文件删除位置数</strong>：Iceberg 表单个 data file 中被删除位置不能超过 400 万个</li>
+    </ol>
+
+    <pre><span class="comment">-- 为 MV 指定分布和排序策略</span>
+<span class="keyword">CREATE MATERIALIZED VIEW</span> mv_sales_optimized
+DISTSTYLE KEY
+DISTKEY(region)
+SORTKEY(sale_date)
+<span class="keyword">AUTO REFRESH YES</span>
+<span class="keyword">AS</span>
+<span class="keyword">SELECT</span>
+    region,
+    sale_date,
+    <span class="function">SUM</span>(amount) <span class="keyword">AS</span> total_amount,
+    <span class="function">COUNT</span>(*) <span class="keyword">AS</span> order_count
+<span class="keyword">FROM</span> iceberg_schema.sales
+<span class="keyword">GROUP BY</span> region, sale_date;</pre>
+  </section>
+
+  <!-- Section 9: Monitoring -->
+  <section class="section" id="monitoring">
+    <h2><i class="fa-solid fa-eye"></i> 监控与运维</h2>
+
+    <h3>关键系统视图</h3>
+    <table>
+      <thead>
+        <tr><th>系统视图</th><th>用途</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>SYS_MV_REFRESH_HISTORY</code></td><td>查看 MV 刷新历史：时间、状态、刷新类型(增量/全量)、行数变化</td></tr>
+        <tr><td><code>SVL_MV_REFRESH_STATUS</code></td><td>旧版刷新状态视图（推荐用 SYS_MV_REFRESH_HISTORY）</td></tr>
+        <tr><td><code>STV_MV_INFO</code></td><td>查看 MV 当前状态：是否 stale、刷新类型、auto refresh 状态</td></tr>
+        <tr><td><code>STL_EXPLAIN</code></td><td>查看查询执行计划，确认是否命中 MV</td></tr>
+      </tbody>
+    </table>
+
+    <h3>常用监控查询</h3>
+    <pre><span class="comment">-- 查看所有 MV 的刷新历史和类型</span>
+<span class="keyword">SELECT</span>
+    mv_name,
+    status,
+    refresh_type,
+    start_time,
+    end_time,
+    DATEDIFF(second, start_time, end_time) <span class="keyword">AS</span> duration_sec,
+    rows_inserted,
+    rows_deleted
+<span class="keyword">FROM</span> SYS_MV_REFRESH_HISTORY
+<span class="keyword">ORDER BY</span> start_time <span class="keyword">DESC</span>
+<span class="keyword">LIMIT</span> 20;
+
+<span class="comment">-- 查看 MV 当前状态（是否过期、刷新类型）</span>
+<span class="keyword">SELECT</span>
+    name,
+    state,           <span class="comment">-- 1=up-to-date, 0=stale</span>
+    autorewrite,     <span class="comment">-- 是否支持自动重写</span>
+    autorefresh      <span class="comment">-- 是否启用自动刷新</span>
+<span class="keyword">FROM</span> STV_MV_INFO;
+
+<span class="comment">-- 确认查询是否被重写为使用 MV</span>
+<span class="keyword">EXPLAIN</span>
+<span class="keyword">SELECT</span> region, <span class="function">SUM</span>(amount)
+<span class="keyword">FROM</span> iceberg_schema.sales
+<span class="keyword">GROUP BY</span> region;
+<span class="comment">-- 如果看到 "Seq Scan on mv_tbl__..." 则表示查询已被重写</span></pre>
+
+    <h3>告警建议</h3>
+    <ul>
+      <li>监控 <code>SYS_MV_REFRESH_HISTORY</code> 中 <code>status = 'Failed'</code> 的记录</li>
+      <li>监控刷新类型：如果频繁出现全量刷新 (Full)，需排查 snapshot 过期或数据变更模式</li>
+      <li>监控刷新耗时：设置阈值告警，超过预期时间说明数据变化量异常</li>
+    </ul>
+  </section>
+
+  <!-- Section 10: Limitations -->
+  <section class="section" id="limitations">
+    <h2><i class="fa-solid fa-triangle-exclamation"></i> 限制与注意事项</h2>
+
+    <div class="card error">
+      <div class="card-title"><i class="fa-solid fa-xmark"></i> 重要限制</div>
+    </div>
+
+    <h3>增量刷新会退化为全量刷新的场景</h3>
+    <ul>
+      <li>Iceberg 表的 required snapshot 已过期（如果 MV 包含聚合操作）</li>
+      <li>多个基表同时有变更，且 MV 包含 JOIN（系统评估全量刷新更快时）</li>
+      <li>单个 data file 中超过 400 万个位置被删除</li>
+    </ul>
+
+    <h3>功能限制</h3>
+    <ul>
+      <li>Iceberg 外表上的 MV <strong>不支持</strong> Concurrency Scaling</li>
+      <li><strong>不支持</strong> Automated MV (AutoMV) —— 系统不会自动为你创建 MV</li>
+      <li><strong>不支持</strong>自动查询重写 (AQMV) —— 需显式查询 MV 名称</li>
+      <li>不能在 MV 定义中使用 ORDER BY、LIMIT、OFFSET</li>
+      <li>不能在 MV 定义中使用标准视图 (VIEW)、UDF、系统表</li>
+      <li>Lake Formation 权限变更<strong>不会</strong>传播到已创建的 MV（安全考量）</li>
+    </ul>
+
+    <h3>MaxMessageSize 问题（delete files 过多）</h3>
+    <div class="card warning">
+      <div class="card-title"><i class="fa-solid fa-bug"></i> 已知问题：Error Code 1009</div>
+      <p>当 Iceberg 表（特别是 Flink CDC/upsert 模式写入的表）积累过多 delete files 时，Redshift Spectrum 查询计划消息体积可能超限，导致 <code>non-PADB exception code 1009 (MaxMessageSize)</code> 错误。</p>
+      <p><strong>解决方案优先级：</strong></p>
+      <ol>
+        <li>使用 S3 Tables 自动 compaction（调高频率）</li>
+        <li>Flink 改用 Copy-on-Write 模式</li>
+        <li>定期手动 <code>rewrite_data_files</code>（delete-file-threshold=10，每 15-30 分钟）</li>
+        <li>创建 Incremental MV（MV 本身可缓解该问题）</li>
+        <li>迁移到 RA3 RG 节点或 Redshift Serverless（本地执行不走 Spectrum 消息总线）</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Section 11: Best Practices -->
+  <section class="section" id="best-practices">
+    <h2><i class="fa-solid fa-star"></i> 最佳实践总结</h2>
+
+    <table>
+      <thead>
+        <tr><th>#</th><th>最佳实践</th><th>原因</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>优先使用 <strong>Copy-on-Write</strong> 模式的 Iceberg 表</td><td>增量刷新效率最高，避免 delete files 累积</td></tr>
+        <tr><td>2</td><td>MV 聚合使用 SUM/COUNT/AVG/MIN/MAX</td><td>这些聚合函数支持增量刷新</td></tr>
+        <tr><td>3</td><td>避免 OUTER JOIN 和 DISTINCT 聚合</td><td>会导致只能全量刷新</td></tr>
+        <tr><td>4</td><td>设置合理的 Snapshot 保留策略</td><td>防止增量刷新退化为全量</td></tr>
+        <tr><td>5</td><td>对高频更新表启用 S3 Tables 自动 Compaction</td><td>自动清理 delete files，保持增量刷新健康</td></tr>
+        <tr><td>6</td><td>为 MV 指定 DISTKEY 和 SORTKEY</td><td>优化后续查询性能</td></tr>
+        <tr><td>7</td><td>使用 SYS_MV_REFRESH_HISTORY 监控刷新</td><td>及时发现退化为全量刷新的问题</td></tr>
+        <tr><td>8</td><td>业务 BI 查询直接引用 MV 名称</td><td>Iceberg 外表 MV 不支持自动查询重写</td></tr>
+        <tr><td>9</td><td>需要确定性刷新时使用 Scheduler / EventBridge</td><td>Auto Refresh 是"尽力而为"，不保证时间</td></tr>
+        <tr><td>10</td><td>测试 CASCADE 关键字用于嵌套 MV 刷新</td><td>确保依赖链中所有 MV 都被刷新</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 12: References -->
+  <section class="section" id="references">
+    <h2><i class="fa-solid fa-book"></i> 参考文档</h2>
+    <ul>
+      <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/materialized-view-external-table.html" target="_blank">Materialized views on external data lake tables in Amazon Redshift Spectrum</a> — 官方文档</li>
+      <li><a href="https://aws.amazon.com/blogs/big-data/incremental-refresh-for-amazon-redshift-materialized-views-on-data-lake-tables/" target="_blank">Incremental refresh for Amazon Redshift materialized views on data lake tables</a> — AWS Blog (2024-11)</li>
+      <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/materialized-view-create-sql-command.html" target="_blank">CREATE MATERIALIZED VIEW</a> — SQL 参考</li>
+      <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/materialized-view-refresh.html" target="_blank">Refreshing a materialized view</a> — 刷新策略详细文档</li>
+      <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/materialized-view-auto-rewrite.html" target="_blank">Automatic query rewriting to use materialized views</a> — 自动查询重写</li>
+      <li><a href="https://aws.amazon.com/blogs/big-data/how-to-use-streamlined-permissions-for-amazon-s3-tables-and-iceberg-materialized-views/" target="_blank">Streamlined permissions for S3 Tables and Iceberg materialized views</a> — AWS Blog (2026-05)</li>
+      <li><a href="https://aws.amazon.com/about-aws/whats-new/2024/10/amazon-redshift-incremental-refresh-mvs-data-lake-tables/" target="_blank">Amazon Redshift now supports incremental refresh on MVs for data lake tables</a> — GA 公告 (2024-10)</li>
+    </ul>
+  </section>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>本文档基于 AWS 官方文档和 Blog 整理，更新于 2026 年 7 月。</p>
+    <p>内容来源：<a href="https://docs.aws.amazon.com/redshift/" target="_blank">Amazon Redshift Documentation</a> |
+    <a href="https://aws.amazon.com/blogs/big-data/" target="_blank">AWS Big Data Blog</a></p>
+  </div>
+
+</div>
+
+
+</body></html>
