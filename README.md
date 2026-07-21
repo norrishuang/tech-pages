@@ -16,6 +16,7 @@
 .
 ├── index.html   # 站点首页，文章导航
 ├── emr/         # EMR 相关技术文章
+├── iceberg/     # Iceberg 相关技术文章
 └── opensearch/  # OpenSearch 相关技术文章
 ```
 
@@ -24,6 +25,10 @@
 ### EMR
 
 - [EMR Managed Scaling 缩容规则与最佳实践](emr/EMR%20Managed%20Scaling%20%E7%BC%A9%E5%AE%B9%E8%A7%84%E5%88%99%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html)
+
+### Iceberg
+
+- [Flink ConvertEqualityDeletes 技术调研](iceberg/Flink%20ConvertEqualityDeletes%20%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94.html)
 
 ## 部署
 

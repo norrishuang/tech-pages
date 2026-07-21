@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html><head><style id="qw-theme">:root {
+  --color-bg: #f2f1f4;
+  --color-text: #352f3d;
+  --color-navbar-bg: #eae8ed;
+  --color-bg-chat-view: #fcfcfd;
+  --color-bg-secondary: #fff;
+  --color-bg-tertiary: #eae8ed;
+  --color-bg-hover: #dcdadf;
+  --color-surface: #eae8ed;
+  --color-surface-hover: #dcdadf;
+  --color-surface-active: #c1bec6;
+  --color-border: #c1bec6;
+  --color-border-light: #dcdadf;
+  --color-border-strong: #c1bec6;
+  --color-primary: #4200db;
+  --color-primary-dark: #35009e;
+  --color-primary-light: #8575ff;
+  --color-primary-bg: #e8e6ff;
+  --color-primary-hover-border: #35009e;
+  --color-nav-icon-active: #4200db;
+  --color-nav-hover-border: #4200db;
+  --color-primary-alpha-3: color-mix(in srgb, #4200db 3%, transparent);
+  --color-primary-alpha-5: color-mix(in srgb, #4200db 5%, transparent);
+  --color-primary-alpha-8: color-mix(in srgb, #4200db 8%, transparent);
+  --color-primary-alpha-12: color-mix(in srgb, #4200db 12%, transparent);
+  --color-primary-alpha-15: color-mix(in srgb, #4200db 15%, transparent);
+  --color-primary-alpha-20: color-mix(in srgb, #4200db 20%, transparent);
+  --color-primary-alpha-25: color-mix(in srgb, #4200db 25%, transparent);
+  --color-primary-alpha-30: color-mix(in srgb, #4200db 30%, transparent);
+  --color-primary-alpha-40: color-mix(in srgb, #4200db 40%, transparent);
+  --color-primary-alpha-50: color-mix(in srgb, #4200db 50%, transparent);
+  --color-primary-alpha-60: color-mix(in srgb, #4200db 60%, transparent);
+  --color-primary-subtle: color-mix(in srgb, #4200db 18%, transparent);
+  --color-primary-border: #8575ff;
+  --color-focus-ring: color-mix(in srgb, #4200db 50%, transparent);
+  --color-sidebar-hover: color-mix(in srgb, #4200db 12%, transparent);
+  --block-hover-outline: 1px dashed color-mix(in srgb, #4200db 50%, transparent);
+  --block-selected-outline: 1px solid #8575ff;
+  --block-selection-outline-offset: 2px;
+  --block-selected-halo: 0 0 8px color-mix(in srgb, #4200db 40%, transparent);
+  --color-accent: #4200db;
+  --color-accent-foreground: #4200db;
+  --color-accent-dark: #35009e;
+  --color-accent-light: #e8e6ff;
+  --color-accent-inverse: #fff;
+  --color-link: #4200db;
+  --color-primary-gradient-end: #e8e6ff;
+  --color-primary-bg-solid: #eae8ed;
+  --color-user-bubble: #f3f3f7;
+  --color-user-bubble-text: #352f3d;
+  --color-text-secondary: #5e5966;
+  --color-text-tertiary: #7a7582;
+  --color-text-muted: #938f9b;
+  --color-text-on-primary: #f2f1f4;
+  --color-success: #00802f;
+  --color-success-dark: #00471e;
+  --color-success-light: #d9ffd6;
+  --color-success-hover: #005c26;
+  --color-success-bg: #e6f4eb;
+  --color-success-border: #c4dccb;
+  --color-success-foreground: #00802f;
+  --color-success-dark-foreground: #00471e;
+  --color-success-text: #00471e;
+  --color-error: #db0000;
+  --color-error-dark: #700000;
+  --color-error-light: #ffe0e0;
+  --color-error-hover: #ffe0e0;
+  --color-error-bg: #fbe9ea;
+  --color-error-border: #eecbcd;
+  --color-error-active-border: #db0000;
+  --color-error-foreground: #db0000;
+  --color-error-dark-foreground: #700000;
+  --color-error-inverse: #fff;
+  --color-error-text: #700000;
+  --color-warning: #f2b100;
+  --color-warning-dark: #573a00;
+  --color-warning-light: #fffbbd;
+  --color-warning-hover: #db9200;
+  --color-warning-bg: #fdf6e4;
+  --color-warning-border: #f5dda6;
+  --color-warning-foreground: #f2b100;
+  --color-warning-dark-foreground: #573a00;
+  --color-warning-inverse: #573a00;
+  --color-surface-warning: #fffbbd;
+  --color-text-warning: #573a00;
+  --color-info: #006ce0;
+  --color-info-dark: #002a66;
+  --color-info-light: #d1f1ff;
+  --color-info-hover: #003b8f;
+  --color-info-bg: #e6f0fb;
+  --color-info-border: #c0d5ec;
+  --color-info-foreground: #006ce0;
+  --color-info-dark-foreground: #002a66;
+  --color-info-inverse: #fff;
+  --color-overlay: #dcdadf80;
+  --color-shadow: #352f3d40;
+  --color-hover: #352f3d0d;
+  --color-tooltip-bg: #eae8ed;
+  --color-tooltip-text: #352f3d;
+  --color-voice-purple: #8575ff;
+  --color-voice-purple-dark: #4200db;
+  --color-voice-purple-light: #8575ff;
+  --color-voice-red: #db0000;
+  --color-voice-red-dark: #700000;
+  --color-voice-amber: #f2b100;
+  --color-voice-purple-glow: #4200db66;
+  --color-voice-red-glow: #db000066;
+  --font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Monaco", "Menlo", "Consolas", monospace;
+  --text-2xs: .5625rem;
+  --text-xs: .625rem;
+  --text-sm: .6875rem;
+  --text-base: .75rem;
+  --text-md: .8125rem;
+  --text-lg: .875rem;
+  --text-xl: 1rem;
+  --text-2xl: 1.125rem;
+  --text-3xl: 1.25rem;
+  --text-4xl: 1.5rem;
+  --text-5xl: 2rem;
+  --spacing-1: calc(.25rem * 1);
+  --spacing-1-5: calc(.25rem * 1.5);
+  --spacing-2: calc(.25rem * 2);
+  --spacing-3: calc(.25rem * 3);
+  --spacing-4: calc(.25rem * 4);
+  --spacing-5: calc(.25rem * 5);
+  --spacing-6: calc(.25rem * 6);
+  --spacing-7: calc(.25rem * 7);
+  --spacing-8: calc(.25rem * 8);
+  --spacing-9: calc(.25rem * 9);
+  --spacing-10: calc(.25rem * 10);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-card: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 8px;
+  --shadow-sm: 0 1px 2px #352f3d0f;
+  --shadow-md: 0 4px 12px #352f3d1a;
+  --color-success-bg-solid: #d9ffd6;
+  --color-error-bg-solid: #ffe0e0;
+  --color-error-border-solid: #ffe0e0;
+  --color-warning-bg-solid: #fffbbd;
+  --color-warning-text: #573a00;
+  --color-info-bg-solid: #d1f1ff;
+  --color-info-bg-solid-alt: #d1f1ff;
+  --color-info-text: #002a66;
+  --color-info-text-alt: #002a66;
+  --color-emerald: #367c53;
+  --color-teal: #0c9aa7;
+  --color-code-bg: #eae8ed;
+  --color-code-header-bg: #dcdadf;
+  --color-code-text: #352f3d;
+  --color-code-border: #c1bec6;
+  --color-code-muted: #5e5966;
+  --color-inline-code-bg: #eae8ed;
+  --color-inline-code-text: #352f3d;
+  --color-inline-code-border: #c1bec6;
+  --color-scrollbar-thumb: #c1bec6;
+  --color-scrollbar-track: transparent;
+  --color-graph-node-text: #352f3d;
+  --color-graph-node-text-dim: #938f9b;
+  --color-graph-edge-default: #938f9b;
+  --color-graph-edge-cross: #d08025;
+  --color-graph-edge-text: #5e5966;
+  --color-graph-edge-stroke: #f2f1f4;
+  --color-graph-highlight-bg: #ff6b6b;
+  --color-graph-highlight-border: #e74c3c;
+  --color-graph-search-bg: gold;
+  --color-graph-search-border: orange;
+  --color-graph-focus-border: #c0392b;
+  --color-graph-external-border: #938f9b;
+  --color-graph-cat-file: #3878b0;
+  --color-graph-cat-folder: #5e5966;
+  --color-graph-cat-file-aggregate: #2d6a9f;
+  --color-graph-cat-class: #7138cc;
+  --color-graph-cat-function: #367c53;
+  --color-graph-cat-method: #0c9aa7;
+  --color-graph-cat-variable: #d08025;
+  --color-graph-cat-import: #b06a1a;
+  --color-graph-cat-module: #5e35a8;
+  --color-graph-cat-concept: #933;
+  --color-graph-cat-person: #c44d4d;
+  --color-graph-cat-org: #0c9aa7;
+  --color-graph-cat-organization: #0c9aa7;
+  --color-graph-cat-product: #8e47ff;
+  --color-graph-cat-metric: #c44d78;
+  --color-graph-cat-location: #34495e;
+  --color-graph-cat-date: #b34d8a;
+  --color-graph-cat-code: #3878b0;
+  --color-graph-cat-doc: #5e5966;
+  --color-graph-cat-url: #367c53;
+  --color-graph-cat-email: #5e35a8;
+  --color-graph-cat-unknown: #938f9b;
+  --color-graph-rel-contains: #938f9b;
+  --color-graph-rel-extends: #7138cc;
+  --color-graph-rel-implements: #3878b0;
+  --color-graph-rel-imports: #d08025;
+  --color-graph-rel-uses: #367c53;
+  --color-graph-rel-calls: #367c53;
+  --color-graph-rel-references: #d08025;
+  --color-graph-rel-related-to: #938f9b;
+  --color-graph-rel-works-on: #933;
+  --color-graph-rel-owns: #0c9aa7;
+  --color-graph-rel-depends-on: #b06a1a;
+  --color-graph-rel-parent-of: #938f9b;
+  --qs-content: #fff;
+  --qs-main: #fff;
+  --qs-primary-foreground: #131920;
+  --qs-secondary-foreground: #656871;
+  --qs-tertiary-foreground: #938f9b;
+  --qs-placeholder-foreground: #8c8c94;
+  --qs-divider: #dedee3;
+  --qs-default-border: #8c8c94;
+  --qs-neutral-soft: #b4b4bb;
+  --qs-neutral-gray-50: #eae8ed;
+  --qs-tertiary-background: #eae8ed;
+  --qs-action-hover: #f3f3f7;
+  --qs-primary-default: #4200db;
+  --qs-primary-dark: #35009e;
+  --qs-primary-light: #e8e6ff;
+  --qs-success-default: #00802f;
+  --qs-error-default: #db0000;
+  --qs-font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --safe-top: 0px;
+  --safe-bottom: 0px;
+  --safe-left: 0px;
+  --safe-right: 0px;
+  --qs-font-family: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --qs-font-base-letter-spacing: .15px;
+  --qs-shadow-sm: 0 0 2px 0 #00000029, 0 0 4px 0 #00000029;
+  --qs-shadow-md: 0 0 2px 0 #00000029, 0 2px 8px 1px #00000029;
+  --qs-shadow-lg: 0 4px 16px 4px #00000029, 0 2px 6px 1px #00000029;
+  --qs-shadow-xl: 0 4px 8px 2px #00000029, 0 6px 20px 4px #00000029;
+  --qs-width-modal-sm: 384px;
+  --qs-width-modal-md: 600px;
+  --qs-width-modal-lg: 1136px;
+  --qs-grid-gap: 16px;
+  --qs-grid-gap-xl: 24px;
+  --qs-primary-medium: #8575ff;
+  --qs-primary-inverse: #fff;
+  --qs-neutral-lightest: #f9f9fb;
+  --qs-neutral-light: #f3f3f7;
+  --qs-neutral-default: #dedee3;
+  --qs-neutral-medium: #8c8c94;
+  --qs-neutral-deep: #656871;
+  --qs-neutral-dark: #333843;
+  --qs-neutral-strong: #131920;
+  --qs-neutral-white: #fff;
+  --qs-neutral-black: #000;
+  --qs-success-medium: #005c26;
+  --qs-success-dark: #00471e;
+  --qs-success-light: #d9ffd6;
+  --qs-success-inverse: #fff;
+  --qs-info-default: #006ce0;
+  --qs-info-medium: #003b8f;
+  --qs-info-dark: #002a66;
+  --qs-info-light: #d1f1ff;
+  --qs-info-inverse: #fff;
+  --qs-warning-default: #f2b100;
+  --qs-warning-medium: #db9200;
+  --qs-warning-dark: #573a00;
+  --qs-warning-light: #fffbbd;
+  --qs-warning-inverse: #573a00;
+  --qs-warning-experimental: #f2b100;
+  --qs-warning-experimental-light: #fffbbd;
+  --qs-warning-experimental-light-foreground: #fffbbd;
+  --qs-error-medium: #900;
+  --qs-error-dark: #700000;
+  --qs-error-light: #ffe0e0;
+  --qs-error-inverse: #fff;
+  --qs-connection-default: #db3300;
+  --qs-connection-soft: #ff997a;
+  --qs-connection-light: #ffe0d6;
+  --qs-connection-dark: #661800;
+  --qs-automation-default: #b3008f;
+  --qs-automation-medium: #d600ba;
+  --qs-automation-soft: #ff94f1;
+  --qs-automation-light: #ffe0fb;
+  --qs-automation-dark: #660052;
+  --qs-insight-default: #a000b8;
+  --qs-insight-soft: #f299ff;
+  --qs-insight-light: #fce6ff;
+  --qs-insight-dark: #590066;
+  --qs-visualization-default: #7300e5;
+  --qs-visualization-soft: #d4a8ff;
+  --qs-visualization-light: #f2e5ff;
+  --qs-visualization-dark: #45008a;
+  --qs-spice: #ff9800;
+  --qs-coachmark: #006ce0;
+  --qs-brand: #fff;
+  --qs-brand-foreground: #131920;
+  --qs-brand-navbar: #131920;
+  --qs-brand-navbar-foreground: #fff;
+  --qs-brand-navbar-light: #dedee3;
+  --qs-brand-navbar-dark: #000;
+  --qs-application-navbar: #4200db;
+  --qs-application-navbar-foreground: #fff;
+  --qs-application-navbar-light: #e8e6ff;
+  --qs-application-navbar-dark: #35009e;
+  --qs-dimension: #4200db;
+  --qs-dimension-foreground: #fff;
+  --qs-dimension-experimental: #4200db;
+  --qs-dimension-experimental-foreground: #4200db;
+  --qs-measure: #00802f;
+  --qs-measure-foreground: #fff;
+  --qs-measure-experimental: #f2b100;
+  --qs-measure-experimental-foreground: #f2b100;
+  --qs-content-inverse: #333843;
+  --qs-content-inverse-active: #131920;
+  --qs-secondary: #dedee3;
+  --qs-disabled: #8c8c94;
+  --qs-divider-light: #f3f3f7;
+  --qs-hover-border: #333843;
+  --qs-active-border: #4200db;
+  --qs-disabled-border: #dedee3;
+  --qs-error-border: #ffe0e0;
+  --qs-error-active-border: #db0000;
+  --qs-disabled-foreground: #b4b4bb;
+  --qs-primary-inverse-foreground: #fff;
+  --qs-error-foreground: #db0000;
+  --qs-contrast-foreground: #131920;
+  --qs-main-foreground: #131920;
+  --qs-main-secondary-foreground: #656871;
+  --qs-action-disabled: #f3f3f7;
+  --qs-action-active: #e8e6ff;
+  --qs-default-badge: #dedee3;
+  --qs-tag-default: #dedee3;
+  --qs-tag-soft-border: #b4b4bb;
+  --qs-focus-offset: 1px;
+  --qs-toggle-tile-sm: calc(.25rem * 8);
+  --qs-toggle-tile-md: calc(.25rem * 12);
+  --qs-toggle-tile-lg: calc(.25rem * 15);
+  --qs-shadow-pin-right: inset 4px 0 4px -4px #00000029;
+  --qs-shadow-pin-left: inset -4px 0 4px -4px #00000029;
+  --react-pdf-text-layer: 1;
+  --highlight-bg-color: #b400aa;
+  --highlight-selected-bg-color: #006400;
+  --react-pdf-annotation-layer: 1;
+  --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+  --input-focus-border-color: Highlight;
+  --input-focus-outline: 1px solid Canvas;
+  --input-unfocused-border-color: transparent;
+  --input-disabled-border-color: transparent;
+  --input-hover-border-color: black;
+  --link-outline: none;
+  color-scheme: light;
+}
+body { background: var(--color-bg); color: var(--color-text); }
+a { color: var(--color-link, var(--color-primary)); }</style>
+<meta charset="UTF-8">
+<title>Flink ConvertEqualityDeletes 技术深度调研</title>
+<style>
+  :root {
+    --color-bg: #ffffff;
+    --color-bg-secondary: #f4f5f7;
+    --color-text: #172b4d;
+    --color-text-secondary: #44546f;
+    --color-text-muted: #8993a4;
+    --color-border-light: #ebecf0;
+    --color-border: #dfe1e6;
+    --color-surface: #ffffff;
+    --color-primary: #0052CC;
+    --color-success: #36b37e;
+    --color-error: #de350b;
+    --color-warning: #ff991f;
+    --color-info: #0065ff;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'SF Mono', Consolas, 'Liberation Mono', monospace;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-sans); color: var(--color-text); background: var(--color-bg); line-height: 1.6; padding: 32px; max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; color: var(--color-primary); }
+  h2 { font-size: 20px; font-weight: 600; margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--color-border-light); }
+  h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; }
+  p { margin-bottom: 12px; }
+  .subtitle { color: var(--color-text-secondary); font-size: 14px; margin-bottom: 24px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .badge-info { background: #deebff; color: #0747a6; }
+  .badge-warning { background: #fff3cd; color: #856404; }
+  .badge-success { background: #e3fcef; color: #006644; }
+  .badge-error { background: #ffebe6; color: #bf2600; }
+  .card { background: var(--color-bg-secondary); border: 1px solid var(--color-border-light); border-radius: var(--radius-md); padding: 20px; margin: 16px 0; }
+  .card-title { font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  th { text-align: left; color: var(--color-text-muted); font-weight: 500; padding: 10px 12px; border-bottom: 2px solid var(--color-border); background: var(--color-bg-secondary); }
+  td { padding: 10px 12px; color: var(--color-text); border-bottom: 1px solid var(--color-border-light); }
+  tr:hover td { background: #f8f9fa; }
+  code { font-family: var(--font-mono); font-size: 12px; background: #f0f1f3; padding: 2px 6px; border-radius: 3px; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: var(--radius-md); overflow-x: auto; margin: 12px 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; }
+  pre .comment { color: #6a9955; }
+  pre .keyword { color: #569cd6; }
+  pre .string { color: #ce9178; }
+  .flow-diagram { background: #fafbfc; border: 1px solid var(--color-border-light); border-radius: var(--radius-md); padding: 20px; margin: 16px 0; font-family: var(--font-mono); font-size: 12px; white-space: pre; line-height: 1.6; overflow-x: auto; }
+  .highlight-box { border-left: 4px solid var(--color-primary); background: #f0f7ff; padding: 16px 20px; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 16px 0; }
+  .warning-box { border-left: 4px solid var(--color-warning); background: #fffdf0; padding: 16px 20px; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 16px 0; }
+  .section-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  a { color: var(--color-primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .toc { background: var(--color-bg-secondary); border: 1px solid var(--color-border-light); border-radius: var(--radius-md); padding: 20px; margin: 24px 0; }
+  .toc-title { font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+  .toc ul { list-style: none; padding-left: 0; }
+  .toc li { padding: 4px 0; font-size: 13px; }
+  .toc li a { color: var(--color-text-secondary); }
+  .timeline { position: relative; padding-left: 24px; margin: 16px 0; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--color-border); }
+  .timeline-item { position: relative; padding: 8px 0 16px; }
+  .timeline-item::before { content: ''; position: absolute; left: -20px; top: 12px; width: 10px; height: 10px; border-radius: 50%; background: var(--color-primary); border: 2px solid white; }
+  .timeline-date { font-size: 12px; color: var(--color-text-muted); font-family: var(--font-mono); }
+  .timeline-text { font-size: 13px; margin-top: 2px; }
+  .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 16px 0; }
+  .metric-card { background: white; border: 1px solid var(--color-border-light); border-radius: var(--radius-md); padding: 16px; text-align: center; }
+  .metric-value { font-size: 24px; font-weight: 700; color: var(--color-primary); font-family: var(--font-mono); }
+  .metric-label { font-size: 11px; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+  ul, ol { margin: 8px 0 12px 20px; }
+  li { margin: 4px 0; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<h1>Flink ConvertEqualityDeletes</h1>
+<p class="subtitle">Iceberg V3 流式 CDC 场景下 Equality Delete → Deletion Vector 实时转换机制深度调研</p>
+
+<div class="section-meta">
+  <span class="badge badge-info">Iceberg 1.12.0 (未发布)</span>
+  <span class="badge badge-success">PR #15996 已合入 main</span>
+  <span class="badge badge-warning">Flink 1.20 / 2.0 / 2.1</span>
+</div>
+
+<div class="toc">
+  <div class="toc-title">目录</div>
+  <ul>
+    <li><a href="#background">1. 背景与问题</a></li>
+    <li><a href="#solution">2. ConvertEqualityDeletes 方案设计</a></li>
+    <li><a href="#workflow">3. 详细工作流</a></li>
+    <li><a href="#features">4. 核心特性</a></li>
+    <li><a href="#scenarios">5. 使用场景</a></li>
+    <li><a href="#versions">6. 版本兼容与发布计划</a></li>
+    <li><a href="#timeline">7. 社区演进时间线</a></li>
+    <li><a href="#comparison">8. 方案对比</a></li>
+    <li><a href="#limitations">9. 限制与后续计划</a></li>
+    <li><a href="#references">10. 参考链接</a></li>
+  </ul>
+</div>
+
+<h2 id="background">1. 背景与问题</h2>
+
+<h3>Equality Delete 的本质矛盾</h3>
+
+<p>Apache Iceberg 的 Merge-on-Read 模式支持两种行级删除机制：</p>
+
+<table>
+  <tbody><tr><th>类型</th><th>原理</th><th>写入代价</th><th>读取代价</th><th>适用引擎</th></tr>
+  <tr><td><strong>Equality Delete</strong></td><td>按列值匹配（如 <code>id=42</code>）标记删除</td><td>极低（微秒级）</td><td><span class="badge badge-error">高</span> — 需 join 所有候选 data files</td><td>Flink CDC</td></tr>
+  <tr><td><strong>Position Delete / DV</strong></td><td>按物理位置 <code>(file, row_position)</code></td><td>中等（需先扫表定位）</td><td><span class="badge badge-success">低</span> — O(1) bitmap 查找</td><td>Spark</td></tr>
+</tbody></table>
+
+<h3>为什么 Flink 只能写 Equality Delete？</h3>
+
+<div class="card">
+  <p><strong>核心约束：流式引擎不扫表。</strong></p>
+  <p>Flink 收到 CDC 消息 <code>DELETE id=3</code> 时，只知道主键值，不知道该行存储在哪个 Parquet 文件的第几行。要获取物理位置需要全表扫描 — 对于 TB 级表，这会将毫秒级延迟变为分钟级，完全不可接受。</p>
+</div>
+
+<h3>Equality Delete 带来的问题</h3>
+
+<ul>
+  <li><strong>读取性能差</strong>：每次查询需跨 sequence number 范围 join delete files 与 data files</li>
+  <li><strong>跨引擎兼容差</strong>：Snowflake（外部模式）、Databricks 均不支持读取 equality delete</li>
+  <li><strong>阻塞 Row Lineage</strong>：表的真实状态需全表扫描才能确定</li>
+  <li><strong>阻塞增量维护</strong>：物化视图和二级索引无法增量更新，需全量重建</li>
+  <li><strong>Compaction 追不上</strong>：高频 CDC 场景 equality delete 堆积速度快于合并速度</li>
+</ul>
+
+<h2 id="solution">2. ConvertEqualityDeletes 方案设计</h2>
+
+<div class="highlight-box">
+  <strong>核心思路：</strong>在 Flink 作业内使用 <strong>RocksDB State 维护主键索引</strong>，流式将 equality delete 解析为 position，直接以 Deletion Vector (Puffin) 格式输出。下游 Reader 永远看不到 equality delete。
+</div>
+
+<h3>分支隔离策略</h3>
+
+<table>
+  <tbody><tr><th>分支</th><th>内容</th><th>谁写</th><th>谁读</th></tr>
+  <tr><td><strong>staging 分支</strong></td><td>data files + equality deletes</td><td>IcebergSink (Writer)</td><td>ConvertEqualityDeletes task</td></tr>
+  <tr><td><strong>target 分支 (main)</strong></td><td>data files + DVs（无 equality delete）</td><td>ConvertEqualityDeletes task</td><td>所有下游查询引擎</td></tr>
+</tbody></table>
+
+<p>这种分支隔离确保 equality delete <strong>永远不暴露给 reader</strong>，从根本上消除了读放大问题。</p>
+
+<h2 id="workflow">3. 详细工作流</h2>
+
+<div class="flow-diagram">
+IcebergSink (Writer)
+    │
+    ▼ commit to staging branch
+┌─────────────────────────────────────────────────────────┐
+│          ConvertEqualityDeletes Pipeline                  │
+│                                                           │
+│  ┌─────────────────┐                                     │
+│  │ 1. Planner (p=1)│ 扫描 staging 最老未处理 snapshot      │
+│  │   发出 ReadCommands：                                   │
+│  │   Phase 0: main data files → 构建 PK index             │
+│  │   Phase 1: staging eq-delete files → 解析              │
+│  │   Phase 2: staging data files → 更新 index             │
+│  └────────┬────────┘                                     │
+│           ▼                                               │
+│  ┌─────────────────┐                                     │
+│  │ 2. Reader (p=N) │ 读取文件内容，发出 IndexCommands       │
+│  └────────┬────────┘                                     │
+│           ▼                                               │
+│  ┌─────────────────────────────┐                         │
+│  │ 3. Worker (p=N, keyed by PK)│                         │
+│  │   RocksDB State 维护 PK index shard                    │
+│  │   eq-delete → 解析为 (filePath, position)              │
+│  └────────┬────────────────────┘                         │
+│           ▼                                               │
+│  ┌──────────────────┐                                    │
+│  │ 4. DVResolver (p=1)│ 按 data file 分组，合并已有 DV    │
+│  └────────┬─────────┘                                    │
+│           ▼                                               │
+│  ┌──────────────────┐                                    │
+│  │ 5. DVMerger (p=N)│ 写入 DV (Puffin bitmap)            │
+│  └────────┬─────────┘                                    │
+│           ▼                                               │
+│  ┌────────────────────┐                                  │
+│  │ 6. Committer (p=1) │ RowDelta commit 到 target 分支    │
+│  │   data files + DVs (无 equality delete)                │
+│  └─────────────────────┘                                 │
+└─────────────────────────────────────────────────────────┘
+    │
+    ▼ target branch (main)
+Query Engines (Spark / Trino / Snowflake / ...)
+    → 只看到 data files + DVs ✅
+</div>
+
+<h2 id="features">4. 核心特性</h2>
+
+<div class="metric-grid">
+  <div class="metric-card"><div class="metric-value">V3</div><div class="metric-label">目标格式版本</div></div>
+  <div class="metric-card"><div class="metric-value">6</div><div class="metric-label">Operator 阶段</div></div>
+  <div class="metric-card"><div class="metric-value">RocksDB</div><div class="metric-label">PK Index 后端</div></div>
+  <div class="metric-card"><div class="metric-value">Puffin</div><div class="metric-label">DV 文件格式</div></div>
+</div>
+
+<table>
+  <tbody><tr><th>特性</th><th>描述</th></tr>
+  <tr><td><strong>V3 Only</strong></td><td>目标分支必须是 <code>format-version=3</code>（DV 是 V3 特性）</td></tr>
+  <tr><td><strong>分支隔离</strong></td><td>Writer 写 staging 分支，Reader 读 target 分支，equality delete 对 reader 不可见</td></tr>
+  <tr><td><strong>幂等提交</strong></td><td>通过 snapshot summary property 记录已处理的 staging snapshot id，crash 后不会重复提交</td></tr>
+  <tr><td><strong>容错恢复</strong></td><td>Planner state 通过 aligned Flink checkpoint 持久化，committer 的 <code>isAlreadyCommitted</code> guard 保证幂等</td></tr>
+  <tr><td><strong>互斥锁</strong></td><td>通过 TableMaintenance 框架 coordination lock 与其他 maintenance task 互斥</td></tr>
+  <tr><td><strong>Reindex 感知</strong></td><td>当 main 分支有外部 commit（如 Spark compaction）时自动触发重建索引</td></tr>
+  <tr><td><strong>可配置 equality fields</strong></td><td><code>ConvertEqualityDeletes.Builder.equalityFieldColumns(List&lt;String&gt;)</code></td></tr>
+  <tr><td><strong>Phase-based 顺序保证</strong></td><td>使用 watermark 保证 data indexing 在 delete resolution 之前完成</td></tr>
+</tbody></table>
+
+<h3>Metrics</h3>
+<table>
+  <tbody><tr><th>组件</th><th>指标</th><th>说明</th></tr>
+  <tr><td>Planner</td><td><code>processedEqDeleteFileNum</code></td><td>已处理的 equality delete 文件数</td></tr>
+  <tr><td>Planner</td><td><code>processedStagingSnapshotNum</code></td><td>已处理的 staging snapshot 数</td></tr>
+  <tr><td>Planner</td><td><code>reindexCount</code></td><td>重建索引次数</td></tr>
+  <tr><td>Worker</td><td><code>indexedKeyNum</code></td><td>索引中的 PK 数量</td></tr>
+  <tr><td>Worker</td><td><code>resolvedDeleteNum</code></td><td>已解析的 delete 数</td></tr>
+  <tr><td>Committer</td><td><code>addedDvNum</code></td><td>提交的 DV 文件数</td></tr>
+  <tr><td>Committer</td><td><code>commitDurationMs</code></td><td>提交耗时</td></tr>
+</tbody></table>
+
+<h2 id="scenarios">5. 使用场景</h2>
+
+<div class="card">
+  <div class="card-title">场景 1：Flink CDC 实时入湖（最核心）</div>
+  <p>MySQL/PostgreSQL → Flink CDC → IcebergSink (staging) → ConvertEqualityDeletes → target (DV only)</p>
+  <p>解决了"CDC 写入快但查询慢"的根本矛盾。下游 Spark/Trino/Snowflake 直接读取无 equality delete 的表。</p>
+</div>
+
+<div class="card">
+  <div class="card-title">场景 2：高频更新业务表</div>
+  <p>电商库存、用户画像等频繁 UPDATE 场景，equality delete 堆积速度远超传统 compaction 频率。内联转换实时消化。</p>
+</div>
+
+<div class="card">
+  <div class="card-title">场景 3：GDPR 合规删除</div>
+  <p>大批量行级删除（如"被遗忘权"请求），equality delete 文件数量爆炸。转换为 DV 后查询性能恢复正常。</p>
+</div>
+
+<div class="card">
+  <div class="card-title">场景 4：跨引擎数据湖</div>
+  <p>Snowflake（外部 Iceberg 模式）和 Databricks 不支持 equality delete。转换后所有引擎可直接读取。</p>
+</div>
+
+<h2 id="versions">6. 版本兼容与发布计划</h2>
+
+<table>
+  <tbody><tr><th>项目</th><th>值</th></tr>
+  <tr><td>PR</td><td><a href="https://github.com/apache/iceberg/pull/15996">#15996</a></td></tr>
+  <tr><td>作者</td><td>Maximilian Michels (Iceberg Flink connector maintainer)</td></tr>
+  <tr><td>创建日期</td><td>2026-04-16</td></tr>
+  <tr><td>合入分支</td><td><code>apache:main</code>（2026-07 合入）</td></tr>
+  <tr><td>预计发布版本</td><td><strong>Iceberg 1.12.0</strong>（尚未发布，预计 2026 Q3-Q4）</td></tr>
+</tbody></table>
+
+<h3>Flink 版本兼容</h3>
+
+<table>
+  <tbody><tr><th>Flink 版本</th><th>Runtime Jar</th><th>状态</th></tr>
+  <tr><td>Flink 2.1</td><td><code>iceberg-flink-runtime-2.1-1.12.0.jar</code></td><td><span class="badge badge-success">预计支持</span></td></tr>
+  <tr><td>Flink 2.0</td><td><code>iceberg-flink-runtime-2.0-1.12.0.jar</code></td><td><span class="badge badge-success">预计支持</span></td></tr>
+  <tr><td>Flink 1.20</td><td><code>iceberg-flink-runtime-1.20-1.12.0.jar</code></td><td><span class="badge badge-success">预计支持</span></td></tr>
+  <tr><td>Flink 1.19 及更早</td><td>—</td><td><span class="badge badge-error">End of Life</span></td></tr>
+</tbody></table>
+
+<div class="warning-box">
+  <strong>注意：</strong>该功能要求目标表为 <code>format-version=3</code>。V2 表需要先升级到 V3：<br>
+  <code>ALTER TABLE t SET TBLPROPERTIES ('format-version' = '3');</code>
+</div>
+
+<h2 id="timeline">7. 社区演进时间线</h2>
+
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="timeline-date">2024-09</div>
+    <div class="timeline-text"><strong>Issue #11122</strong> — V3 Position Delete 改进总体设计提案（Umbrella Issue）</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-date">2024-10</div>
+    <div class="timeline-text">Russell Spitzer 首次提出废弃 equality delete，因 Flink 无替代方案被搁置</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-date">2024-11</div>
+    <div class="timeline-text"><strong>PR #11446</strong> — Core 层为 DV 添加 content offset/size 到 DeleteFile（Flink metrics 同步适配）</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-date">2025-09</div>
+    <div class="timeline-text"><strong>PR #14148</strong> — Flink 支持读取 V3 row lineage 元数据字段 (<code>_row_id</code>, <code>_last_updated_sequence_number</code>)</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-date">2025-10</div>
+    <div class="timeline-text"><strong>PR #14197</strong> — Flink IcebergSink 支持写入 DV（position delete 路径）</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-date">2025-11</div>
+    <div class="timeline-text"><strong>PR #14414</strong> — DynamicIcebergSink 支持 DV 写入 + 多 format version 混合</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-date">2026-04-16</div>
+    <div class="timeline-text"><strong>PR #15996</strong> — ConvertEqualityDeletes maintenance task 创建</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-date">2026-05-19</div>
+    <div class="timeline-text"><strong>Iceberg 1.11.0 发布</strong> — V3 Production Ready，Flink TableMaintenance 框架完善</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-date">2026-07</div>
+    <div class="timeline-text"><strong>PR #15996 合入 main</strong>，Maximilian Michels 确认跨 6 个 commit 完成</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-date">2026-07</div>
+    <div class="timeline-text">huaxin gao 正式推动 <strong>V4 中废弃 equality delete</strong>（dev 邮件列表讨论）</div>
+  </div>
+</div>
+
+<h2 id="comparison">8. 方案对比</h2>
+
+<table>
+  <tbody><tr><th>方案</th><th>执行位置</th><th>延迟</th><th>需额外基础设施</th><th>Reader 可见 eq-delete</th></tr>
+  <tr><td><strong>ConvertEqualityDeletes (新)</strong></td><td>Flink 作业内</td><td>实时（checkpoint 级）</td><td>无</td><td><span class="badge badge-success">不可见</span></td></tr>
+  <tr><td>Spark RewriteDataFiles</td><td>外部 Spark 集群</td><td>分钟~小时（调度频率）</td><td>Spark 集群</td><td><span class="badge badge-error">窗口期可见</span></td></tr>
+  <tr><td>S3 Tables 自动 Compaction</td><td>AWS 托管后台</td><td>分钟级（不完全可控）</td><td>无（S3 Tables 内置）</td><td><span class="badge badge-warning">短暂可见</span></td></tr>
+  <tr><td>IceStream (第三方)</td><td>独立服务</td><td>接近实时</td><td>需部署运维</td><td><span class="badge badge-warning">取决于配置</span></td></tr>
+  <tr><td>Flink RewriteDataFiles task</td><td>Flink 作业内</td><td>Compaction 触发频率</td><td>无</td><td><span class="badge badge-error">Compaction 前可见</span></td></tr>
+</tbody></table>
+
+<h2 id="limitations">9. 限制与后续计划</h2>
+
+<h3>当前限制</h3>
+<ul>
+  <li>Row lineage (<code>_row_id</code>, <code>_last_updated_sequence_number</code>) 暂不保留</li>
+  <li>暂无 staging 分支生命周期管理（创建/清理）</li>
+  <li>DVResolver 全量 manifest scan，无 partition pruning 优化</li>
+  <li>仅支持 aligned checkpoint（不支持 unaligned checkpoint）</li>
+  <li>Partition evolution 跨 spec 场景可能存在边界问题</li>
+</ul>
+
+<h3>后续计划</h3>
+<ol>
+  <li><strong>集成为 IcebergSink 的 inline post-commit task</strong> — 用户无需单独配置 maintenance job</li>
+  <li>自动清理 staging 分支已处理的 snapshots</li>
+  <li>添加官方文档</li>
+  <li>DVResolver 支持 partition pruning 优化</li>
+  <li>保留 Row Lineage</li>
+</ol>
+
+<h2 id="references">10. 参考链接</h2>
+
+<table>
+  <tbody><tr><th>#</th><th>链接</th><th>说明</th></tr>
+  <tr><td>1</td><td><a href="https://github.com/apache/iceberg/pull/15996">PR #15996</a></td><td>ConvertEqualityDeletes 主 PR</td></tr>
+  <tr><td>2</td><td><a href="https://docs.google.com/document/d/1Jz4Fjt-6jRmwqbgHX_u0ohuyTB9ytDzfslS7lYraIjk/edit?tab=t.5qlfbj9bk8i3">设计文档</a></td><td>Google Doc 详细设计</td></tr>
+  <tr><td>3</td><td><a href="https://lists.apache.org/thread/gldqrycmo24r0vo77wzcj9s9b04rtvy7">邮件列表讨论</a></td><td>Iceberg Dev 邮件列表</td></tr>
+  <tr><td>4</td><td><a href="https://dev.to/alexmercedcoder/apache-data-lakehouse-weekly-july-11-to-july-18-2026-3f1p">Data Lakehouse Weekly 2026-07-18</a></td><td>社区报道</td></tr>
+  <tr><td>5</td><td><a href="https://risingwave.com/blog/the-equality-delete-problem-in-apache-iceberg/">The Equality Delete Problem</a></td><td>问题深度分析 (RisingWave)</td></tr>
+  <tr><td>6</td><td><a href="https://iceberg.apache.org/docs/latest/flink-maintenance/">Flink TableMaintenance 文档</a></td><td>Iceberg 官方文档</td></tr>
+  <tr><td>7</td><td><a href="https://github.com/apache/iceberg/issues/11122">Issue #11122</a></td><td>V3 Position Delete 改进 Umbrella Issue</td></tr>
+  <tr><td>8</td><td><a href="https://github.com/jordepic/Icestream">IceStream</a></td><td>第三方 eq-to-DV 转换方案</td></tr>
+  <tr><td>9</td><td><a href="https://etleap.com/blog/streaming-updates-in-iceberg-position-deletes-at-scale">Streaming Updates in Iceberg</a></td><td>Position Deletes at Scale (Etleap)</td></tr>
+  <tr><td>10</td><td><a href="https://iceberg.apache.org/multi-engine-support/">Multi-Engine Support</a></td><td>Iceberg 多引擎版本兼容矩阵</td></tr>
+</tbody></table>
+
+<hr style="margin-top: 32px; border: none; border-top: 1px solid var(--color-border-light);">
+<p style="font-size: 12px; color: var(--color-text-muted); margin-top: 16px;">
+  调研时间：2026-07-21 | 作者：Xiao Huang | 基于 PR #15996 及社区公开讨论整理
+</p>
+
+
+
+</body></html>
