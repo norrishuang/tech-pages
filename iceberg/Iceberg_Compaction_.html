@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html><head><style id="qw-theme">:root {
+  --color-bg: #f2f1f4;
+  --color-text: #352f3d;
+  --color-navbar-bg: #eae8ed;
+  --color-bg-chat-view: #fcfcfd;
+  --color-bg-secondary: #fff;
+  --color-bg-tertiary: #eae8ed;
+  --color-bg-hover: #dcdadf;
+  --color-surface: #eae8ed;
+  --color-surface-hover: #dcdadf;
+  --color-surface-active: #c1bec6;
+  --color-border: #c1bec6;
+  --color-border-light: #dcdadf;
+  --color-border-strong: #c1bec6;
+  --color-primary: #4200db;
+  --color-primary-dark: #35009e;
+  --color-primary-light: #8575ff;
+  --color-primary-bg: #e8e6ff;
+  --color-primary-hover-border: #35009e;
+  --color-nav-icon-active: #4200db;
+  --color-nav-hover-border: #4200db;
+  --color-primary-alpha-3: color-mix(in srgb, #4200db 3%, transparent);
+  --color-primary-alpha-5: color-mix(in srgb, #4200db 5%, transparent);
+  --color-primary-alpha-8: color-mix(in srgb, #4200db 8%, transparent);
+  --color-primary-alpha-12: color-mix(in srgb, #4200db 12%, transparent);
+  --color-primary-alpha-15: color-mix(in srgb, #4200db 15%, transparent);
+  --color-primary-alpha-20: color-mix(in srgb, #4200db 20%, transparent);
+  --color-primary-alpha-25: color-mix(in srgb, #4200db 25%, transparent);
+  --color-primary-alpha-30: color-mix(in srgb, #4200db 30%, transparent);
+  --color-primary-alpha-40: color-mix(in srgb, #4200db 40%, transparent);
+  --color-primary-alpha-50: color-mix(in srgb, #4200db 50%, transparent);
+  --color-primary-alpha-60: color-mix(in srgb, #4200db 60%, transparent);
+  --color-primary-subtle: color-mix(in srgb, #4200db 18%, transparent);
+  --color-primary-border: #8575ff;
+  --color-focus-ring: color-mix(in srgb, #4200db 50%, transparent);
+  --color-sidebar-hover: color-mix(in srgb, #4200db 12%, transparent);
+  --block-hover-outline: 1px dashed color-mix(in srgb, #4200db 50%, transparent);
+  --block-selected-outline: 1px solid #8575ff;
+  --block-selection-outline-offset: 2px;
+  --block-selected-halo: 0 0 8px color-mix(in srgb, #4200db 40%, transparent);
+  --color-accent: #4200db;
+  --color-accent-foreground: #4200db;
+  --color-accent-dark: #35009e;
+  --color-accent-light: #e8e6ff;
+  --color-accent-inverse: #fff;
+  --color-link: #4200db;
+  --color-primary-gradient-end: #e8e6ff;
+  --color-primary-bg-solid: #eae8ed;
+  --color-user-bubble: #f3f3f7;
+  --color-user-bubble-text: #352f3d;
+  --color-text-secondary: #5e5966;
+  --color-text-tertiary: #7a7582;
+  --color-text-muted: #938f9b;
+  --color-text-on-primary: #f2f1f4;
+  --color-success: #00802f;
+  --color-success-dark: #00471e;
+  --color-success-light: #d9ffd6;
+  --color-success-hover: #005c26;
+  --color-success-bg: #e6f4eb;
+  --color-success-border: #c4dccb;
+  --color-success-foreground: #00802f;
+  --color-success-dark-foreground: #00471e;
+  --color-success-text: #00471e;
+  --color-error: #db0000;
+  --color-error-dark: #700000;
+  --color-error-light: #ffe0e0;
+  --color-error-hover: #ffe0e0;
+  --color-error-bg: #fbe9ea;
+  --color-error-border: #eecbcd;
+  --color-error-active-border: #db0000;
+  --color-error-foreground: #db0000;
+  --color-error-dark-foreground: #700000;
+  --color-error-inverse: #fff;
+  --color-error-text: #700000;
+  --color-warning: #f2b100;
+  --color-warning-dark: #573a00;
+  --color-warning-light: #fffbbd;
+  --color-warning-hover: #db9200;
+  --color-warning-bg: #fdf6e4;
+  --color-warning-border: #f5dda6;
+  --color-warning-foreground: #f2b100;
+  --color-warning-dark-foreground: #573a00;
+  --color-warning-inverse: #573a00;
+  --color-surface-warning: #fffbbd;
+  --color-text-warning: #573a00;
+  --color-info: #006ce0;
+  --color-info-dark: #002a66;
+  --color-info-light: #d1f1ff;
+  --color-info-hover: #003b8f;
+  --color-info-bg: #e6f0fb;
+  --color-info-border: #c0d5ec;
+  --color-info-foreground: #006ce0;
+  --color-info-dark-foreground: #002a66;
+  --color-info-inverse: #fff;
+  --color-overlay: #dcdadf80;
+  --color-shadow: #352f3d40;
+  --color-hover: #352f3d0d;
+  --color-tooltip-bg: #eae8ed;
+  --color-tooltip-text: #352f3d;
+  --color-voice-purple: #8575ff;
+  --color-voice-purple-dark: #4200db;
+  --color-voice-purple-light: #8575ff;
+  --color-voice-red: #db0000;
+  --color-voice-red-dark: #700000;
+  --color-voice-amber: #f2b100;
+  --color-voice-purple-glow: #4200db66;
+  --color-voice-red-glow: #db000066;
+  --font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Monaco", "Menlo", "Consolas", monospace;
+  --text-2xs: .5625rem;
+  --text-xs: .625rem;
+  --text-sm: .6875rem;
+  --text-base: .75rem;
+  --text-md: .8125rem;
+  --text-lg: .875rem;
+  --text-xl: 1rem;
+  --text-2xl: 1.125rem;
+  --text-3xl: 1.25rem;
+  --text-4xl: 1.5rem;
+  --text-5xl: 2rem;
+  --spacing-1: calc(.25rem * 1);
+  --spacing-1-5: calc(.25rem * 1.5);
+  --spacing-2: calc(.25rem * 2);
+  --spacing-3: calc(.25rem * 3);
+  --spacing-4: calc(.25rem * 4);
+  --spacing-5: calc(.25rem * 5);
+  --spacing-6: calc(.25rem * 6);
+  --spacing-7: calc(.25rem * 7);
+  --spacing-8: calc(.25rem * 8);
+  --spacing-9: calc(.25rem * 9);
+  --spacing-10: calc(.25rem * 10);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-card: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 8px;
+  --shadow-sm: 0 1px 2px #352f3d0f;
+  --shadow-md: 0 4px 12px #352f3d1a;
+  --color-success-bg-solid: #d9ffd6;
+  --color-error-bg-solid: #ffe0e0;
+  --color-error-border-solid: #ffe0e0;
+  --color-warning-bg-solid: #fffbbd;
+  --color-warning-text: #573a00;
+  --color-info-bg-solid: #d1f1ff;
+  --color-info-bg-solid-alt: #d1f1ff;
+  --color-info-text: #002a66;
+  --color-info-text-alt: #002a66;
+  --color-emerald: #367c53;
+  --color-teal: #0c9aa7;
+  --color-code-bg: #eae8ed;
+  --color-code-header-bg: #dcdadf;
+  --color-code-text: #352f3d;
+  --color-code-border: #c1bec6;
+  --color-code-muted: #5e5966;
+  --color-inline-code-bg: #eae8ed;
+  --color-inline-code-text: #352f3d;
+  --color-inline-code-border: #c1bec6;
+  --color-scrollbar-thumb: #c1bec6;
+  --color-scrollbar-track: transparent;
+  --color-graph-node-text: #352f3d;
+  --color-graph-node-text-dim: #938f9b;
+  --color-graph-edge-default: #938f9b;
+  --color-graph-edge-cross: #d08025;
+  --color-graph-edge-text: #5e5966;
+  --color-graph-edge-stroke: #f2f1f4;
+  --color-graph-highlight-bg: #ff6b6b;
+  --color-graph-highlight-border: #e74c3c;
+  --color-graph-search-bg: gold;
+  --color-graph-search-border: orange;
+  --color-graph-focus-border: #c0392b;
+  --color-graph-external-border: #938f9b;
+  --color-graph-cat-file: #3878b0;
+  --color-graph-cat-folder: #5e5966;
+  --color-graph-cat-file-aggregate: #2d6a9f;
+  --color-graph-cat-class: #7138cc;
+  --color-graph-cat-function: #367c53;
+  --color-graph-cat-method: #0c9aa7;
+  --color-graph-cat-variable: #d08025;
+  --color-graph-cat-import: #b06a1a;
+  --color-graph-cat-module: #5e35a8;
+  --color-graph-cat-concept: #933;
+  --color-graph-cat-person: #c44d4d;
+  --color-graph-cat-org: #0c9aa7;
+  --color-graph-cat-organization: #0c9aa7;
+  --color-graph-cat-product: #8e47ff;
+  --color-graph-cat-metric: #c44d78;
+  --color-graph-cat-location: #34495e;
+  --color-graph-cat-date: #b34d8a;
+  --color-graph-cat-code: #3878b0;
+  --color-graph-cat-doc: #5e5966;
+  --color-graph-cat-url: #367c53;
+  --color-graph-cat-email: #5e35a8;
+  --color-graph-cat-unknown: #938f9b;
+  --color-graph-rel-contains: #938f9b;
+  --color-graph-rel-extends: #7138cc;
+  --color-graph-rel-implements: #3878b0;
+  --color-graph-rel-imports: #d08025;
+  --color-graph-rel-uses: #367c53;
+  --color-graph-rel-calls: #367c53;
+  --color-graph-rel-references: #d08025;
+  --color-graph-rel-related-to: #938f9b;
+  --color-graph-rel-works-on: #933;
+  --color-graph-rel-owns: #0c9aa7;
+  --color-graph-rel-depends-on: #b06a1a;
+  --color-graph-rel-parent-of: #938f9b;
+  --qs-content: #fff;
+  --qs-main: #fff;
+  --qs-primary-foreground: #131920;
+  --qs-secondary-foreground: #656871;
+  --qs-tertiary-foreground: #938f9b;
+  --qs-placeholder-foreground: #8c8c94;
+  --qs-divider: #dedee3;
+  --qs-default-border: #8c8c94;
+  --qs-neutral-soft: #b4b4bb;
+  --qs-neutral-gray-50: #eae8ed;
+  --qs-tertiary-background: #eae8ed;
+  --qs-action-hover: #f3f3f7;
+  --qs-primary-default: #4200db;
+  --qs-primary-dark: #35009e;
+  --qs-primary-light: #e8e6ff;
+  --qs-success-default: #00802f;
+  --qs-error-default: #db0000;
+  --qs-font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --safe-top: 0px;
+  --safe-bottom: 0px;
+  --safe-left: 0px;
+  --safe-right: 0px;
+  --qs-font-family: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --qs-font-base-letter-spacing: .15px;
+  --qs-shadow-sm: 0 0 2px 0 #00000029, 0 0 4px 0 #00000029;
+  --qs-shadow-md: 0 0 2px 0 #00000029, 0 2px 8px 1px #00000029;
+  --qs-shadow-lg: 0 4px 16px 4px #00000029, 0 2px 6px 1px #00000029;
+  --qs-shadow-xl: 0 4px 8px 2px #00000029, 0 6px 20px 4px #00000029;
+  --qs-width-modal-sm: 384px;
+  --qs-width-modal-md: 600px;
+  --qs-width-modal-lg: 1136px;
+  --qs-grid-gap: 16px;
+  --qs-grid-gap-xl: 24px;
+  --qs-primary-medium: #8575ff;
+  --qs-primary-inverse: #fff;
+  --qs-neutral-lightest: #f9f9fb;
+  --qs-neutral-light: #f3f3f7;
+  --qs-neutral-default: #dedee3;
+  --qs-neutral-medium: #8c8c94;
+  --qs-neutral-deep: #656871;
+  --qs-neutral-dark: #333843;
+  --qs-neutral-strong: #131920;
+  --qs-neutral-white: #fff;
+  --qs-neutral-black: #000;
+  --qs-success-medium: #005c26;
+  --qs-success-dark: #00471e;
+  --qs-success-light: #d9ffd6;
+  --qs-success-inverse: #fff;
+  --qs-info-default: #006ce0;
+  --qs-info-medium: #003b8f;
+  --qs-info-dark: #002a66;
+  --qs-info-light: #d1f1ff;
+  --qs-info-inverse: #fff;
+  --qs-warning-default: #f2b100;
+  --qs-warning-medium: #db9200;
+  --qs-warning-dark: #573a00;
+  --qs-warning-light: #fffbbd;
+  --qs-warning-inverse: #573a00;
+  --qs-warning-experimental: #f2b100;
+  --qs-warning-experimental-light: #fffbbd;
+  --qs-warning-experimental-light-foreground: #fffbbd;
+  --qs-error-medium: #900;
+  --qs-error-dark: #700000;
+  --qs-error-light: #ffe0e0;
+  --qs-error-inverse: #fff;
+  --qs-connection-default: #db3300;
+  --qs-connection-soft: #ff997a;
+  --qs-connection-light: #ffe0d6;
+  --qs-connection-dark: #661800;
+  --qs-automation-default: #b3008f;
+  --qs-automation-medium: #d600ba;
+  --qs-automation-soft: #ff94f1;
+  --qs-automation-light: #ffe0fb;
+  --qs-automation-dark: #660052;
+  --qs-insight-default: #a000b8;
+  --qs-insight-soft: #f299ff;
+  --qs-insight-light: #fce6ff;
+  --qs-insight-dark: #590066;
+  --qs-visualization-default: #7300e5;
+  --qs-visualization-soft: #d4a8ff;
+  --qs-visualization-light: #f2e5ff;
+  --qs-visualization-dark: #45008a;
+  --qs-spice: #ff9800;
+  --qs-coachmark: #006ce0;
+  --qs-brand: #fff;
+  --qs-brand-foreground: #131920;
+  --qs-brand-navbar: #131920;
+  --qs-brand-navbar-foreground: #fff;
+  --qs-brand-navbar-light: #dedee3;
+  --qs-brand-navbar-dark: #000;
+  --qs-application-navbar: #4200db;
+  --qs-application-navbar-foreground: #fff;
+  --qs-application-navbar-light: #e8e6ff;
+  --qs-application-navbar-dark: #35009e;
+  --qs-dimension: #4200db;
+  --qs-dimension-foreground: #fff;
+  --qs-dimension-experimental: #4200db;
+  --qs-dimension-experimental-foreground: #4200db;
+  --qs-measure: #00802f;
+  --qs-measure-foreground: #fff;
+  --qs-measure-experimental: #f2b100;
+  --qs-measure-experimental-foreground: #f2b100;
+  --qs-content-inverse: #333843;
+  --qs-content-inverse-active: #131920;
+  --qs-secondary: #dedee3;
+  --qs-disabled: #8c8c94;
+  --qs-divider-light: #f3f3f7;
+  --qs-hover-border: #333843;
+  --qs-active-border: #4200db;
+  --qs-disabled-border: #dedee3;
+  --qs-error-border: #ffe0e0;
+  --qs-error-active-border: #db0000;
+  --qs-disabled-foreground: #b4b4bb;
+  --qs-primary-inverse-foreground: #fff;
+  --qs-error-foreground: #db0000;
+  --qs-contrast-foreground: #131920;
+  --qs-main-foreground: #131920;
+  --qs-main-secondary-foreground: #656871;
+  --qs-action-disabled: #f3f3f7;
+  --qs-action-active: #e8e6ff;
+  --qs-default-badge: #dedee3;
+  --qs-tag-default: #dedee3;
+  --qs-tag-soft-border: #b4b4bb;
+  --qs-focus-offset: 1px;
+  --qs-toggle-tile-sm: calc(.25rem * 8);
+  --qs-toggle-tile-md: calc(.25rem * 12);
+  --qs-toggle-tile-lg: calc(.25rem * 15);
+  --qs-shadow-pin-right: inset 4px 0 4px -4px #00000029;
+  --qs-shadow-pin-left: inset -4px 0 4px -4px #00000029;
+  --react-pdf-text-layer: 1;
+  --highlight-bg-color: #b400aa;
+  --highlight-selected-bg-color: #006400;
+  --react-pdf-annotation-layer: 1;
+  --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+  --input-focus-border-color: Highlight;
+  --input-focus-outline: 1px solid Canvas;
+  --input-unfocused-border-color: transparent;
+  --input-disabled-border-color: transparent;
+  --input-hover-border-color: black;
+  --link-outline: none;
+  color-scheme: light;
+}
+body { background: var(--color-bg); color: var(--color-text); }
+a { color: var(--color-link, var(--color-primary)); }</style>
+<meta charset="UTF-8">
+<style>
+  body {
+    background: var(--color-bg);
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    margin: 0;
+    padding: 32px;
+    line-height: 1.7;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--color-text);
+  }
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 36px;
+    margin-bottom: 16px;
+    color: var(--color-text);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    color: var(--color-text-secondary);
+  }
+  p {
+    margin: 12px 0;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+  }
+  .card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin: 16px 0;
+  }
+  .highlight-card {
+    background: var(--color-bg-secondary);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin: 16px 0;
+  }
+  .highlight-card p {
+    margin: 4px 0;
+  }
+  code {
+    font-family: var(--font-mono);
+    background: var(--color-bg-secondary);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--color-text);
+  }
+  pre {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+  th {
+    text-align: left;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--color-border);
+    background: var(--color-bg-secondary);
+  }
+  td {
+    padding: 10px 14px;
+    color: var(--color-text-secondary);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  tr:hover td {
+    background: var(--color-surface-hover);
+  }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .tag-blue {
+    background: var(--color-info-bg);
+    color: var(--color-info-text);
+  }
+  .tag-green {
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
+  }
+  .tag-orange {
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+  }
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    padding: 16px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-light);
+  }
+  .flow-box {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--color-text);
+  }
+  .flow-arrow {
+    color: var(--color-text-muted);
+    font-size: 16px;
+  }
+  ul, ol {
+    padding-left: 24px;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+  }
+  li {
+    margin: 8px 0;
+  }
+  .toc {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: 16px 24px;
+    margin-bottom: 32px;
+  }
+  .toc-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-text);
+    margin-bottom: 8px;
+  }
+  .toc ol {
+    font-size: 13px;
+    color: var(--color-primary);
+    margin: 0;
+  }
+  .toc li {
+    margin: 4px 0;
+  }
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--color-border-light);
+    margin: 40px 0;
+  }
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 600px) {
+    .comparison-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Apache Iceberg Compaction 机制详解</h1>
+<p class="subtitle">涵盖 Spark rewrite_data_files 与 AWS S3 Tables 自动 Compaction | 2026-07</p>
+
+<div class="toc">
+  <div class="toc-title">目录</div>
+  <ol>
+    <li>Compaction 概述</li>
+    <li>rewrite_data_files 核心机制</li>
+    <li>Bin-Packing 文件筛选逻辑</li>
+    <li>场景推演：增量写入后的合并行为</li>
+    <li>关键参数详解</li>
+    <li>Sort 策略 vs Bin-Pack 策略</li>
+    <li>AWS S3 Tables 自动 Compaction</li>
+    <li>最佳实践</li>
+  </ol>
+</div>
+
+<h2>1. Compaction 概述</h2>
+<p>Apache Iceberg 作为一种高性能的表格式（Table Format），支持在对象存储上进行高效的增量写入。但频繁的小文件写入会导致查询性能下降，因此需要 Compaction（文件压缩/合并）来优化数据文件布局。</p>
+
+<div class="highlight-card">
+  <p><strong>核心目标：</strong>将大量小文件合并为少量大文件，优化查询时的 I/O 效率，同时避免对已经合理大小的文件进行重复操作。</p>
+</div>
+
+<h2>2. rewrite_data_files 核心机制</h2>
+<p>Spark 通过 Iceberg 的 <code>rewrite_data_files</code> 存储过程来执行 Compaction。默认使用 <strong>Bin-Packing</strong> 策略。</p>
+
+<pre>CALL catalog.system.rewrite_data_files(
+  table =&gt; 'db.my_table',
+  strategy =&gt; 'binpack',
+  options =&gt; map(
+    'target-file-size-bytes', '134217728',   -- 128MB
+    'min-file-size-bytes',    '100663296',   -- 96MB (75%)
+    'max-file-size-bytes',    '241591910'    -- ~230MB (180%)
+  )
+)</pre>
+
+<h3>执行流程</h3>
+<div class="flow-diagram">
+  <div class="flow-box">扫描所有数据文件</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">按大小筛选候选文件</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">Bin-Packing 分组</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">重写为目标大小文件</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">提交新 Snapshot</div>
+</div>
+
+<h2>3. Bin-Packing 文件筛选逻辑</h2>
+<p>Bin-Packing 策略的核心在于<strong>只选择"不合理大小"的文件</strong>进行重写：</p>
+
+<div class="card">
+  <h3 style="margin-top: 0;">筛选规则</h3>
+  <ul>
+    <li><strong>文件大小 &lt; <code>min-file-size-bytes</code></strong> → 太小，选为候选 ✅</li>
+    <li><strong>文件大小 &gt; <code>max-file-size-bytes</code></strong> → 太大，选为候选（将被拆分）✅</li>
+    <li><strong><code>min-file-size-bytes</code> ≤ 文件大小 ≤ <code>max-file-size-bytes</code></strong> → 合理大小，跳过 ❌</li>
+  </ul>
+</div>
+
+<div class="highlight-card">
+  <p><strong>关键结论：</strong>已经合并到目标大小范围内的文件，在后续 <code>rewrite_data_files</code> 调用时<strong>不会再参与合并</strong>。</p>
+</div>
+
+<h2>4. 场景推演：增量写入后的合并行为</h2>
+
+<h3>场景设定</h3>
+<table>
+  <tbody><tr><th>参数</th><th>值</th></tr>
+  <tr><td>target-file-size-bytes</td><td>128 MB</td></tr>
+  <tr><td>min-file-size-bytes (75%)</td><td>96 MB</td></tr>
+  <tr><td>max-file-size-bytes (180%)</td><td>~230 MB</td></tr>
+</tbody></table>
+
+<h3>执行过程</h3>
+<div class="card">
+  <p><strong>Step 1 — 初始状态</strong></p>
+  <pre style="border:none; padding: 8px 0; margin: 0;">10 个文件 × 10MB = 100MB 总数据</pre>
+  <p>所有文件 (10MB) &lt; min (96MB) → 全部选为候选</p>
+
+  <p><strong>Step 2 — 第一次合并后</strong></p>
+  <pre style="border:none; padding: 8px 0; margin: 0;">1 个文件 × 100MB（实际合并结果，接近但略小于 target）</pre>
+  <p>100MB 落在 [96MB, 230MB] 范围内 → 标记为"合理大小"</p>
+
+  <p><strong>Step 3 — 新增写入</strong></p>
+  <pre style="border:none; padding: 8px 0; margin: 0;">1 × 100MB + 10 × 10MB = 200MB 总数据，11 个文件</pre>
+
+  <p><strong>Step 4 — 第二次合并</strong></p>
+  <pre style="border:none; padding: 8px 0; margin: 0;">100MB 文件 → 在合理范围内 → ❌ 不参与
+10 × 10MB 文件 → 低于 min → ✅ 参与合并
+结果：1 × 100MB（原） + 1 × 100MB（新合并） = 2 个文件</pre>
+</div>
+
+<h2>5. 关键参数详解</h2>
+<table>
+  <tbody><tr>
+    <th>参数</th>
+    <th>默认值</th>
+    <th>说明</th>
+  </tr>
+  <tr>
+    <td><code>target-file-size-bytes</code></td>
+    <td>512 MB</td>
+    <td>合并后的目标文件大小</td>
+  </tr>
+  <tr>
+    <td><code>min-file-size-bytes</code></td>
+    <td>target × 75%</td>
+    <td>低于此值的文件被视为"太小"，参与合并</td>
+  </tr>
+  <tr>
+    <td><code>max-file-size-bytes</code></td>
+    <td>target × 180%</td>
+    <td>高于此值的文件被视为"太大"，被拆分</td>
+  </tr>
+  <tr>
+    <td><code>min-input-files</code></td>
+    <td>5</td>
+    <td>一个分组至少需要 N 个文件才会触发重写</td>
+  </tr>
+  <tr>
+    <td><code>max-concurrent-file-group-rewrites</code></td>
+    <td>5</td>
+    <td>并行重写的文件组数</td>
+  </tr>
+  <tr>
+    <td><code>partial-progress.enabled</code></td>
+    <td>false</td>
+    <td>是否允许部分提交（大表推荐开启）</td>
+  </tr>
+  <tr>
+    <td><code>delete-file-threshold</code></td>
+    <td>2147483647</td>
+    <td>关联 delete file 超过此数的数据文件强制重写</td>
+  </tr>
+</tbody></table>
+
+<h2>6. Sort 策略 vs Bin-Pack 策略</h2>
+
+<div class="comparison-grid">
+  <div class="card">
+    <h3 style="margin-top: 0;"><span class="tag tag-blue">Bin-Pack</span></h3>
+    <ul>
+      <li>只重写"不合理大小"的文件</li>
+      <li>不改变数据排序</li>
+      <li>增量友好，重复执行代价低</li>
+      <li>适合日常 Compaction</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3 style="margin-top: 0;"><span class="tag tag-orange">Sort</span></h3>
+    <ul>
+      <li><strong>重写所有文件</strong>以保证全局排序</li>
+      <li>按指定列排序（支持 Z-Order）</li>
+      <li>每次执行代价较高</li>
+      <li>适合查询优化 / Sort Order 变更</li>
+    </ul>
+  </div>
+</div>
+
+<pre>-- Sort 策略示例
+CALL catalog.system.rewrite_data_files(
+  table =&gt; 'db.my_table',
+  strategy =&gt; 'sort',
+  sort_order =&gt; 'event_time ASC NULLS LAST, user_id ASC'
+)</pre>
+
+<h2>7. AWS S3 Tables 自动 Compaction</h2>
+
+<p>AWS S3 Tables 提供托管的自动 Compaction 服务，无需用户手动触发：</p>
+
+<table>
+  <tbody><tr><th>配置项</th><th>默认值</th><th>说明</th></tr>
+  <tr>
+    <td>策略</td>
+    <td><span class="tag tag-blue">Bin-Pack</span></td>
+    <td>与 Iceberg 社区一致</td>
+  </tr>
+  <tr>
+    <td>启用状态</td>
+    <td><span class="tag tag-green">默认开启</span></td>
+    <td>表创建后自动生效</td>
+  </tr>
+  <tr>
+    <td>目标文件大小</td>
+    <td>512 MB</td>
+    <td>可通过 API 调整</td>
+  </tr>
+  <tr>
+    <td>调度频率</td>
+    <td>服务自动管理</td>
+    <td>无需配置 cron</td>
+  </tr>
+</tbody></table>
+
+<h3>配置管理 API</h3>
+<pre>aws s3tables put-table-maintenance-configuration \
+  --table-bucket-arn arn:aws:s3tables:region:account:bucket/my-bucket \
+  --namespace my_namespace \
+  --name my_table \
+  --type icebergCompaction \
+  --value '{
+    "status": "enabled",
+    "settings": {
+      "icebergCompaction": {
+        "targetFileSizeBytes": 134217728
+      }
+    }
+  }'</pre>
+
+<h3>S3 Tables vs 手动 Spark Compaction</h3>
+<table>
+  <tbody><tr><th></th><th>S3 Tables 自动 Compaction</th><th>手动 Spark rewrite_data_files</th></tr>
+  <tr><td>策略</td><td>仅 bin-pack</td><td>bin-pack / sort / z-order</td></tr>
+  <tr><td>频率</td><td>服务自动调度</td><td>用户自行触发</td></tr>
+  <tr><td>可定制性</td><td>有限（目标大小）</td><td>完全可配</td></tr>
+  <tr><td>成本</td><td>包含在 S3 Tables 费用中</td><td>需额外 Spark/EMR 集群</td></tr>
+  <tr><td>适用场景</td><td>常规小文件合并</td><td>需要排序优化或精细控制</td></tr>
+</tbody></table>
+
+<hr class="section-divider">
+
+<h2>8. 最佳实践</h2>
+
+<div class="card">
+  <h3 style="margin-top: 0;">日常 Compaction 调优建议</h3>
+  <ol>
+    <li><strong>高频 CDC/Upsert 场景：</strong>设置 <code>delete-file-threshold=10</code>，每 15-30 分钟执行一次 compaction，防止 delete files 堆积导致 Redshift MaxMessageSize 错误</li>
+    <li><strong>大表分区：</strong>开启 <code>partial-progress.enabled=true</code>，避免单次事务过大导致冲突</li>
+    <li><strong>查询优化：</strong>定期（如每周）使用 <code>sort</code> 策略按查询高频列排序，平时使用 <code>binpack</code></li>
+    <li><strong>S3 Tables 用户：</strong>依赖自动 Compaction 处理常规合并，高频写入场景可调高 compaction 频率</li>
+    <li><strong>避免不必要的全量重写：</strong>不要将 <code>min-file-size-bytes</code> 设为 <code>target-file-size-bytes</code>，除非明确需要全量重组</li>
+  </ol>
+</div>
+
+
+</body></html>
