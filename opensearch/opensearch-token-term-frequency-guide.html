@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><style id="qw-theme">:root {
+  --color-bg: #f2f1f4;
+  --color-text: #352f3d;
+  --color-navbar-bg: #eae8ed;
+  --color-bg-chat-view: #fcfcfd;
+  --color-bg-secondary: #fff;
+  --color-bg-tertiary: #eae8ed;
+  --color-bg-hover: #dcdadf;
+  --color-surface: #eae8ed;
+  --color-surface-hover: #dcdadf;
+  --color-surface-active: #c1bec6;
+  --color-border: #c1bec6;
+  --color-border-light: #dcdadf;
+  --color-border-strong: #c1bec6;
+  --color-primary: #4200db;
+  --color-primary-dark: #35009e;
+  --color-primary-light: #8575ff;
+  --color-primary-bg: #e8e6ff;
+  --color-primary-hover-border: #35009e;
+  --color-nav-icon-active: #4200db;
+  --color-nav-hover-border: #4200db;
+  --color-primary-alpha-3: color-mix(in srgb, #4200db 3%, transparent);
+  --color-primary-alpha-5: color-mix(in srgb, #4200db 5%, transparent);
+  --color-primary-alpha-8: color-mix(in srgb, #4200db 8%, transparent);
+  --color-primary-alpha-12: color-mix(in srgb, #4200db 12%, transparent);
+  --color-primary-alpha-15: color-mix(in srgb, #4200db 15%, transparent);
+  --color-primary-alpha-20: color-mix(in srgb, #4200db 20%, transparent);
+  --color-primary-alpha-25: color-mix(in srgb, #4200db 25%, transparent);
+  --color-primary-alpha-30: color-mix(in srgb, #4200db 30%, transparent);
+  --color-primary-alpha-40: color-mix(in srgb, #4200db 40%, transparent);
+  --color-primary-alpha-50: color-mix(in srgb, #4200db 50%, transparent);
+  --color-primary-alpha-60: color-mix(in srgb, #4200db 60%, transparent);
+  --color-primary-subtle: color-mix(in srgb, #4200db 18%, transparent);
+  --color-primary-border: #8575ff;
+  --color-focus-ring: color-mix(in srgb, #4200db 50%, transparent);
+  --color-sidebar-hover: color-mix(in srgb, #4200db 12%, transparent);
+  --block-hover-outline: 1px dashed color-mix(in srgb, #4200db 50%, transparent);
+  --block-selected-outline: 1px solid #8575ff;
+  --block-selection-outline-offset: 2px;
+  --block-selected-halo: 0 0 8px color-mix(in srgb, #4200db 40%, transparent);
+  --color-accent: #4200db;
+  --color-accent-foreground: #4200db;
+  --color-accent-dark: #35009e;
+  --color-accent-light: #e8e6ff;
+  --color-accent-inverse: #fff;
+  --color-link: #4200db;
+  --color-primary-gradient-end: #e8e6ff;
+  --color-primary-bg-solid: #eae8ed;
+  --color-user-bubble: #f3f3f7;
+  --color-user-bubble-text: #352f3d;
+  --color-text-secondary: #5e5966;
+  --color-text-tertiary: #7a7582;
+  --color-text-muted: #938f9b;
+  --color-text-on-primary: #f2f1f4;
+  --color-success: #00802f;
+  --color-success-dark: #00471e;
+  --color-success-light: #d9ffd6;
+  --color-success-hover: #005c26;
+  --color-success-bg: #e6f4eb;
+  --color-success-border: #c4dccb;
+  --color-success-foreground: #00802f;
+  --color-success-dark-foreground: #00471e;
+  --color-success-text: #00471e;
+  --color-error: #db0000;
+  --color-error-dark: #700000;
+  --color-error-light: #ffe0e0;
+  --color-error-hover: #ffe0e0;
+  --color-error-bg: #fbe9ea;
+  --color-error-border: #eecbcd;
+  --color-error-active-border: #db0000;
+  --color-error-foreground: #db0000;
+  --color-error-dark-foreground: #700000;
+  --color-error-inverse: #fff;
+  --color-error-text: #700000;
+  --color-warning: #f2b100;
+  --color-warning-dark: #573a00;
+  --color-warning-light: #fffbbd;
+  --color-warning-hover: #db9200;
+  --color-warning-bg: #fdf6e4;
+  --color-warning-border: #f5dda6;
+  --color-warning-foreground: #f2b100;
+  --color-warning-dark-foreground: #573a00;
+  --color-warning-inverse: #573a00;
+  --color-surface-warning: #fffbbd;
+  --color-text-warning: #573a00;
+  --color-info: #006ce0;
+  --color-info-dark: #002a66;
+  --color-info-light: #d1f1ff;
+  --color-info-hover: #003b8f;
+  --color-info-bg: #e6f0fb;
+  --color-info-border: #c0d5ec;
+  --color-info-foreground: #006ce0;
+  --color-info-dark-foreground: #002a66;
+  --color-info-inverse: #fff;
+  --color-overlay: #dcdadf80;
+  --color-shadow: #352f3d40;
+  --color-hover: #352f3d0d;
+  --color-tooltip-bg: #eae8ed;
+  --color-tooltip-text: #352f3d;
+  --color-voice-purple: #8575ff;
+  --color-voice-purple-dark: #4200db;
+  --color-voice-purple-light: #8575ff;
+  --color-voice-red: #db0000;
+  --color-voice-red-dark: #700000;
+  --color-voice-amber: #f2b100;
+  --color-voice-purple-glow: #4200db66;
+  --color-voice-red-glow: #db000066;
+  --font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Monaco", "Menlo", "Consolas", monospace;
+  --text-2xs: .5625rem;
+  --text-xs: .625rem;
+  --text-sm: .6875rem;
+  --text-base: .75rem;
+  --text-md: .8125rem;
+  --text-lg: .875rem;
+  --text-xl: 1rem;
+  --text-2xl: 1.125rem;
+  --text-3xl: 1.25rem;
+  --text-4xl: 1.5rem;
+  --text-5xl: 2rem;
+  --spacing-1: calc(.25rem * 1);
+  --spacing-1-5: calc(.25rem * 1.5);
+  --spacing-2: calc(.25rem * 2);
+  --spacing-3: calc(.25rem * 3);
+  --spacing-4: calc(.25rem * 4);
+  --spacing-5: calc(.25rem * 5);
+  --spacing-6: calc(.25rem * 6);
+  --spacing-7: calc(.25rem * 7);
+  --spacing-8: calc(.25rem * 8);
+  --spacing-9: calc(.25rem * 9);
+  --spacing-10: calc(.25rem * 10);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-card: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 8px;
+  --shadow-sm: 0 1px 2px #352f3d0f;
+  --shadow-md: 0 4px 12px #352f3d1a;
+  --color-success-bg-solid: #d9ffd6;
+  --color-error-bg-solid: #ffe0e0;
+  --color-error-border-solid: #ffe0e0;
+  --color-warning-bg-solid: #fffbbd;
+  --color-warning-text: #573a00;
+  --color-info-bg-solid: #d1f1ff;
+  --color-info-bg-solid-alt: #d1f1ff;
+  --color-info-text: #002a66;
+  --color-info-text-alt: #002a66;
+  --color-emerald: #367c53;
+  --color-teal: #0c9aa7;
+  --color-code-bg: #eae8ed;
+  --color-code-header-bg: #dcdadf;
+  --color-code-text: #352f3d;
+  --color-code-border: #c1bec6;
+  --color-code-muted: #5e5966;
+  --color-inline-code-bg: #eae8ed;
+  --color-inline-code-text: #352f3d;
+  --color-inline-code-border: #c1bec6;
+  --color-scrollbar-thumb: #c1bec6;
+  --color-scrollbar-track: transparent;
+  --color-graph-node-text: #352f3d;
+  --color-graph-node-text-dim: #938f9b;
+  --color-graph-edge-default: #938f9b;
+  --color-graph-edge-cross: #d08025;
+  --color-graph-edge-text: #5e5966;
+  --color-graph-edge-stroke: #f2f1f4;
+  --color-graph-highlight-bg: #ff6b6b;
+  --color-graph-highlight-border: #e74c3c;
+  --color-graph-search-bg: gold;
+  --color-graph-search-border: orange;
+  --color-graph-focus-border: #c0392b;
+  --color-graph-external-border: #938f9b;
+  --color-graph-cat-file: #3878b0;
+  --color-graph-cat-folder: #5e5966;
+  --color-graph-cat-file-aggregate: #2d6a9f;
+  --color-graph-cat-class: #7138cc;
+  --color-graph-cat-function: #367c53;
+  --color-graph-cat-method: #0c9aa7;
+  --color-graph-cat-variable: #d08025;
+  --color-graph-cat-import: #b06a1a;
+  --color-graph-cat-module: #5e35a8;
+  --color-graph-cat-concept: #933;
+  --color-graph-cat-person: #c44d4d;
+  --color-graph-cat-org: #0c9aa7;
+  --color-graph-cat-organization: #0c9aa7;
+  --color-graph-cat-product: #8e47ff;
+  --color-graph-cat-metric: #c44d78;
+  --color-graph-cat-location: #34495e;
+  --color-graph-cat-date: #b34d8a;
+  --color-graph-cat-code: #3878b0;
+  --color-graph-cat-doc: #5e5966;
+  --color-graph-cat-url: #367c53;
+  --color-graph-cat-email: #5e35a8;
+  --color-graph-cat-unknown: #938f9b;
+  --color-graph-rel-contains: #938f9b;
+  --color-graph-rel-extends: #7138cc;
+  --color-graph-rel-implements: #3878b0;
+  --color-graph-rel-imports: #d08025;
+  --color-graph-rel-uses: #367c53;
+  --color-graph-rel-calls: #367c53;
+  --color-graph-rel-references: #d08025;
+  --color-graph-rel-related-to: #938f9b;
+  --color-graph-rel-works-on: #933;
+  --color-graph-rel-owns: #0c9aa7;
+  --color-graph-rel-depends-on: #b06a1a;
+  --color-graph-rel-parent-of: #938f9b;
+  --qs-content: #fff;
+  --qs-main: #fff;
+  --qs-primary-foreground: #131920;
+  --qs-secondary-foreground: #656871;
+  --qs-tertiary-foreground: #938f9b;
+  --qs-placeholder-foreground: #8c8c94;
+  --qs-divider: #dedee3;
+  --qs-default-border: #8c8c94;
+  --qs-neutral-soft: #b4b4bb;
+  --qs-neutral-gray-50: #eae8ed;
+  --qs-tertiary-background: #eae8ed;
+  --qs-action-hover: #f3f3f7;
+  --qs-primary-default: #4200db;
+  --qs-primary-dark: #35009e;
+  --qs-primary-light: #e8e6ff;
+  --qs-success-default: #00802f;
+  --qs-error-default: #db0000;
+  --qs-font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --safe-top: 0px;
+  --safe-bottom: 0px;
+  --safe-left: 0px;
+  --safe-right: 0px;
+  --qs-font-family: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --qs-font-base-letter-spacing: .15px;
+  --qs-shadow-sm: 0 0 2px 0 #00000029, 0 0 4px 0 #00000029;
+  --qs-shadow-md: 0 0 2px 0 #00000029, 0 2px 8px 1px #00000029;
+  --qs-shadow-lg: 0 4px 16px 4px #00000029, 0 2px 6px 1px #00000029;
+  --qs-shadow-xl: 0 4px 8px 2px #00000029, 0 6px 20px 4px #00000029;
+  --qs-width-modal-sm: 384px;
+  --qs-width-modal-md: 600px;
+  --qs-width-modal-lg: 1136px;
+  --qs-grid-gap: 16px;
+  --qs-grid-gap-xl: 24px;
+  --qs-primary-medium: #8575ff;
+  --qs-primary-inverse: #fff;
+  --qs-neutral-lightest: #f9f9fb;
+  --qs-neutral-light: #f3f3f7;
+  --qs-neutral-default: #dedee3;
+  --qs-neutral-medium: #8c8c94;
+  --qs-neutral-deep: #656871;
+  --qs-neutral-dark: #333843;
+  --qs-neutral-strong: #131920;
+  --qs-neutral-white: #fff;
+  --qs-neutral-black: #000;
+  --qs-success-medium: #005c26;
+  --qs-success-dark: #00471e;
+  --qs-success-light: #d9ffd6;
+  --qs-success-inverse: #fff;
+  --qs-info-default: #006ce0;
+  --qs-info-medium: #003b8f;
+  --qs-info-dark: #002a66;
+  --qs-info-light: #d1f1ff;
+  --qs-info-inverse: #fff;
+  --qs-warning-default: #f2b100;
+  --qs-warning-medium: #db9200;
+  --qs-warning-dark: #573a00;
+  --qs-warning-light: #fffbbd;
+  --qs-warning-inverse: #573a00;
+  --qs-warning-experimental: #f2b100;
+  --qs-warning-experimental-light: #fffbbd;
+  --qs-warning-experimental-light-foreground: #fffbbd;
+  --qs-error-medium: #900;
+  --qs-error-dark: #700000;
+  --qs-error-light: #ffe0e0;
+  --qs-error-inverse: #fff;
+  --qs-connection-default: #db3300;
+  --qs-connection-soft: #ff997a;
+  --qs-connection-light: #ffe0d6;
+  --qs-connection-dark: #661800;
+  --qs-automation-default: #b3008f;
+  --qs-automation-medium: #d600ba;
+  --qs-automation-soft: #ff94f1;
+  --qs-automation-light: #ffe0fb;
+  --qs-automation-dark: #660052;
+  --qs-insight-default: #a000b8;
+  --qs-insight-soft: #f299ff;
+  --qs-insight-light: #fce6ff;
+  --qs-insight-dark: #590066;
+  --qs-visualization-default: #7300e5;
+  --qs-visualization-soft: #d4a8ff;
+  --qs-visualization-light: #f2e5ff;
+  --qs-visualization-dark: #45008a;
+  --qs-spice: #ff9800;
+  --qs-coachmark: #006ce0;
+  --qs-brand: #fff;
+  --qs-brand-foreground: #131920;
+  --qs-brand-navbar: #131920;
+  --qs-brand-navbar-foreground: #fff;
+  --qs-brand-navbar-light: #dedee3;
+  --qs-brand-navbar-dark: #000;
+  --qs-application-navbar: #4200db;
+  --qs-application-navbar-foreground: #fff;
+  --qs-application-navbar-light: #e8e6ff;
+  --qs-application-navbar-dark: #35009e;
+  --qs-dimension: #4200db;
+  --qs-dimension-foreground: #fff;
+  --qs-dimension-experimental: #4200db;
+  --qs-dimension-experimental-foreground: #4200db;
+  --qs-measure: #00802f;
+  --qs-measure-foreground: #fff;
+  --qs-measure-experimental: #f2b100;
+  --qs-measure-experimental-foreground: #f2b100;
+  --qs-content-inverse: #333843;
+  --qs-content-inverse-active: #131920;
+  --qs-secondary: #dedee3;
+  --qs-disabled: #8c8c94;
+  --qs-divider-light: #f3f3f7;
+  --qs-hover-border: #333843;
+  --qs-active-border: #4200db;
+  --qs-disabled-border: #dedee3;
+  --qs-error-border: #ffe0e0;
+  --qs-error-active-border: #db0000;
+  --qs-disabled-foreground: #b4b4bb;
+  --qs-primary-inverse-foreground: #fff;
+  --qs-error-foreground: #db0000;
+  --qs-contrast-foreground: #131920;
+  --qs-main-foreground: #131920;
+  --qs-main-secondary-foreground: #656871;
+  --qs-action-disabled: #f3f3f7;
+  --qs-action-active: #e8e6ff;
+  --qs-default-badge: #dedee3;
+  --qs-tag-default: #dedee3;
+  --qs-tag-soft-border: #b4b4bb;
+  --qs-focus-offset: 1px;
+  --qs-toggle-tile-sm: calc(.25rem * 8);
+  --qs-toggle-tile-md: calc(.25rem * 12);
+  --qs-toggle-tile-lg: calc(.25rem * 15);
+  --qs-shadow-pin-right: inset 4px 0 4px -4px #00000029;
+  --qs-shadow-pin-left: inset -4px 0 4px -4px #00000029;
+  --react-pdf-text-layer: 1;
+  --highlight-bg-color: #b400aa;
+  --highlight-selected-bg-color: #006400;
+  --react-pdf-annotation-layer: 1;
+  --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+  --input-focus-border-color: Highlight;
+  --input-focus-outline: 1px solid Canvas;
+  --input-unfocused-border-color: transparent;
+  --input-disabled-border-color: transparent;
+  --input-hover-border-color: black;
+  --link-outline: none;
+  color-scheme: light;
+}
+body { background: var(--color-bg); color: var(--color-text); }
+a { color: var(--color-link, var(--color-primary)); }</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenSearch 查看分词与词频技术指南</title>
+<style>
+  :root {
+    --color-bg: #ffffff;
+    --color-bg-secondary: #f4f5f7;
+    --color-text: #172b4d;
+    --color-text-secondary: #44546f;
+    --color-text-muted: #8993a4;
+    --color-border-light: #ebecf0;
+    --color-border: #dfe1e6;
+    --color-surface: #ffffff;
+    --color-primary: #0052CC;
+    --color-primary-light: #deebff;
+    --color-success: #36b37e;
+    --color-success-bg: #e3fcef;
+    --color-error: #de350b;
+    --color-error-bg: #ffebe6;
+    --color-warning: #ff991f;
+    --color-warning-bg: #fffae6;
+    --color-info: #0065ff;
+    --color-info-bg: #e6f0ff;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+    --font-mono: 'SF Mono', Consolas, 'Noto Sans Mono', monospace;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-bg);
+    line-height: 1.7;
+    padding: 40px 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--color-text);
+  }
+
+  .subtitle {
+    color: var(--color-text-secondary);
+    font-size: 15px;
+    margin-bottom: 32px;
+  }
+
+  h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 48px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--color-primary);
+    color: var(--color-text);
+  }
+
+  h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 32px;
+    margin-bottom: 12px;
+    color: var(--color-text);
+  }
+
+  h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    color: var(--color-text-secondary);
+  }
+
+  p { margin-bottom: 14px; font-size: 15px; }
+
+  a { color: var(--color-primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Table of contents */
+  .toc {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+  .toc h3 { margin-top: 0; margin-bottom: 12px; font-size: 15px; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin-bottom: 6px; font-size: 14px; }
+  .toc li a { color: var(--color-primary); }
+
+  /* Comparison table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 16px 0 24px;
+  }
+  th {
+    text-align: left;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--color-border);
+    background: var(--color-bg-secondary);
+  }
+  td {
+    padding: 10px 12px;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border-light);
+    vertical-align: top;
+  }
+  tr:hover td { background: var(--color-bg-secondary); }
+
+  /* Code blocks */
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 12px 0 20px;
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: var(--color-bg-secondary);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    color: var(--color-primary);
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  /* Syntax highlights */
+  .json-key { color: #7dd3fc; }
+  .json-string { color: #86efac; }
+  .json-number { color: #fbbf24; }
+  .json-comment { color: #64748b; font-style: italic; }
+  .http-method { color: #a78bfa; font-weight: bold; }
+
+  /* Alert/tip boxes */
+  .alert {
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .alert-warning {
+    background: var(--color-warning-bg);
+    border-left: 4px solid var(--color-warning);
+  }
+  .alert-info {
+    background: var(--color-info-bg);
+    border-left: 4px solid var(--color-info);
+  }
+  .alert-success {
+    background: var(--color-success-bg);
+    border-left: 4px solid var(--color-success);
+  }
+  .alert-error {
+    background: var(--color-error-bg);
+    border-left: 4px solid var(--color-error);
+  }
+  .alert strong { display: block; margin-bottom: 4px; }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    margin-right: 6px;
+  }
+  .badge-api { background: var(--color-primary-light); color: var(--color-primary); }
+  .badge-tip { background: var(--color-success-bg); color: #006644; }
+  .badge-warn { background: var(--color-warning-bg); color: #7a4100; }
+
+  /* Section cards */
+  .method-card {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin: 20px 0;
+    background: var(--color-surface);
+  }
+  .method-card h3 {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .method-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border-light);
+    color: var(--color-text-muted);
+    font-size: 13px;
+  }
+  .footer a { color: var(--color-text-secondary); }
+
+  /* Quick-reference card */
+  .quick-ref {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .quick-ref-item {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+  }
+  .quick-ref-item .label { font-size: 12px; color: var(--color-text-muted); margin-bottom: 4px; }
+  .quick-ref-item .value { font-size: 14px; font-weight: 500; font-family: var(--font-mono); }
+
+  @media (max-width: 640px) {
+    body { padding: 24px 16px; }
+    h1 { font-size: 24px; }
+    .quick-ref { grid-template-columns: 1fr; }
+    pre { padding: 12px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>OpenSearch 查看分词与词频技术指南</h1>
+<p class="subtitle">三种方法全面掌握 Token 分析、Term Frequency 与文档频率统计 — 含实测案例与踩坑记录</p>
+
+<nav class="toc">
+  <h3>目录</h3>
+  <ol>
+    <li><a href="#overview">概述与方法对比</a></li>
+    <li><a href="#method1">方法一：_analyze API — 测试分词效果</a></li>
+    <li><a href="#method2">方法二：Term Vectors API — 单文档精确词频</a></li>
+    <li><a href="#method3">方法三：Terms Aggregation — 全索引词分布统计</a></li>
+    <li><a href="#interpret">如何解读 Term Vectors 返回结果</a></li>
+    <li><a href="#pitfalls">常见坑总结</a></li>
+    <li><a href="#refs">参考文档</a></li>
+  </ol>
+</nav>
+
+<!-- Section 1: Overview -->
+<h2 id="overview">1. 概述与方法对比</h2>
+
+<p>OpenSearch 没有单一的"查词频" API，需要根据使用场景选择合适的方法：<strong>测试分词效果</strong>、<strong>查看单文档词频</strong>、还是<strong>统计全索引词分布</strong>。下表总结了三种方法的核心差异：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>方法</th>
+      <th>接口</th>
+      <th>能否直接得到词频</th>
+      <th>适用场景</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>_analyze</code> API</td>
+      <td><code>POST /{index}/_analyze</code></td>
+      <td>否（需自己数 token 重复次数）</td>
+      <td>测试分词效果、验证 analyzer 配置</td>
+    </tr>
+    <tr>
+      <td>Term Vectors API</td>
+      <td><code>GET/POST /{index}/_termvectors</code></td>
+      <td><strong>是</strong>（直接返回 <code>term_freq</code>）</td>
+      <td>单个文档的精确词频与位置信息</td>
+    </tr>
+    <tr>
+      <td>Terms Aggregation</td>
+      <td><code>POST /{index}/_search</code> 配合 <code>aggs</code></td>
+      <td>返回 <code>doc_count</code>（文档频率）</td>
+      <td>全索引范围的高频词统计</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Section 2: _analyze -->
+<h2 id="method1">2. 方法一：_analyze API — 测试分词效果</h2>
+
+<div class="method-card">
+  <h3><span class="method-num">1</span> _analyze API</h3>
+  
+  <p>不依赖已有文档，直接测试一段文本会被拆成哪些 token。<strong>不返回词频统计</strong>，如果同一个词出现多次，需要自己统计 token 数组中的重复项。</p>
+
+  <h4>用法 1：指定 analyzer 测试任意文本</h4>
+  <pre><code><span class="http-method">POST</span> /{index}/_analyze
+{
+  <span class="json-key">"analyzer"</span>: <span class="json-string">"ik_smart"</span>,
+  <span class="json-key">"text"</span>: <span class="json-string">"OpenSearch向量搜索性能优化，向量搜索需要合理配置分片"</span>
+}</code></pre>
+
+  <p>返回结果（节选）：</p>
+  <pre><code>{
+  <span class="json-key">"tokens"</span>: [
+    {<span class="json-key">"token"</span>: <span class="json-string">"opensearch"</span>, <span class="json-key">"position"</span>: <span class="json-number">0</span>, ...},
+    {<span class="json-key">"token"</span>: <span class="json-string">"向量"</span>, <span class="json-key">"position"</span>: <span class="json-number">1</span>, ...},
+    {<span class="json-key">"token"</span>: <span class="json-string">"搜索"</span>, <span class="json-key">"position"</span>: <span class="json-number">2</span>, ...},
+    ...
+    {<span class="json-key">"token"</span>: <span class="json-string">"向量"</span>, <span class="json-key">"position"</span>: <span class="json-number">5</span>, ...},  <span class="json-comment">// "向量" 第 2 次出现</span>
+    {<span class="json-key">"token"</span>: <span class="json-string">"搜索"</span>, <span class="json-key">"position"</span>: <span class="json-number">6</span>, ...}   <span class="json-comment">// "搜索" 第 2 次出现</span>
+  ]
+}</code></pre>
+  <p>"向量"、"搜索" 各出现 2 次（position 1/5、2/6），手动统计即可得到词频。</p>
+
+  <h4>用法 2：指定 field，使用该字段 mapping 中配置的分析器</h4>
+  <pre><code><span class="http-method">POST</span> /{index}/_analyze
+{
+  <span class="json-key">"field"</span>: <span class="json-string">"content"</span>,
+  <span class="json-key">"text"</span>: <span class="json-string">"我们完成了Series A融资，融资金额创新高"</span>
+}</code></pre>
+  <p>比手动指定 <code>analyzer</code> 更贴近真实索引行为——会自动读取该字段 mapping 里配置的 analyzer（如自定义的 <code>ik_english_mixed</code>）。</p>
+
+  <div class="alert alert-info">
+    <strong>💡 使用建议</strong>
+    <code>_analyze</code> 适合开发调试阶段验证分词效果（如中文 IK 分词器的 smart/max_word 模式对比），不适合生产环境的词频统计。它不写入索引，也不影响已有数据。
+  </div>
+</div>
+
+<!-- Section 3: Term Vectors -->
+<h2 id="method2">3. 方法二：Term Vectors API — 单文档精确词频</h2>
+
+<div class="method-card">
+  <h3><span class="method-num">2</span> Term Vectors API</h3>
+
+  <p>直接返回 <code>term_freq</code> 字段，是获取<strong>单文档精确词频</strong>的最佳方法。支持查看词在文档中的出现位置（position）和字符偏移（offset）。</p>
+
+  <h4>基本用法：查询已索引文档</h4>
+  <pre><code><span class="http-method">GET</span> /{index}/_termvectors/{doc_id}
+{
+  <span class="json-key">"fields"</span>: [<span class="json-string">"text"</span>],
+  <span class="json-key">"term_statistics"</span>: <span class="json-number">true</span>,
+  <span class="json-key">"positions"</span>: <span class="json-number">true</span>,
+  <span class="json-key">"offsets"</span>: <span class="json-number">true</span>
+}</code></pre>
+
+  <div class="alert alert-error">
+    <strong>⚠️ 关键限制</strong>
+    如果字段 mapping 中<strong>没有开启 <code>term_vector</code> 存储</strong>，对已索引的真实文档按 <code>_id</code> 查询会返回空结果（<code>"term_vectors": {}</code>），即使文档 <code>found: true</code>。这个行为不报错，容易误以为文档没有内容。
+  </div>
+
+  <h4>绕过方案：Artificial Document（实时生成，不依赖 mapping 配置）</h4>
+  <p>不传 <code>_id</code>，用 <code>doc</code> 字段提供虚构文档内容，OpenSearch 会实时分词并计算词频：</p>
+  <pre><code><span class="http-method">POST</span> /{index}/_termvectors
+{
+  <span class="json-key">"doc"</span>: {
+    <span class="json-key">"content"</span>: <span class="json-string">"我们完成了Series A融资，融资金额创新高"</span>
+  },
+  <span class="json-key">"field_statistics"</span>: <span class="json-number">true</span>,
+  <span class="json-key">"fields"</span>: [<span class="json-string">"content"</span>],
+  <span class="json-key">"offsets"</span>: <span class="json-number">true</span>,
+  <span class="json-key">"positions"</span>: <span class="json-number">true</span>,
+  <span class="json-key">"term_statistics"</span>: <span class="json-number">true</span>
+}</code></pre>
+
+  <p>返回结果（节选）：</p>
+  <pre><code>{
+  <span class="json-key">"term_vectors"</span>: {
+    <span class="json-key">"content"</span>: {
+      <span class="json-key">"field_statistics"</span>: {<span class="json-key">"sum_doc_freq"</span>: <span class="json-number">0</span>, <span class="json-key">"doc_count"</span>: <span class="json-number">0</span>, <span class="json-key">"sum_ttf"</span>: <span class="json-number">0</span>},
+      <span class="json-key">"terms"</span>: {
+        <span class="json-key">"融资"</span>: {
+          <span class="json-key">"term_freq"</span>: <span class="json-number">2</span>,
+          <span class="json-key">"tokens"</span>: [
+            {<span class="json-key">"position"</span>: <span class="json-number">4</span>, ...},
+            {<span class="json-key">"position"</span>: <span class="json-number">5</span>, ...}
+          ]
+        },
+        <span class="json-key">"我们"</span>: {<span class="json-key">"term_freq"</span>: <span class="json-number">1</span>, ...},
+        ...
+      }
+    }
+  }
+}</code></pre>
+  <p><code>term_freq</code> 直接给出词频，"融资" = 2 次。</p>
+
+  <h4>正确方案（生产环境）：在 mapping 中开启 term_vector 存储</h4>
+  <p>要让<strong>已索引的真实文档</strong>支持直接查询词频（无需 artificial document），需要在字段 mapping 加上 <code>term_vector</code> 参数：</p>
+  <pre><code><span class="http-method">PUT</span> /my-index
+{
+  <span class="json-key">"mappings"</span>: {
+    <span class="json-key">"properties"</span>: {
+      <span class="json-key">"message"</span>: {
+        <span class="json-key">"type"</span>: <span class="json-string">"text"</span>,
+        <span class="json-key">"term_vector"</span>: <span class="json-string">"with_positions_offsets"</span>,
+        <span class="json-key">"fields"</span>: {
+          <span class="json-key">"keyword"</span>: {<span class="json-key">"type"</span>: <span class="json-string">"keyword"</span>, <span class="json-key">"ignore_above"</span>: <span class="json-number">256</span>}
+        }
+      }
+    }
+  }
+}</code></pre>
+
+  <p><code>term_vector</code> 支持以下值：</p>
+  <table>
+    <thead><tr><th>值</th><th>存储内容</th></tr></thead>
+    <tbody>
+      <tr><td><code>no</code>（默认）</td><td>不存储 term vector</td></tr>
+      <tr><td><code>yes</code></td><td>仅存储词频</td></tr>
+      <tr><td><code>with_positions</code></td><td>词频 + 位置</td></tr>
+      <tr><td><code>with_offsets</code></td><td>词频 + 字符偏移</td></tr>
+      <tr><td><code>with_positions_offsets</code></td><td>词频 + 位置 + 偏移（推荐）</td></tr>
+      <tr><td><code>with_positions_offsets_payloads</code></td><td>全部信息</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-warning">
+    <strong>⚠️ 注意事项</strong>
+    <ul style="margin: 8px 0 0 20px; font-size: 14px;">
+      <li><code>mapping</code> 修改（含 <code>_index_template</code>）<strong>只影响未来新建的索引</strong>，OpenSearch 不允许修改已有索引的 <code>term_vector</code> 配置</li>
+      <li>已有索引要支持此能力，需要 reindex 到新 mapping 的索引（成本较高，涉及 alias 切换）</li>
+      <li><code>term_vector</code> 存储会增加索引体积（通常几个百分点到 30%，视字段大小），非必要不建议全局开启</li>
+      <li>对于使用 ISM rollover 的时序索引，修改 <code>_index_template</code> 后需要等待下一次 rollover（通常次日）新索引才会生效</li>
+    </ul>
+  </div>
+
+  <h4>Filter 参数：精确控制返回的 Term</h4>
+  <p>Term Vectors API 支持 <code>filter</code> 对象来过滤返回的 token：</p>
+  <pre><code><span class="http-method">POST</span> /{index}/_termvectors/{doc_id}
+{
+  <span class="json-key">"fields"</span>: [<span class="json-string">"content"</span>],
+  <span class="json-key">"term_statistics"</span>: <span class="json-number">true</span>,
+  <span class="json-key">"filter"</span>: {
+    <span class="json-key">"max_num_terms"</span>: <span class="json-number">10</span>,
+    <span class="json-key">"min_term_freq"</span>: <span class="json-number">2</span>,
+    <span class="json-key">"min_word_length"</span>: <span class="json-number">2</span>
+  }
+}</code></pre>
+  <table>
+    <thead><tr><th>过滤参数</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><code>max_num_terms</code></td><td>最多返回多少个 term</td></tr>
+      <tr><td><code>min_term_freq</code></td><td>最低文档内词频</td></tr>
+      <tr><td><code>max_term_freq</code></td><td>最高文档内词频</td></tr>
+      <tr><td><code>min_doc_freq</code></td><td>最低文档频率（全索引）</td></tr>
+      <tr><td><code>max_doc_freq</code></td><td>最高文档频率（全索引）</td></tr>
+      <tr><td><code>min_word_length</code></td><td>最小词长度</td></tr>
+      <tr><td><code>max_word_length</code></td><td>最大词长度</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Section 4: Terms Aggregation -->
+<h2 id="method3">4. 方法三：Terms Aggregation — 全索引词分布统计</h2>
+
+<div class="method-card">
+  <h3><span class="method-num">3</span> Terms Aggregation</h3>
+
+  <p>统计整个索引范围内某个字段的<strong>文档频率</strong>分布（<code>doc_count</code> = 包含该词的文档数，不是词在单文档内的出现次数）。</p>
+
+  <h4>前提：字段必须可聚合</h4>
+  <p><code>text</code> 类型字段默认<strong>不支持聚合</strong>，直接使用会报错：</p>
+  <pre><code><span class="json-comment">// 错误信息：</span>
+Text fields are not optimised for operations that require per-document 
+field data like aggregations and sorting, so these operations are 
+disabled by default. Please use a keyword field instead.</code></pre>
+
+  <p><strong>两种解决方式：</strong></p>
+  <table>
+    <thead><tr><th>方式</th><th>做法</th><th>适用场景</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-tip">推荐</span>用 <code>.keyword</code> 子字段</td>
+        <td>直接聚合 <code>field_name.keyword</code></td>
+        <td>mapping 已配置多字段（大部分默认 mapping 都有）</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-warn">仅测试</span>临时开 <code>fielddata</code></td>
+        <td><code>PUT /{index}/_mapping</code> 设置 <code>"fielddata": true</code></td>
+        <td>临时调试，用完应关闭（占用大量内存）</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>基本用法：对 keyword 子字段聚合</h4>
+  <pre><code><span class="http-method">POST</span> /{index}/_search
+{
+  <span class="json-key">"size"</span>: <span class="json-number">0</span>,
+  <span class="json-key">"aggs"</span>: {
+    <span class="json-key">"top_terms"</span>: {
+      <span class="json-key">"terms"</span>: {
+        <span class="json-key">"field"</span>: <span class="json-string">"payload.category.keyword"</span>,
+        <span class="json-key">"size"</span>: <span class="json-number">15</span>
+      }
+    }
+  }
+}</code></pre>
+
+  <p>返回结果示例：</p>
+  <pre><code>{
+  <span class="json-key">"aggregations"</span>: {
+    <span class="json-key">"top_terms"</span>: {
+      <span class="json-key">"buckets"</span>: [
+        {<span class="json-key">"key"</span>: <span class="json-string">"short_term"</span>, <span class="json-key">"doc_count"</span>: <span class="json-number">314</span>},
+        {<span class="json-key">"key"</span>: <span class="json-string">"project"</span>, <span class="json-key">"doc_count"</span>: <span class="json-number">266</span>},
+        {<span class="json-key">"key"</span>: <span class="json-string">"experience"</span>, <span class="json-key">"doc_count"</span>: <span class="json-number">192</span>},
+        {<span class="json-key">"key"</span>: <span class="json-string">"environment"</span>, <span class="json-key">"doc_count"</span>: <span class="json-number">109</span>},
+        {<span class="json-key">"key"</span>: <span class="json-string">"decision"</span>, <span class="json-key">"doc_count"</span>: <span class="json-number">42</span>},
+        {<span class="json-key">"key"</span>: <span class="json-string">"preference"</span>, <span class="json-key">"doc_count"</span>: <span class="json-number">24</span>}
+      ]
+    }
+  }
+}</code></pre>
+
+  <div class="alert alert-info">
+    <strong>💡 理解 doc_count vs term_freq</strong>
+    <code>doc_count</code> 是"有多少文档包含这个词"（文档频率 / Document Frequency），<strong>不是</strong>"这个词在所有文档里总共出现了多少次"（总词频 / Total Term Frequency）。如果字段本身是整段文本（如 <code>.keyword</code> 未分词），则 <code>doc_count</code> = 该精确值出现的文档数。
+  </div>
+
+  <h4>高级用法：配合 query 筛选范围</h4>
+  <pre><code><span class="http-method">POST</span> /{index}/_search
+{
+  <span class="json-key">"size"</span>: <span class="json-number">0</span>,
+  <span class="json-key">"query"</span>: {
+    <span class="json-key">"range"</span>: {
+      <span class="json-key">"@timestamp"</span>: {
+        <span class="json-key">"gte"</span>: <span class="json-string">"2026-07-01"</span>,
+        <span class="json-key">"lt"</span>: <span class="json-string">"2026-07-25"</span>
+      }
+    }
+  },
+  <span class="json-key">"aggs"</span>: {
+    <span class="json-key">"top_terms"</span>: {
+      <span class="json-key">"terms"</span>: {
+        <span class="json-key">"field"</span>: <span class="json-string">"action.keyword"</span>,
+        <span class="json-key">"size"</span>: <span class="json-number">20</span>,
+        <span class="json-key">"order"</span>: {<span class="json-key">"_count"</span>: <span class="json-string">"desc"</span>}
+      }
+    }
+  }
+}</code></pre>
+</div>
+
+<!-- Section 5: Interpret -->
+<h2 id="interpret">5. 如何解读 Term Vectors 返回结果</h2>
+
+<p>以 VPC Flow Logs 的实测返回为例：</p>
+<pre><code>{
+  <span class="json-key">"_index"</span>: <span class="json-string">"vpc-logs-2026.07.23-000259"</span>,
+  <span class="json-key">"_id"</span>: <span class="json-string">"E3wMkp8BQCva11W17tSU"</span>,
+  <span class="json-key">"found"</span>: <span class="json-number">true</span>,
+  <span class="json-key">"term_vectors"</span>: {
+    <span class="json-key">"message"</span>: {
+      <span class="json-key">"field_statistics"</span>: {
+        <span class="json-key">"sum_doc_freq"</span>: <span class="json-number">17521511</span>,
+        <span class="json-key">"doc_count"</span>: <span class="json-number">703983</span>,
+        <span class="json-key">"sum_ttf"</span>: <span class="json-number">18781232</span>
+      },
+      <span class="json-key">"terms"</span>: {
+        <span class="json-key">"10.192.22.96"</span>: {
+          <span class="json-key">"term_freq"</span>: <span class="json-number">2</span>,
+          <span class="json-key">"tokens"</span>: [
+            {<span class="json-key">"position"</span>: <span class="json-number">5</span>, <span class="json-key">"start_offset"</span>: <span class="json-number">50</span>, <span class="json-key">"end_offset"</span>: <span class="json-number">62</span>},
+            {<span class="json-key">"position"</span>: <span class="json-number">24</span>, <span class="json-key">"start_offset"</span>: <span class="json-number">202</span>, <span class="json-key">"end_offset"</span>: <span class="json-number">214</span>}
+          ]
+        },
+        <span class="json-key">"accept"</span>: {<span class="json-key">"term_freq"</span>: <span class="json-number">1</span>, <span class="json-key">"tokens"</span>: [{<span class="json-key">"position"</span>: <span class="json-number">13</span>, ...}]}
+      }
+    }
+  }
+}</code></pre>
+
+<h3>field_statistics（全索引范围统计）</h3>
+<table>
+  <thead><tr><th>字段</th><th>含义</th><th>示例值解释</th></tr></thead>
+  <tbody>
+    <tr><td><code>doc_count</code></td><td>索引里有多少篇文档该字段有值</td><td>70.4 万篇文档含 <code>message</code> 字段</td></tr>
+    <tr><td><code>sum_ttf</code></td><td>该字段所有词加起来出现的总次数</td><td>约 1878 万个词元（理解为"这个字段一共有多少个词元"）</td></tr>
+    <tr><td><code>sum_doc_freq</code></td><td>所有不同词各自"出现在多少篇文档里"的加总</td><td>主要用于计算 TF-IDF，日常查词频不用太关注</td></tr>
+  </tbody>
+</table>
+
+<h3>terms（当前这一条文档的词频）</h3>
+<table>
+  <thead><tr><th>字段</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td><code>term_freq</code></td><td>这个词在<strong>这一条文档</strong>里出现了几次</td></tr>
+    <tr><td><code>tokens[].position</code></td><td>分词后的第几个 token（从 0 开始）</td></tr>
+    <tr><td><code>tokens[].start_offset / end_offset</code></td><td>该词在原始文本里的字符起止位置，可用于高亮定位</td></tr>
+    <tr><td><code>doc_freq</code>（需开启 <code>term_statistics</code>）</td><td>全索引有多少文档包含这个词</td></tr>
+    <tr><td><code>ttf</code>（需开启 <code>term_statistics</code>）</td><td>这个词在全索引所有文档里的总出现次数</td></tr>
+  </tbody>
+</table>
+
+<h3>速查：不同问题该看哪个字段</h3>
+<div class="quick-ref">
+  <div class="quick-ref-item">
+    <div class="label">这条文档里某个词出现几次</div>
+    <div class="value">terms.&lt;词&gt;.term_freq</div>
+  </div>
+  <div class="quick-ref-item">
+    <div class="label">这个字段全索引一共有多少词元</div>
+    <div class="value">field_statistics.sum_ttf</div>
+  </div>
+  <div class="quick-ref-item">
+    <div class="label">全索引有多少文档命中这个字段</div>
+    <div class="value">field_statistics.doc_count</div>
+  </div>
+  <div class="quick-ref-item">
+    <div class="label">某词在全索引所有文档里的总出现次数</div>
+    <div class="value">terms.&lt;词&gt;.ttf（需开启 term_statistics）</div>
+  </div>
+</div>
+
+<!-- Section 6: Pitfalls -->
+<h2 id="pitfalls">6. 常见坑总结</h2>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>问题描述</th><th>原因与解决</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Term Vectors 返回空 <code>{}</code> 但 <code>found: true</code></td>
+      <td>字段 mapping 未开 <code>term_vector</code> 存储。<br><strong>临时方案</strong>：用 artificial document（<code>doc</code> 参数）绕过<br><strong>长期方案</strong>：改 mapping 后 reindex</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><code>_source</code> 里的业务 <code>id</code> ≠ OpenSearch 的 <code>_id</code></td>
+      <td>查询 term vectors 要用 OpenSearch 返回的真实 <code>_id</code>（搜索结果的 <code>_id</code> 字段），不是文档内容里自定义的 <code>id</code> 字段</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Terms Aggregation 报错 "Text fields are not optimised..."</td>
+      <td><code>text</code> 字段不能直接聚合，用 <code>.keyword</code> 子字段或临时开 <code>fielddata</code>（用完记得关闭）</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><code>doc_count</code>（聚合）≠ <code>term_freq</code>（term vectors）</td>
+      <td>前者是文档频率（多少文档包含该词），后者是单文档内词频（出现几次），语义不同</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><code>_index_template</code> 改动不是立即对所有索引生效</td>
+      <td>只影响改动后新建（rollover）的索引。当天已存在的索引不受影响，需要等下一次 rollover（通常次日）</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="alert alert-success">
+  <strong>✅ 生产验证案例</strong>
+  给 <code>vpc_logs_template</code>（VPC Flow Logs 索引模板）的 <code>message</code> 字段加 <code>term_vector: with_positions_offsets</code>，验证结果：
+  <ul style="margin: 8px 0 0 20px; font-size: 14px;">
+    <li><code>vpc-logs-2026.07.22-000258</code>（改动前创建）→ 直接查询返回空 <code>{}</code></li>
+    <li><code>vpc-logs-2026.07.23-000259</code>（改动后 rollover）→ ✅ 正常返回 <code>term_freq</code></li>
+  </ul>
+</div>
+
+<!-- Section 7: References -->
+<h2 id="refs">7. 参考文档</h2>
+
+<table>
+  <thead><tr><th>文档</th><th>链接</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>OpenSearch Term Vectors API</td>
+      <td><a href="https://docs.opensearch.org/latest/api-reference/document-apis/termvector/" target="_blank">docs.opensearch.org/latest/api-reference/document-apis/termvector/</a></td>
+    </tr>
+    <tr>
+      <td>OpenSearch Multi Term Vectors API</td>
+      <td><a href="https://docs.opensearch.org/latest/api-reference/document-apis/mtermvectors/" target="_blank">docs.opensearch.org/latest/api-reference/document-apis/mtermvectors/</a></td>
+    </tr>
+    <tr>
+      <td>OpenSearch Analyze API</td>
+      <td><a href="https://docs.opensearch.org/latest/api-reference/analyze-apis/" target="_blank">docs.opensearch.org/latest/api-reference/analyze-apis/</a></td>
+    </tr>
+    <tr>
+      <td>term_vector Mapping Parameter</td>
+      <td><a href="https://docs.opensearch.org/latest/mappings/mapping-parameters/term-vector/" target="_blank">docs.opensearch.org/latest/mappings/mapping-parameters/term-vector/</a></td>
+    </tr>
+    <tr>
+      <td>Elasticsearch Term Vectors Examples</td>
+      <td><a href="https://www.elastic.co/docs/reference/elasticsearch/rest-apis/term-vectors-examples" target="_blank">elastic.co/docs/reference/elasticsearch/rest-apis/term-vectors-examples</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  <p>📅 更新时间：2026-07-24 &nbsp;|&nbsp; 基于 OpenSearch 2.x / 3.x 版本验证 &nbsp;|&nbsp; 作者：Xiao Huang</p>
+  <p>参考来源：个人实测笔记（VPC Logs / mem0_memories 索引）+ <a href="https://docs.opensearch.org" target="_blank">OpenSearch 官方文档</a></p>
+</div>
+
+
+</body></html>

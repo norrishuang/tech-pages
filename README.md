@@ -32,6 +32,10 @@
 - [Amazon Redshift 上的 Iceberg 物化视图 - 技术深度指南](iceberg/redshift-iceberg-materialized-view-guide.html)
 - [Apache Iceberg Compaction 机制详解](iceberg/Iceberg_Compaction_.html)
 
+### OpenSearch
+
+- [OpenSearch 查看分词与词频技术指南](opensearch/opensearch-token-term-frequency-guide.html)
+
 ## 部署
 
 本仓库通过 GitHub Pages 直接从 `main` 分支发布，无需额外构建步骤。
