@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><style id="qw-theme">:root {
+  --color-bg: #f2f1f4;
+  --color-text: #352f3d;
+  --color-navbar-bg: #eae8ed;
+  --color-bg-chat-view: #fcfcfd;
+  --color-bg-secondary: #fff;
+  --color-bg-tertiary: #eae8ed;
+  --color-bg-hover: #dcdadf;
+  --color-surface: #eae8ed;
+  --color-surface-hover: #dcdadf;
+  --color-surface-active: #c1bec6;
+  --color-border: #c1bec6;
+  --color-border-light: #dcdadf;
+  --color-border-strong: #c1bec6;
+  --color-primary: #4200db;
+  --color-primary-dark: #35009e;
+  --color-primary-light: #8575ff;
+  --color-primary-bg: #e8e6ff;
+  --color-primary-hover-border: #35009e;
+  --color-nav-icon-active: #4200db;
+  --color-nav-hover-border: #4200db;
+  --color-primary-alpha-3: color-mix(in srgb, #4200db 3%, transparent);
+  --color-primary-alpha-5: color-mix(in srgb, #4200db 5%, transparent);
+  --color-primary-alpha-8: color-mix(in srgb, #4200db 8%, transparent);
+  --color-primary-alpha-12: color-mix(in srgb, #4200db 12%, transparent);
+  --color-primary-alpha-15: color-mix(in srgb, #4200db 15%, transparent);
+  --color-primary-alpha-20: color-mix(in srgb, #4200db 20%, transparent);
+  --color-primary-alpha-25: color-mix(in srgb, #4200db 25%, transparent);
+  --color-primary-alpha-30: color-mix(in srgb, #4200db 30%, transparent);
+  --color-primary-alpha-40: color-mix(in srgb, #4200db 40%, transparent);
+  --color-primary-alpha-50: color-mix(in srgb, #4200db 50%, transparent);
+  --color-primary-alpha-60: color-mix(in srgb, #4200db 60%, transparent);
+  --color-primary-subtle: color-mix(in srgb, #4200db 18%, transparent);
+  --color-primary-border: #8575ff;
+  --color-focus-ring: color-mix(in srgb, #4200db 50%, transparent);
+  --color-sidebar-hover: color-mix(in srgb, #4200db 12%, transparent);
+  --block-hover-outline: 1px dashed color-mix(in srgb, #4200db 50%, transparent);
+  --block-selected-outline: 1px solid #8575ff;
+  --block-selection-outline-offset: 2px;
+  --block-selected-halo: 0 0 8px color-mix(in srgb, #4200db 40%, transparent);
+  --color-accent: #4200db;
+  --color-accent-foreground: #4200db;
+  --color-accent-dark: #35009e;
+  --color-accent-light: #e8e6ff;
+  --color-accent-inverse: #fff;
+  --color-link: #4200db;
+  --color-primary-gradient-end: #e8e6ff;
+  --color-primary-bg-solid: #eae8ed;
+  --color-user-bubble: #f3f3f7;
+  --color-user-bubble-text: #352f3d;
+  --color-text-secondary: #5e5966;
+  --color-text-tertiary: #7a7582;
+  --color-text-muted: #938f9b;
+  --color-text-on-primary: #f2f1f4;
+  --color-success: #00802f;
+  --color-success-dark: #00471e;
+  --color-success-light: #d9ffd6;
+  --color-success-hover: #005c26;
+  --color-success-bg: #e6f4eb;
+  --color-success-border: #c4dccb;
+  --color-success-foreground: #00802f;
+  --color-success-dark-foreground: #00471e;
+  --color-success-text: #00471e;
+  --color-error: #db0000;
+  --color-error-dark: #700000;
+  --color-error-light: #ffe0e0;
+  --color-error-hover: #ffe0e0;
+  --color-error-bg: #fbe9ea;
+  --color-error-border: #eecbcd;
+  --color-error-active-border: #db0000;
+  --color-error-foreground: #db0000;
+  --color-error-dark-foreground: #700000;
+  --color-error-inverse: #fff;
+  --color-error-text: #700000;
+  --color-warning: #f2b100;
+  --color-warning-dark: #573a00;
+  --color-warning-light: #fffbbd;
+  --color-warning-hover: #db9200;
+  --color-warning-bg: #fdf6e4;
+  --color-warning-border: #f5dda6;
+  --color-warning-foreground: #f2b100;
+  --color-warning-dark-foreground: #573a00;
+  --color-warning-inverse: #573a00;
+  --color-surface-warning: #fffbbd;
+  --color-text-warning: #573a00;
+  --color-info: #006ce0;
+  --color-info-dark: #002a66;
+  --color-info-light: #d1f1ff;
+  --color-info-hover: #003b8f;
+  --color-info-bg: #e6f0fb;
+  --color-info-border: #c0d5ec;
+  --color-info-foreground: #006ce0;
+  --color-info-dark-foreground: #002a66;
+  --color-info-inverse: #fff;
+  --color-overlay: #dcdadf80;
+  --color-shadow: #352f3d40;
+  --color-hover: #352f3d0d;
+  --color-tooltip-bg: #eae8ed;
+  --color-tooltip-text: #352f3d;
+  --color-voice-purple: #8575ff;
+  --color-voice-purple-dark: #4200db;
+  --color-voice-purple-light: #8575ff;
+  --color-voice-red: #db0000;
+  --color-voice-red-dark: #700000;
+  --color-voice-amber: #f2b100;
+  --color-voice-purple-glow: #4200db66;
+  --color-voice-red-glow: #db000066;
+  --font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Monaco", "Menlo", "Consolas", monospace;
+  --text-2xs: .5625rem;
+  --text-xs: .625rem;
+  --text-sm: .6875rem;
+  --text-base: .75rem;
+  --text-md: .8125rem;
+  --text-lg: .875rem;
+  --text-xl: 1rem;
+  --text-2xl: 1.125rem;
+  --text-3xl: 1.25rem;
+  --text-4xl: 1.5rem;
+  --text-5xl: 2rem;
+  --spacing-1: calc(.25rem * 1);
+  --spacing-1-5: calc(.25rem * 1.5);
+  --spacing-2: calc(.25rem * 2);
+  --spacing-3: calc(.25rem * 3);
+  --spacing-4: calc(.25rem * 4);
+  --spacing-5: calc(.25rem * 5);
+  --spacing-6: calc(.25rem * 6);
+  --spacing-7: calc(.25rem * 7);
+  --spacing-8: calc(.25rem * 8);
+  --spacing-9: calc(.25rem * 9);
+  --spacing-10: calc(.25rem * 10);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-card: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 8px;
+  --shadow-sm: 0 1px 2px #352f3d0f;
+  --shadow-md: 0 4px 12px #352f3d1a;
+  --color-success-bg-solid: #d9ffd6;
+  --color-error-bg-solid: #ffe0e0;
+  --color-error-border-solid: #ffe0e0;
+  --color-warning-bg-solid: #fffbbd;
+  --color-warning-text: #573a00;
+  --color-info-bg-solid: #d1f1ff;
+  --color-info-bg-solid-alt: #d1f1ff;
+  --color-info-text: #002a66;
+  --color-info-text-alt: #002a66;
+  --color-emerald: #367c53;
+  --color-teal: #0c9aa7;
+  --color-code-bg: #eae8ed;
+  --color-code-header-bg: #dcdadf;
+  --color-code-text: #352f3d;
+  --color-code-border: #c1bec6;
+  --color-code-muted: #5e5966;
+  --color-inline-code-bg: #eae8ed;
+  --color-inline-code-text: #352f3d;
+  --color-inline-code-border: #c1bec6;
+  --color-scrollbar-thumb: #c1bec6;
+  --color-scrollbar-track: transparent;
+  --color-graph-node-text: #352f3d;
+  --color-graph-node-text-dim: #938f9b;
+  --color-graph-edge-default: #938f9b;
+  --color-graph-edge-cross: #d08025;
+  --color-graph-edge-text: #5e5966;
+  --color-graph-edge-stroke: #f2f1f4;
+  --color-graph-highlight-bg: #ff6b6b;
+  --color-graph-highlight-border: #e74c3c;
+  --color-graph-search-bg: gold;
+  --color-graph-search-border: orange;
+  --color-graph-focus-border: #c0392b;
+  --color-graph-external-border: #938f9b;
+  --color-graph-cat-file: #3878b0;
+  --color-graph-cat-folder: #5e5966;
+  --color-graph-cat-file-aggregate: #2d6a9f;
+  --color-graph-cat-class: #7138cc;
+  --color-graph-cat-function: #367c53;
+  --color-graph-cat-method: #0c9aa7;
+  --color-graph-cat-variable: #d08025;
+  --color-graph-cat-import: #b06a1a;
+  --color-graph-cat-module: #5e35a8;
+  --color-graph-cat-concept: #933;
+  --color-graph-cat-person: #c44d4d;
+  --color-graph-cat-org: #0c9aa7;
+  --color-graph-cat-organization: #0c9aa7;
+  --color-graph-cat-product: #8e47ff;
+  --color-graph-cat-metric: #c44d78;
+  --color-graph-cat-location: #34495e;
+  --color-graph-cat-date: #b34d8a;
+  --color-graph-cat-code: #3878b0;
+  --color-graph-cat-doc: #5e5966;
+  --color-graph-cat-url: #367c53;
+  --color-graph-cat-email: #5e35a8;
+  --color-graph-cat-unknown: #938f9b;
+  --color-graph-rel-contains: #938f9b;
+  --color-graph-rel-extends: #7138cc;
+  --color-graph-rel-implements: #3878b0;
+  --color-graph-rel-imports: #d08025;
+  --color-graph-rel-uses: #367c53;
+  --color-graph-rel-calls: #367c53;
+  --color-graph-rel-references: #d08025;
+  --color-graph-rel-related-to: #938f9b;
+  --color-graph-rel-works-on: #933;
+  --color-graph-rel-owns: #0c9aa7;
+  --color-graph-rel-depends-on: #b06a1a;
+  --color-graph-rel-parent-of: #938f9b;
+  --qs-content: #fff;
+  --qs-main: #fff;
+  --qs-primary-foreground: #131920;
+  --qs-secondary-foreground: #656871;
+  --qs-tertiary-foreground: #938f9b;
+  --qs-placeholder-foreground: #8c8c94;
+  --qs-divider: #dedee3;
+  --qs-default-border: #8c8c94;
+  --qs-neutral-soft: #b4b4bb;
+  --qs-neutral-gray-50: #eae8ed;
+  --qs-tertiary-background: #eae8ed;
+  --qs-action-hover: #f3f3f7;
+  --qs-primary-default: #4200db;
+  --qs-primary-dark: #35009e;
+  --qs-primary-light: #e8e6ff;
+  --qs-success-default: #00802f;
+  --qs-error-default: #db0000;
+  --qs-font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --safe-top: 0px;
+  --safe-bottom: 0px;
+  --safe-left: 0px;
+  --safe-right: 0px;
+  --qs-font-family: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --qs-font-base-letter-spacing: .15px;
+  --qs-shadow-sm: 0 0 2px 0 #00000029, 0 0 4px 0 #00000029;
+  --qs-shadow-md: 0 0 2px 0 #00000029, 0 2px 8px 1px #00000029;
+  --qs-shadow-lg: 0 4px 16px 4px #00000029, 0 2px 6px 1px #00000029;
+  --qs-shadow-xl: 0 4px 8px 2px #00000029, 0 6px 20px 4px #00000029;
+  --qs-width-modal-sm: 384px;
+  --qs-width-modal-md: 600px;
+  --qs-width-modal-lg: 1136px;
+  --qs-grid-gap: 16px;
+  --qs-grid-gap-xl: 24px;
+  --qs-primary-medium: #8575ff;
+  --qs-primary-inverse: #fff;
+  --qs-neutral-lightest: #f9f9fb;
+  --qs-neutral-light: #f3f3f7;
+  --qs-neutral-default: #dedee3;
+  --qs-neutral-medium: #8c8c94;
+  --qs-neutral-deep: #656871;
+  --qs-neutral-dark: #333843;
+  --qs-neutral-strong: #131920;
+  --qs-neutral-white: #fff;
+  --qs-neutral-black: #000;
+  --qs-success-medium: #005c26;
+  --qs-success-dark: #00471e;
+  --qs-success-light: #d9ffd6;
+  --qs-success-inverse: #fff;
+  --qs-info-default: #006ce0;
+  --qs-info-medium: #003b8f;
+  --qs-info-dark: #002a66;
+  --qs-info-light: #d1f1ff;
+  --qs-info-inverse: #fff;
+  --qs-warning-default: #f2b100;
+  --qs-warning-medium: #db9200;
+  --qs-warning-dark: #573a00;
+  --qs-warning-light: #fffbbd;
+  --qs-warning-inverse: #573a00;
+  --qs-warning-experimental: #f2b100;
+  --qs-warning-experimental-light: #fffbbd;
+  --qs-warning-experimental-light-foreground: #fffbbd;
+  --qs-error-medium: #900;
+  --qs-error-dark: #700000;
+  --qs-error-light: #ffe0e0;
+  --qs-error-inverse: #fff;
+  --qs-connection-default: #db3300;
+  --qs-connection-soft: #ff997a;
+  --qs-connection-light: #ffe0d6;
+  --qs-connection-dark: #661800;
+  --qs-automation-default: #b3008f;
+  --qs-automation-medium: #d600ba;
+  --qs-automation-soft: #ff94f1;
+  --qs-automation-light: #ffe0fb;
+  --qs-automation-dark: #660052;
+  --qs-insight-default: #a000b8;
+  --qs-insight-soft: #f299ff;
+  --qs-insight-light: #fce6ff;
+  --qs-insight-dark: #590066;
+  --qs-visualization-default: #7300e5;
+  --qs-visualization-soft: #d4a8ff;
+  --qs-visualization-light: #f2e5ff;
+  --qs-visualization-dark: #45008a;
+  --qs-spice: #ff9800;
+  --qs-coachmark: #006ce0;
+  --qs-brand: #fff;
+  --qs-brand-foreground: #131920;
+  --qs-brand-navbar: #131920;
+  --qs-brand-navbar-foreground: #fff;
+  --qs-brand-navbar-light: #dedee3;
+  --qs-brand-navbar-dark: #000;
+  --qs-application-navbar: #4200db;
+  --qs-application-navbar-foreground: #fff;
+  --qs-application-navbar-light: #e8e6ff;
+  --qs-application-navbar-dark: #35009e;
+  --qs-dimension: #4200db;
+  --qs-dimension-foreground: #fff;
+  --qs-dimension-experimental: #4200db;
+  --qs-dimension-experimental-foreground: #4200db;
+  --qs-measure: #00802f;
+  --qs-measure-foreground: #fff;
+  --qs-measure-experimental: #f2b100;
+  --qs-measure-experimental-foreground: #f2b100;
+  --qs-content-inverse: #333843;
+  --qs-content-inverse-active: #131920;
+  --qs-secondary: #dedee3;
+  --qs-disabled: #8c8c94;
+  --qs-divider-light: #f3f3f7;
+  --qs-hover-border: #333843;
+  --qs-active-border: #4200db;
+  --qs-disabled-border: #dedee3;
+  --qs-error-border: #ffe0e0;
+  --qs-error-active-border: #db0000;
+  --qs-disabled-foreground: #b4b4bb;
+  --qs-primary-inverse-foreground: #fff;
+  --qs-error-foreground: #db0000;
+  --qs-contrast-foreground: #131920;
+  --qs-main-foreground: #131920;
+  --qs-main-secondary-foreground: #656871;
+  --qs-action-disabled: #f3f3f7;
+  --qs-action-active: #e8e6ff;
+  --qs-default-badge: #dedee3;
+  --qs-tag-default: #dedee3;
+  --qs-tag-soft-border: #b4b4bb;
+  --qs-focus-offset: 1px;
+  --qs-toggle-tile-sm: calc(.25rem * 8);
+  --qs-toggle-tile-md: calc(.25rem * 12);
+  --qs-toggle-tile-lg: calc(.25rem * 15);
+  --qs-shadow-pin-right: inset 4px 0 4px -4px #00000029;
+  --qs-shadow-pin-left: inset -4px 0 4px -4px #00000029;
+  --react-pdf-text-layer: 1;
+  --highlight-bg-color: #b400aa;
+  --highlight-selected-bg-color: #006400;
+  --react-pdf-annotation-layer: 1;
+  --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+  --input-focus-border-color: Highlight;
+  --input-focus-outline: 1px solid Canvas;
+  --input-unfocused-border-color: transparent;
+  --input-disabled-border-color: transparent;
+  --input-hover-border-color: black;
+  --link-outline: none;
+  color-scheme: light;
+}
+body { background: var(--color-bg); color: var(--color-text); }
+a { color: var(--color-link, var(--color-primary)); }</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apache Gravitino 技术调研报告</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f8f9fb;
+  --color-text: #1a2332;
+  --color-text-secondary: #4a5568;
+  --color-text-muted: #8993a4;
+  --color-border-light: #e8ecf0;
+  --color-border: #d2d8e0;
+  --color-surface: #ffffff;
+  --color-primary: #1e3a5f;
+  --color-primary-light: #2d5a8e;
+  --color-accent: #0077cc;
+  --color-accent-light: #e6f3ff;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+  --color-purple: #7c3aed;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', Consolas, monospace;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* Layout */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* TOC Sidebar */
+.toc {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 260px;
+  height: 100vh;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 24px 0;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.toc-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  margin-bottom: 16px;
+}
+
+.toc-header h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 4px;
+}
+
+.toc-header h1 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.toc a {
+  display: block;
+  padding: 8px 20px;
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 13px;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.toc a:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-left-color: var(--color-accent);
+}
+
+.toc a.active {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-left-color: #4fc3f7;
+}
+
+.toc-meta {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  margin-top: auto;
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+}
+
+/* Main Content */
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 48px 56px;
+}
+
+/* Hero */
+.hero {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid var(--color-border-light);
+}
+
+.hero h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 12px;
+}
+
+.hero .subtitle {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  margin-bottom: 16px;
+}
+
+.hero .meta {
+  display: flex;
+  gap: 24px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.hero .meta span i {
+  margin-right: 6px;
+  color: var(--color-accent);
+}
+
+/* Section */
+section {
+  margin-bottom: 48px;
+}
+
+section h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+section h2 i {
+  margin-right: 10px;
+  color: var(--color-accent);
+  font-size: 20px;
+}
+
+section h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-primary-light);
+  margin: 24px 0 12px;
+}
+
+p {
+  margin-bottom: 14px;
+  color: var(--color-text-secondary);
+}
+
+strong { color: var(--color-text); }
+
+/* Key Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.stat-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-card .value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.stat-card .label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 24px;
+  font-size: 13.5px;
+}
+
+thead {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+th {
+  padding: 10px 14px;
+  font-weight: 600;
+  text-align: left;
+  font-size: 12.5px;
+}
+
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border-light);
+  color: var(--color-text-secondary);
+}
+
+tr:nth-child(even) { background: var(--color-bg-secondary); }
+tr:hover { background: var(--color-accent-light); }
+
+/* Tags */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  margin: 1px 2px;
+}
+
+.tag-green { background: #d1fae5; color: #065f46; }
+.tag-red { background: #fee2e2; color: #991b1b; }
+.tag-yellow { background: #fef3c7; color: #92400e; }
+.tag-blue { background: #dbeafe; color: #1e40af; }
+.tag-purple { background: #ede9fe; color: #5b21b6; }
+
+/* Architecture Diagram */
+.arch-diagram {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.arch-layer {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.arch-layer .layer-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--color-primary);
+  min-width: 120px;
+}
+
+.arch-layer .layer-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.arch-layer .item {
+  background: var(--color-accent-light);
+  border: 1px solid #b3d9f2;
+  border-radius: var(--radius-sm);
+  padding: 3px 10px;
+  font-size: 11.5px;
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.arch-layer.highlight {
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
+}
+
+.arch-connector {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 18px;
+  margin: 2px 0;
+}
+
+/* Callout */
+.callout {
+  background: var(--color-accent-light);
+  border-left: 4px solid var(--color-accent);
+  padding: 14px 18px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.callout.warning {
+  background: #fff8e6;
+  border-left-color: var(--color-warning);
+}
+
+.callout.success {
+  background: #ecfdf5;
+  border-left-color: var(--color-success);
+}
+
+/* Use Case Cards */
+.usecase-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.usecase-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.usecase-card h4 {
+  font-size: 14px;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+}
+
+.usecase-card h4 i {
+  color: var(--color-accent);
+  margin-right: 6px;
+}
+
+.usecase-card p {
+  font-size: 13px;
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+/* Adopter */
+.adopter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.adopter {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary-light);
+}
+
+/* Flow diagram */
+.flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.flow-box {
+  background: var(--color-accent-light);
+  border: 1px solid #b3d9f2;
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.flow-box.primary {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+.flow-arrow {
+  color: var(--color-text-muted);
+  font-size: 16px;
+}
+
+/* Print */
+@media print {
+  .toc { display: none; }
+  .main { margin-left: 0; max-width: 100%; }
+}
+
+@media (max-width: 900px) {
+  .toc { display: none; }
+  .main { margin-left: 0; padding: 24px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .usecase-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+<!-- Table of Contents -->
+<nav class="toc">
+  <div class="toc-header">
+    <h2>调研报告</h2>
+    <h1>Apache Gravitino</h1>
+  </div>
+  <a href="#overview"><i class="fas fa-globe"></i> 1. 概述</a>
+  <a href="#capabilities"><i class="fas fa-cubes"></i> 2. 核心能力</a>
+  <a href="#architecture"><i class="fas fa-layer-group"></i> 3. 架构设计</a>
+  <a href="#access-control"><i class="fas fa-shield-halved"></i> 4. 统一权限控制</a>
+  <a href="#integration"><i class="fas fa-plug"></i> 5. 引擎集成方式</a>
+  <a href="#usecases"><i class="fas fa-lightbulb"></i> 6. 典型场景</a>
+  <a href="#comparison"><i class="fas fa-scale-balanced"></i> 7. 竞品对比</a>
+  <a href="#adopters"><i class="fas fa-building"></i> 8. 已知采用者</a>
+  <a href="#aws"><i class="fab fa-aws"></i> 9. 与 AWS 生态的关系</a>
+  <a href="#roadmap"><i class="fas fa-road"></i> 10. 发展趋势</a>
+  <div class="toc-meta">
+    <p>报告日期: 2026-07-28</p>
+    <p>数据来源: 官方文档 / 社区博客 / 公开演讲</p>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main">
+
+<div class="hero">
+  <h1><i class="fas fa-database" style="color:var(--color-accent)"></i> Apache Gravitino 技术调研报告</h1>
+  <p class="subtitle">统一联邦元数据湖 — Catalog of Catalogs</p>
+  <div class="meta">
+    <span><i class="fas fa-calendar"></i>2026年7月28日</span>
+    <span><i class="fas fa-code-branch"></i>最新版本 v1.3.0</span>
+    <span><i class="fas fa-balance-scale"></i>Apache License 2.0</span>
+    <span><i class="fab fa-github"></i>2,600+ Stars</span>
+  </div>
+</div>
+
+<!-- Section 1: Overview -->
+<section id="overview">
+  <h2><i class="fas fa-globe"></i>1. 概述</h2>
+  <p>Apache Gravitino 是一个高性能、支持地理分布的<strong>联邦元数据湖（Federated Metadata Lake）</strong>开源项目。其核心定位为 <strong>"Catalog of Catalogs"</strong> — 不替换企业现有的 Catalog 系统，而是在所有 Catalog 之上提供一个统一的元数据治理层。</p>
+  <p>Gravitino 最初由 Datastrato 公司发起，2024年进入 Apache 孵化器，2025年6月3日<strong>正式毕业成为 Apache 顶级项目（TLP）</strong>，2025年9月发布首个稳定大版本 1.0.0。截至2026年6月，最新版本为 <strong>1.3.0</strong>。</p>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="value">1.3.0</div>
+      <div class="label">最新版本</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">2,600+</div>
+      <div class="label">GitHub Stars</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">3,300+</div>
+      <div class="label">代码提交</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">40+</div>
+      <div class="label">每版本贡献者</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>核心洞察：</strong>传统思路是"把数据统一到一个系统"（代价高、团队抵制），Gravitino 的思路是"<strong>统一元数据，数据留在原地</strong>"— Federation over Migration。
+  </div>
+</section>
+
+<!-- Section 2: Core Capabilities -->
+<section id="capabilities">
+  <h2><i class="fas fa-cubes"></i>2. 核心能力</h2>
+
+  <h3>2.1 统一元数据模型</h3>
+  <p>Gravitino 抽象出一套通用的元数据对象层级，覆盖关系型数据、文件、消息队列、AI 模型等：</p>
+  <div class="flow">
+    <div class="flow-box primary">Metalake（租户）</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box">Catalog（数据源）</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box">Schema（库）</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box">Table / Fileset / Model / Topic</div>
+  </div>
+
+  <h3>2.2 直接管理（非采集）</h3>
+  <p>不像 DataHub/Atlas 那样被动收集元数据，Gravitino <strong>直接连接</strong>底层系统 — 在 Gravitino 里做的修改立即反映到底层，反之亦然。</p>
+
+  <h3>2.3 多引擎支持</h3>
+  <p>Trino、Spark、Flink、DuckDB、Doris 等引擎可通过 Gravitino Connector 或标准 Iceberg REST 协议统一访问所有数据源。</p>
+
+  <h3>2.4 联邦 IRC（Federated Iceberg REST Catalog）</h3>
+  <p><strong>1.3.0 核心亮点</strong>：一个 Gravitino IRC 可联邦其他 Iceberg REST Catalog，<strong>不复制 metadata</strong>，bearer-token 转发给数据所有者，由所有者做授权和审计。</p>
+
+  <h3>2.5 多云单一 Catalog</h3>
+  <p>1.3.0 支持一个 IRC endpoint <strong>同时</strong>服务 S3 + GCS + ADLS，按 URI scheme 自动路由，每次请求下发 <strong>path-scoped 临时凭证</strong>（Credential Vending）。</p>
+
+  <h3>2.6 AI 资产管理</h3>
+  <table>
+    <thead><tr><th>能力</th><th>说明</th><th>版本</th></tr></thead>
+    <tbody>
+      <tr><td>Model Catalog</td><td>ML 模型注册、版本管理</td><td>0.8+</td></tr>
+      <tr><td>Lance REST Service</td><td>向量数据集的 REST 访问</td><td>1.1+</td></tr>
+      <tr><td>MCP Server</td><td>让 LLM Agent 通过 MCP 协议发现/操作数据</td><td>1.0+</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Section 3: Architecture -->
+<section id="architecture">
+  <h2><i class="fas fa-layer-group"></i>3. 架构设计</h2>
+
+  <div class="arch-diagram">
+    <div class="arch-layer">
+      <span class="layer-name">查询引擎层</span>
+      <div class="layer-items">
+        <span class="item">Trino</span>
+        <span class="item">Spark</span>
+        <span class="item">Flink</span>
+        <span class="item">DuckDB</span>
+        <span class="item">Doris</span>
+        <span class="item">Python Client</span>
+      </div>
+    </div>
+    <div class="arch-connector">▼</div>
+    <div class="arch-layer highlight">
+      <span class="layer-name">接口层</span>
+      <div class="layer-items">
+        <span class="item">REST API (:8090)</span>
+        <span class="item">Iceberg REST (:9001)</span>
+        <span class="item">MCP Server</span>
+        <span class="item">Web UI</span>
+      </div>
+    </div>
+    <div class="arch-connector">▼</div>
+    <div class="arch-layer highlight">
+      <span class="layer-name">认证 &amp; 鉴权</span>
+      <div class="layer-items">
+        <span class="item">Simple</span>
+        <span class="item">Basic (内置IDP)</span>
+        <span class="item">OAuth2/OIDC</span>
+        <span class="item">Kerberos</span>
+        <span class="item">RBAC + DAC</span>
+      </div>
+    </div>
+    <div class="arch-connector">▼</div>
+    <div class="arch-layer">
+      <span class="layer-name">核心对象模型</span>
+      <div class="layer-items">
+        <span class="item">Metalake</span>
+        <span class="item">Catalog</span>
+        <span class="item">Schema</span>
+        <span class="item">Table</span>
+        <span class="item">Fileset</span>
+        <span class="item">Model</span>
+        <span class="item">Topic</span>
+        <span class="item">Function</span>
+      </div>
+    </div>
+    <div class="arch-connector">▼</div>
+    <div class="arch-layer">
+      <span class="layer-name">连接器层</span>
+      <div class="layer-items">
+        <span class="item">Hive</span>
+        <span class="item">Iceberg</span>
+        <span class="item">AWS Glue</span>
+        <span class="item">MySQL</span>
+        <span class="item">PostgreSQL</span>
+        <span class="item">Kafka</span>
+        <span class="item">HDFS/S3/GCS</span>
+        <span class="item">Lance</span>
+      </div>
+    </div>
+    <div class="arch-connector">▼</div>
+    <div class="arch-layer">
+      <span class="layer-name">数据源</span>
+      <div class="layer-items">
+        <span class="item">Amazon S3</span>
+        <span class="item">GCS</span>
+        <span class="item">ADLS</span>
+        <span class="item">HDFS</span>
+        <span class="item">RDS</span>
+        <span class="item">Kafka Cluster</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 4: Access Control -->
+<section id="access-control">
+  <h2><i class="fas fa-shield-halved"></i>4. 统一权限控制（重点）</h2>
+
+  <h3>4.1 双重访问控制模型</h3>
+  <table>
+    <thead><tr><th>模型</th><th>原理</th><th>适用场景</th></tr></thead>
+    <tbody>
+      <tr><td><strong>RBAC</strong></td><td>Privilege → Role → User/Group</td><td>数据使用者的细粒度操作权限</td></tr>
+      <tr><td><strong>DAC (Ownership)</strong></td><td>创建者自动成为 Owner，Owner 拥有管理权</td><td>元数据对象的管理权（ALTER/DROP）</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.2 权限类型覆盖</h3>
+  <table>
+    <thead><tr><th>资源类型</th><th>关键 Privilege</th></tr></thead>
+    <tbody>
+      <tr><td>Table</td><td>CREATE_TABLE, SELECT_TABLE, MODIFY_TABLE</td></tr>
+      <tr><td>View</td><td>CREATE_VIEW, SELECT_VIEW</td></tr>
+      <tr><td>Topic (Kafka)</td><td>CREATE_TOPIC, PRODUCE_TOPIC, CONSUME_TOPIC</td></tr>
+      <tr><td>Fileset (S3/HDFS)</td><td>CREATE_FILESET, READ_FILESET, WRITE_FILESET</td></tr>
+      <tr><td>Model (AI)</td><td>REGISTER_MODEL, LINK_MODEL_VERSION, USE_MODEL</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.3 权限继承与 DENY 优先</h3>
+  <p>权限沿对象层级自顶向下继承（Metalake → Catalog → Schema → Table）。<strong>DENY 永远优先于 ALLOW</strong>，无论出现在哪一层。</p>
+
+  <h3>4.4 Authorization Pushdown</h3>
+  <p>Gravitino 可将策略翻译并同步到底层系统（Apache Ranger / 数据源原生 ACL），保证即使绕过 Gravitino 直接访问底层，权限依然生效。</p>
+
+  <h3>4.5 与 Apache Ranger 的分工</h3>
+  <table>
+    <thead><tr><th>维度</th><th>Gravitino</th><th>Apache Ranger</th></tr></thead>
+    <tbody>
+      <tr><td><strong>控制层面</strong></td><td>元数据面 — 拦截 metadata 请求</td><td>数据面 — 拦截 SQL 执行</td></tr>
+      <tr><td><strong>最细粒度</strong></td><td>表级</td><td>行级 / 列级（含脱敏）</td></tr>
+      <tr><td><strong>拦截位置</strong></td><td>Catalog 层</td><td>引擎内部 Plugin</td></tr>
+      <tr><td><strong>跨数据源</strong></td><td>✅ 天然统一</td><td>⚠️ 需每个数据源配 Plugin</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <strong>当前 Gap：</strong>IRC 模式下 <strong>per-user identity propagation 尚未支持</strong>（官方标注 planned for future release）。目前只有 Gravitino Trino Connector + <code>forwardUser=true</code> 可实现 per-user 鉴权。
+  </div>
+</section>
+
+<!-- Section 5: Engine Integration -->
+<section id="integration">
+  <h2><i class="fas fa-plug"></i>5. 引擎集成方式</h2>
+
+  <h3>两条接入路径</h3>
+  <table>
+    <thead><tr><th>特性</th><th>Gravitino Engine Connector</th><th>Iceberg REST Catalog (IRC)</th></tr></thead>
+    <tbody>
+      <tr><td>需要额外 JAR</td><td><span class="tag tag-yellow">是</span></td><td><span class="tag tag-green">否</span></td></tr>
+      <tr><td>支持引擎</td><td>Trino, Spark, Flink, Daft</td><td>任何 Iceberg 兼容引擎</td></tr>
+      <tr><td>Per-user 鉴权</td><td><span class="tag tag-green">✅ forwardUser=true</span></td><td><span class="tag tag-red">❌ 计划中</span></td></tr>
+      <tr><td>Credential Vending</td><td><span class="tag tag-yellow">部分</span></td><td><span class="tag tag-green">✅ 完整</span></td></tr>
+      <tr><td>非 Iceberg 表</td><td><span class="tag tag-green">✅ Hive/MySQL 等</span></td><td><span class="tag tag-red">❌ 仅 Iceberg</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>HUE → Trino → Gravitino 路径</h3>
+  <div class="flow">
+    <div class="flow-box">HUE (LDAP)</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box">Trino (impersonate)</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box primary">Gravitino (RBAC)</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box">数据</div>
+  </div>
+  <p>通过 <code>gravitino.client.session.forwardUser=true</code>，Trino 将每个 session user 的身份传递给 Gravitino，实现 per-user 权限裁决。</p>
+</section>
+
+<!-- Section 6: Use Cases -->
+<section id="usecases">
+  <h2><i class="fas fa-lightbulb"></i>6. 典型场景</h2>
+
+  <div class="usecase-grid">
+    <div class="usecase-card">
+      <h4><i class="fas fa-arrows-alt-h"></i> 湖仓多 Catalog 统一</h4>
+      <p>Hive + Iceberg + Glue 共存于迁移过渡期，通过 Gravitino 统一入口查询</p>
+    </div>
+    <div class="usecase-card">
+      <h4><i class="fas fa-cloud"></i> 跨云数据联邦</h4>
+      <p>AWS + GCP + Azure 数据在一个 Catalog 视图中，Credential Vending 按云路由</p>
+    </div>
+    <div class="usecase-card">
+      <h4><i class="fas fa-handshake"></i> 并购整合</h4>
+      <p>联邦被收购公司的 Catalog，不强制合并，所有权和审计留在对方</p>
+    </div>
+    <div class="usecase-card">
+      <h4><i class="fas fa-network-wired"></i> Data Mesh</h4>
+      <p>各 BU 自治数据产品，Gravitino 提供统一发现和联邦治理</p>
+    </div>
+    <div class="usecase-card">
+      <h4><i class="fas fa-exchange-alt"></i> 替代 HMS</h4>
+      <p>突破 Hive Metastore 只能管 Hive/Iceberg 表的限制，成为新一代 Catalog</p>
+    </div>
+    <div class="usecase-card">
+      <h4><i class="fas fa-robot"></i> AI/ML 平台</h4>
+      <p>统一管理 Table + Model + Lance 向量数据集，Data + AI 一体治理</p>
+    </div>
+    <div class="usecase-card">
+      <h4><i class="fas fa-brain"></i> AI Agent 数据助手</h4>
+      <p>MCP Server 让 LLM Agent 有权限地发现和操作企业数据</p>
+    </div>
+    <div class="usecase-card">
+      <h4><i class="fas fa-lock"></i> 中心化权限</h4>
+      <p>一处 RBAC + Credential Vending + 审计，覆盖所有数据源</p>
+    </div>
+  </div>
+</section>
+
+<!-- Section 7: Comparison -->
+<section id="comparison">
+  <h2><i class="fas fa-scale-balanced"></i>7. 竞品对比</h2>
+
+  <table>
+    <thead>
+      <tr><th>维度</th><th>Gravitino</th><th>Unity Catalog (OSS)</th><th>Apache Polaris</th><th>AWS Glue Catalog</th><th>SageMaker Catalog</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>定位</strong></td>
+        <td>联邦 Catalog 引擎</td>
+        <td>中心化 Catalog</td>
+        <td>Iceberg REST Catalog</td>
+        <td>托管 Catalog</td>
+        <td>数据资产发现平台</td>
+      </tr>
+      <tr>
+        <td><strong>开源</strong></td>
+        <td><span class="tag tag-green">Apache 2.0</span></td>
+        <td><span class="tag tag-green">Apache 2.0</span></td>
+        <td><span class="tag tag-green">Apache 2.0</span></td>
+        <td><span class="tag tag-red">闭源</span></td>
+        <td><span class="tag tag-red">闭源</span></td>
+      </tr>
+      <tr>
+        <td><strong>多 Catalog 联邦</strong></td>
+        <td><span class="tag tag-green">✅ 核心特性</span></td>
+        <td><span class="tag tag-red">❌</span></td>
+        <td><span class="tag tag-red">❌</span></td>
+        <td><span class="tag tag-red">❌</span></td>
+        <td><span class="tag tag-red">❌</span></td>
+      </tr>
+      <tr>
+        <td><strong>多云</strong></td>
+        <td><span class="tag tag-green">S3+GCS+ADLS</span></td>
+        <td><span class="tag tag-yellow">有限</span></td>
+        <td><span class="tag tag-green">✅</span></td>
+        <td><span class="tag tag-red">AWS Only</span></td>
+        <td><span class="tag tag-red">AWS Only</span></td>
+      </tr>
+      <tr>
+        <td><strong>资产类型</strong></td>
+        <td>Table+File+Topic+Model+Func</td>
+        <td>Table+Volume+Model+Func</td>
+        <td>仅 Iceberg Table</td>
+        <td>Table+File (有限)</td>
+        <td>所有 AWS 数据资产</td>
+      </tr>
+      <tr>
+        <td><strong>引擎中立</strong></td>
+        <td><span class="tag tag-green">Trino/Spark/Flink/DuckDB</span></td>
+        <td><span class="tag tag-yellow">Spark 为主</span></td>
+        <td><span class="tag tag-green">引擎中立</span></td>
+        <td><span class="tag tag-yellow">Athena/Redshift/EMR</span></td>
+        <td><span class="tag tag-red">不接入引擎</span></td>
+      </tr>
+      <tr>
+        <td><strong>AI 集成</strong></td>
+        <td><span class="tag tag-green">MCP+Lance+Model</span></td>
+        <td><span class="tag tag-yellow">Model Registry</span></td>
+        <td><span class="tag tag-red">❌</span></td>
+        <td><span class="tag tag-red">❌</span></td>
+        <td><span class="tag tag-blue">发现/编目</span></td>
+      </tr>
+      <tr>
+        <td><strong>权限方式</strong></td>
+        <td>自带 RBAC + Pushdown</td>
+        <td>自带 ACL</td>
+        <td>自带 RBAC</td>
+        <td>Lake Formation/IAM</td>
+        <td>不做权限控制</td>
+      </tr>
+      <tr>
+        <td><strong>面向对象</strong></td>
+        <td>引擎 (机器)</td>
+        <td>引擎 (机器)</td>
+        <td>引擎 (机器)</td>
+        <td>引擎 (机器)</td>
+        <td><strong>人 (发现/治理)</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout success">
+    <strong>Gravitino 的差异化：</strong>它不是要替代 Unity/Polaris/Glue，而是可以<strong>联邦它们</strong> — 把这些 Catalog 都注册为 Gravitino 下的一个 backend。
+  </div>
+</section>
+
+<!-- Section 8: Adopters -->
+<section id="adopters">
+  <h2><i class="fas fa-building"></i>8. 已知采用者与社区</h2>
+
+  <h3>生产案例</h3>
+  <table>
+    <thead><tr><th>公司</th><th>场景</th><th>来源</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Pinterest</strong></td><td>规模化 Iceberg 迁移，Hive/Iceberg 表通过 Gravitino 统一查询</td><td>公开演讲 (2025)</td></tr>
+      <tr><td><strong>字节跳动 / BytePlus</strong></td><td>LAS 服务直接集成 Gravitino 作为元数据治理层</td><td>BytePlus 官方文档</td></tr>
+      <tr><td><strong>NexusOne</strong></td><td>多租户联邦 Iceberg 平台，扩展 Keycloak + Ranger 集成</td><td>技术博客 (2026.03)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>社区贡献者（代码参与）</h3>
+  <div class="adopter-list">
+    <span class="adopter">Uber</span>
+    <span class="adopter">Apple</span>
+    <span class="adopter">Intel</span>
+    <span class="adopter">Pinterest</span>
+    <span class="adopter">eBay</span>
+    <span class="adopter">小米</span>
+    <span class="adopter">Cloudflare</span>
+    <span class="adopter">AWS</span>
+    <span class="adopter">腾讯</span>
+    <span class="adopter">Yahoo</span>
+    <span class="adopter">Roku TV</span>
+    <span class="adopter">Confluent</span>
+    <span class="adopter">Cloudera</span>
+    <span class="adopter">DuckDB</span>
+    <span class="adopter">LlamaIndex</span>
+  </div>
+</section>
+
+<!-- Section 9: AWS -->
+<section id="aws">
+  <h2><i class="fab fa-aws"></i>9. 与 AWS 生态的关系</h2>
+
+  <table>
+    <thead><tr><th>集成路径</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Gravitino + EMR</strong></td><td>Spark Connector Plugin / IRC 方式接入 EMR Spark/Trino</td></tr>
+      <tr><td><strong>Gravitino + Glue Catalog</strong></td><td>原生 Glue provider，注册为 Catalog backend，EMR 上免额外 JAR</td></tr>
+      <tr><td><strong>Gravitino + S3 Tables</strong></td><td>通过 REST backend 代理 S3 Tables Iceberg REST endpoint</td></tr>
+      <tr><td><strong>Gravitino + Lake Formation</strong></td><td>互补：Gravitino 管 metadata 访问控制，LF 管 S3 存储层权限</td></tr>
+      <tr><td><strong>Credential Vending</strong></td><td>与 AWS STS AssumeRole 模型天然对齐</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Gravitino vs SageMaker Catalog</h3>
+  <div class="flow">
+    <div class="flow-box">业务用户</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box">SageMaker Catalog<br><small>发现/编目/标注</small></div>
+    <span class="flow-arrow" style="visibility:hidden">→</span>
+    <div class="flow-box">引擎用户</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box primary">Gravitino<br><small>查询/权限/联邦</small></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box">数据</div>
+  </div>
+  <p><strong>不是同一个场景的产物。</strong>SageMaker Catalog 面向<strong>人</strong>（数据发现/治理），Gravitino 面向<strong>引擎</strong>（统一访问/权限控制）。一个解决"找到数据"，另一个解决"访问数据"。两者可互补。</p>
+</section>
+
+<!-- Section 10: Roadmap -->
+<section id="roadmap">
+  <h2><i class="fas fa-road"></i>10. 发展趋势与未来规划</h2>
+
+  <table>
+    <thead><tr><th>方向</th><th>内容</th><th>预期时间</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Universal Lakehouse</strong></td><td>Iceberg + Delta Lake + Hudi + Paimon 多格式统一管理</td><td>进行中</td></tr>
+      <tr><td><strong>ABAC</strong></td><td>基于属性的访问控制（Sensitivity=High 等动态标签），替代静态 RBAC</td><td>规划中</td></tr>
+      <tr><td><strong>KMS 集成</strong></td><td>密钥管理服务集成，数据加密治理</td><td>规划中</td></tr>
+      <tr><td><strong>IRC per-user identity</strong></td><td>从引擎透传 per-user 身份到 IRC，实现端到端 per-user 鉴权</td><td>关键待解决</td></tr>
+      <tr><td><strong>Data Agent 编排</strong></td><td>MCP + Action System，AI Agent 自主发现并操作数据</td><td>探索中</td></tr>
+      <tr><td><strong>多模态数据栈</strong></td><td>Daft、Ray、Lance 深度集成，支持非表格数据</td><td>进行中</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>趋势判断：</strong>Gravitino 正从"Metadata Catalog"演进为"Operational Metadata Platform"— 不仅管元数据，还提供 scan planning offload、credential vending、job execution 等运行时能力，向 Data Control Plane 迈进。
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+// TOC active state
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.toc a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.offsetTop - 100;
+    if (window.scrollY >= top) current = section.id;
+  });
+  links.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+  });
+});
+</script>
+
+
+</body></html>

@@ -32,6 +32,7 @@
 - [Flink ConvertEqualityDeletes 技术调研](iceberg/Flink%20ConvertEqualityDeletes%20%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94.html)
 - [Amazon Redshift 上的 Iceberg 物化视图 - 技术深度指南](iceberg/redshift-iceberg-materialized-view-guide.html)
 - [Apache Iceberg Compaction 机制详解](iceberg/Iceberg_Compaction_.html)
+- [Apache Gravitino 技术调研报告](iceberg/apache-gravitino-research-report.html)
 
 ### Kinesis
 
