@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apache Iceberg Variant 与 Shredding：机制、上游进展与实测归因</title>
+<style>
+  :root {
+    --bg: #f7f7f9;
+    --card-bg: #ffffff;
+    --text: #232f3e;
+    --muted: #6b7280;
+    --accent: #ff9900;
+    --accent-dark: #d97e00;
+    --border: #e5e5e8;
+    --border-strong: #d1d5db;
+    --code-bg: #f4f4f6;
+    --ok-bg: #ecfdf3;      --ok-bd: #a6e9c1;   --ok-fg: #05603a;
+    --bad-bg: #fef3f2;     --bad-bd: #fda29b;  --bad-fg: #b42318;
+    --warn-bg: #fffaeb;    --warn-bd: #fec84b; --warn-fg: #93370d;
+    --info-bg: #eff8ff;    --info-bd: #b2ddff; --info-fg: #175cd3;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 15px;
+  }
+
+  /* ---------- layout ---------- */
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px 80px; display: flex; gap: 36px; }
+  main { flex: 1 1 auto; min-width: 0; max-width: 860px; }
+  nav.toc {
+    flex: 0 0 232px; position: sticky; top: 24px; align-self: flex-start;
+    max-height: calc(100vh - 48px); overflow-y: auto;
+    font-size: 0.85rem; padding: 18px 0 18px 18px; border-left: 2px solid var(--border);
+  }
+  nav.toc strong { display: block; font-size: 0.78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  nav.toc a { display: block; color: var(--muted); text-decoration: none; padding: 3px 0; }
+  nav.toc a:hover { color: var(--accent-dark); }
+  nav.toc a.sub { padding-left: 14px; font-size: 0.8rem; }
+  @media (max-width: 1020px) { nav.toc { display: none; } .wrap { padding: 0 20px 60px; } }
+
+  /* ---------- header ---------- */
+  header.page {
+    background: linear-gradient(135deg, #232f3e 0%, #37475a 100%);
+    color: #fff; padding: 56px 24px 44px; margin-bottom: 40px;
+  }
+  header.page .inner { max-width: 1180px; margin: 0 auto; }
+  header.page h1 { margin: 0 0 12px; font-size: 1.95rem; line-height: 1.4; font-weight: 600; }
+  header.page .sub { color: #d5dbe3; margin: 0 0 18px; font-size: 0.98rem; }
+  header.page .meta { font-size: 0.82rem; color: #9fb0c3; }
+  .breadcrumb { font-size: 0.82rem; margin-bottom: 14px; }
+  .breadcrumb a { color: var(--accent); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  /* ---------- typography ---------- */
+  h2 {
+    font-size: 1.35rem; margin: 52px 0 18px; padding-left: 12px;
+    border-left: 4px solid var(--accent); scroll-margin-top: 20px; font-weight: 600;
+  }
+  h3 { font-size: 1.08rem; margin: 34px 0 12px; scroll-margin-top: 20px; font-weight: 600; }
+  h4 { font-size: 0.96rem; margin: 24px 0 8px; color: #37475a; font-weight: 600; }
+  p { margin: 12px 0; }
+  ul, ol { padding-left: 24px; margin: 12px 0; }
+  li { margin: 6px 0; }
+  a { color: #0b6bcb; }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 44px 0; }
+
+  code {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 4px; padding: 1px 5px;
+    font-family: "SF Mono", Monaco, Menlo, Consolas, monospace; font-size: 0.86em;
+  }
+  pre {
+    background: #232f3e; color: #e6edf3; padding: 16px 18px; border-radius: 8px;
+    overflow-x: auto; font-size: 0.84rem; line-height: 1.6;
+  }
+  pre code { background: none; border: 0; padding: 0; color: inherit; font-size: 1em; }
+
+  /* ---------- tables ---------- */
+  .tbl { overflow-x: auto; margin: 18px 0; }
+  table { border-collapse: collapse; width: 100%; background: var(--card-bg); font-size: 0.88rem; }
+  th, td { border: 1px solid var(--border); padding: 9px 12px; text-align: left; vertical-align: top; }
+  th { background: #f0f1f3; font-weight: 600; white-space: nowrap; }
+  tbody tr:nth-child(even) { background: #fbfbfc; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.ctr, th.ctr { text-align: center; }
+
+  /* ---------- callouts ---------- */
+  .box { border-radius: 8px; padding: 14px 18px; margin: 20px 0; border: 1px solid; border-left-width: 4px; }
+  .box p:first-child { margin-top: 0; } .box p:last-child { margin-bottom: 0; }
+  .box .t { font-weight: 600; display: block; margin-bottom: 6px; }
+  .box.key  { background: var(--info-bg); border-color: var(--info-bd); }
+  .box.key .t { color: var(--info-fg); }
+  .box.warn { background: var(--warn-bg); border-color: var(--warn-bd); }
+  .box.warn .t { color: var(--warn-fg); }
+  .box.bad  { background: var(--bad-bg);  border-color: var(--bad-bd); }
+  .box.bad .t { color: var(--bad-fg); }
+  .box.ok   { background: var(--ok-bg);   border-color: var(--ok-bd); }
+  .box.ok .t { color: var(--ok-fg); }
+
+  /* ---------- badges ---------- */
+  .b { display: inline-block; font-size: 0.74rem; font-weight: 600; padding: 1px 8px;
+       border-radius: 10px; border: 1px solid; white-space: nowrap; line-height: 1.6; }
+  .b-ok   { background: var(--ok-bg);   border-color: var(--ok-bd);   color: var(--ok-fg); }
+  .b-bad  { background: var(--bad-bg);  border-color: var(--bad-bd);  color: var(--bad-fg); }
+  .b-warn { background: var(--warn-bg); border-color: var(--warn-bd); color: var(--warn-fg); }
+  .b-info { background: var(--info-bg); border-color: var(--info-bd); color: var(--info-fg); }
+  .b-mute { background: #f3f4f6;        border-color: var(--border-strong); color: var(--muted); }
+
+  /* ---------- misc ---------- */
+  .lede { font-size: 1.02rem; color: #37475a; background: var(--card-bg);
+          border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; }
+  .lede ul { margin: 10px 0 0; }
+  .src { font-size: 0.82rem; color: var(--muted); margin-top: 6px; }
+  .src code { font-size: 0.9em; }
+  footer.page { border-top: 1px solid var(--border); padding: 28px 24px 48px; text-align: center;
+                color: var(--muted); font-size: 0.85rem; }
+  footer.page a { color: var(--accent-dark); }
+  .win { color: var(--ok-fg); font-weight: 600; }
+  .lose { color: var(--bad-fg); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header class="page">
+  <div class="inner">
+    <div class="breadcrumb"><a href="../index.html">&larr; Tech Pages</a> / Iceberg</div>
+    <h1>Apache Iceberg Variant 与 Shredding：机制、上游进展与实测归因</h1>
+    <p class="sub">从 Variant 二进制编码到 shredding 列裁剪 —— 哪些性能收益已经兑现，哪些还卡在上游，以及三组 40 亿行级实测数据的正确归因</p>
+    <p class="meta">最后更新 2026-07-29 &nbsp;·&nbsp; 上游状态截至同日 &nbsp;·&nbsp; 基于 Spark 4.1.2 / 4.2.0 + Iceberg 1.11.0 + Amazon S3 Tables 实测</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<nav class="toc">
+  <strong>目录</strong>
+  <a href="#tldr">0. 结论速览</a>
+  <a href="#why">1. 设计初衷与目标</a>
+  <a href="#mech">2. 技术机制</a>
+  <a href="#layers">3. 四层性能来源辨析</a>
+  <a href="#tests">4. 我们的实测数据</a>
+  <a href="#t1" class="sub">4.1 游戏日志 42 亿行</a>
+  <a href="#t2" class="sub">4.2 COVID 2 亿行</a>
+  <a href="#t3" class="sub">4.3 Agent Trace 4.11 亿行</a>
+  <a href="#t4" class="sub">4.4 三组结果统一解释</a>
+  <a href="#pitfall">5. 配置踩坑（重要）</a>
+  <a href="#upstream">6. 上游进展追踪</a>
+  <a href="#aws">7. AWS 侧支持矩阵</a>
+  <a href="#agent">8. 已兑现的价值</a>
+  <a href="#advice">9. 选型建议</a>
+  <a href="#todo">10. 待验证事项</a>
+  <a href="#refs">附：资料来源</a>
+</nav>
+
+<main>
+
+<!-- ================================================================ -->
+<h2 id="tldr">0. 结论速览</h2>
+
+<div class="lede">
+  <p><strong>Variant 当前处于「功能可用、存储已兑现、Agent 价值已兑现，但 shredding 查询加速尚未兑现」的阶段。</strong></p>
+  <p>如果你只带走三句话：</p>
+  <ul>
+    <li><strong>Variant 有两种完全不同的性能收益，必须分开谈。</strong>「二进制编码免去 JSON 文本解析」现在就能拿到；「shredding 列裁剪 / 谓词下推」在<em>任何已发布版本</em>中都还拿不到。混淆这两者是几乎所有 Variant 性能报告的通病。</li>
+    <li><strong>我们自己三组实测里那些漂亮的提升数字，来源是前者，不是 shredding。</strong>其中一组（Agent Trace Log）的 shredding 配置键根本写错了，表大概率从未启用 shredding —— 详见 <a href="#pitfall">§5</a>。</li>
+    <li><strong>完整收益需要 Iceberg 侧合并 PR #16714/#16715 + Spark 4.3 两个条件同时满足</strong>，且相关 PR 已多次被 stale bot 关闭，排期上不宜乐观 —— 详见 <a href="#upstream">§6</a>。</li>
+  </ul>
+</div>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>能力维度</th><th class="ctr">成熟度</th><th>状态</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>功能可用性（建表 / 读写 / 嵌套 / 数组 / 类型）</td>
+      <td class="ctr"><span class="b b-ok">已就绪</span></td>
+      <td>Spark 4.1 + Iceberg 1.11 + S3 Tables 全链路打通，可生产使用</td>
+    </tr>
+    <tr>
+      <td>存储效率</td>
+      <td class="ctr"><span class="b b-ok">已兑现</span></td>
+      <td>相同数据比 JSON String 省 <strong>13.8% ~ 16%</strong>（大文件），纯二进制编码单独可达 31.4%</td>
+    </tr>
+    <tr>
+      <td>Agent / Schema 自描述</td>
+      <td class="ctr"><span class="b b-ok">已兑现</span></td>
+      <td><code>schema_of_variant_agg</code> 让 Agent 零采样发现 schema，是 Variant 当下最独特的价值</td>
+    </tr>
+    <tr>
+      <td>查询性能 —— 二进制编码免解析</td>
+      <td class="ctr"><span class="b b-ok">已兑现</span></td>
+      <td>长 JSON / 深路径 / 大表扫描场景快 <strong>1.16x ~ 1.90x</strong>；短 JSON 场景反而更慢</td>
+    </tr>
+    <tr>
+      <td>查询性能 —— <strong>shredding 列裁剪</strong></td>
+      <td class="ctr"><span class="b b-bad">尚未兑现</span></td>
+      <td>Iceberg Spark connector 未实现下推接口，单列查询仍需重建整个 Variant</td>
+    </tr>
+    <tr>
+      <td>查询性能 —— <strong>file / row-group skipping</strong></td>
+      <td class="ctr"><span class="b b-bad">尚未兑现</span></td>
+      <td>最薄弱环节：SPARK-55817 仍 Open，对应 PR 已被 stale bot 关闭</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<hr />
+
+<!-- ================================================================ -->
+<h2 id="why">1. 设计初衷与目标</h2>
+
+<p>先把「Variant 到底为什么存在」讲清楚，后面所有性能讨论都建立在这个基础上。</p>
+
+<h3>1.1 解决的是「JSON 字符串重复解析」这个老问题</h3>
+
+<p>Variant 不是为某个新潮场景发明的。各社区的原始 proposal 用几乎一致的语言描述动机：</p>
+
+<ul>
+  <li><strong>Spark SPIP（SPARK-45891）</strong>：用户依赖 JSON 表达式处理 JSON 数据，"can often lead to <em>repeated JSON parsing and degraded performance</em>"；目标是 "use a more efficient <em>binary representation</em> internally and avoid repeated JSON parsing"，同时 "keeps the flexibility of schemaless JSON data"。</li>
+  <li><strong>Iceberg Variant Proposal（Issue #10392）</strong>：通过编码为 variant 列，"we <em>retain the flexibility of the source data, while allowing query engines to more efficiently operate</em> on the data"。</li>
+  <li><strong>Databricks 工程博客</strong>把取舍说得最直白：<em>"Without Variant, customers had to choose between flexibility and performance."</em></li>
+</ul>
+
+<div class="box key">
+  <span class="t">一句话概括</span>
+  用<strong>二进制编码</strong>取代 <strong>JSON 文本</strong>，在<strong>不要求用户预定义 schema</strong> 的前提下消除逐行重复解析的开销 —— 即「既要 JSON 的灵活，又要列存的性能」。
+</div>
+
+<h3>1.2 两层目标，正好对应「存储已兑现 / 查询未兑现」的分界</h3>
+
+<p>公开 spec 把目标拆成了两层，这个拆分是理解后文一切的钥匙：</p>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>层</th><th>规范</th><th>目标</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>① Variant Binary Encoding</strong></td>
+      <td><code>VariantEncoding.md</code></td>
+      <td>让半结构化数据 "can be efficiently <em>queried by path</em>"；嵌套值自包含（"each nested Variant value is contiguous and self-contained"），便于在宽 / 深结构中高效访问</td>
+    </tr>
+    <tr>
+      <td><strong>② Variant Shredding</strong></td>
+      <td><code>VariantShredding.md</code></td>
+      <td>出发点是 "data is often <em>partially homogeneous</em>"，故把高频字段抽取成独立 Parquet 列，解锁三件事：<br />(a) 更紧凑的列式编码<br />(b) 用列统计做 data skipping<br />(c) partial projections（部分投影）</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box key">
+  <span class="t">关键洞察</span>
+  我们实测中「读取慢、列裁剪不生效」恰恰是 shredding spec 第 (b)(c) 两条目标<strong>尚未在 Iceberg connector 落地</strong>的直接表现。设计目标是清晰的，缺的只是实现。
+</div>
+
+<h3>1.3 诚实说明：设计文档里没有 AI Agent</h3>
+
+<div class="box warn">
+  <span class="t">⚠️ 事实与推断的边界</span>
+  <p>我们检索了 Parquet spec、Spark SPIP、Iceberg proposal、Databricks / Snowflake 工程博客等<strong>全部能找到的 Variant 原始设计资料，没有任何一处把 AI Agent / LLM 列为 Variant 的设计动机或目标</strong>。Variant 的设计初衷纯粹是数据工程问题。</p>
+  <p><strong>有出处的事实</strong>：Spark 提供公开内置函数 <code>schema_of_variant</code> / <code>schema_of_variant_agg</code>，可在查询运行时从数据本身推断 Variant 结构和类型，无需事先定义 schema。这是 "schemaless / 保留源数据灵活性" 设计目标的自然结果。</p>
+  <p><strong>本团队的推断</strong>：Variant 把「理解半结构化数据结构」的成本从「Agent 探索 / 采样」转移到了「数据自描述」，对需要自主生成 SQL 的 Data Agent 价值很大。这一推断已被我们实测验证（见 <a href="#agent">§8</a>），但<strong>不应被表述为「Variant 是为 AI 设计的」</strong>。</p>
+</div>
+
+<hr />
+
+<!-- ================================================================ -->
+<h2 id="mech">2. 技术机制</h2>
+
+<h3>2.1 为什么传统两种方案都不行</h3>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>方案</th><th>问题</th></tr></thead>
+  <tbody>
+    <tr><td><strong>VARCHAR 字符串</strong></td><td>查询时全列反序列化，无谓词下推，无 row group 跳过</td></tr>
+    <tr><td><strong>展开为宽表</strong></td><td>Schema 膨胀（50 字段 = 50 列），大量 nullable 列；结构变化需 <code>ALTER TABLE</code>；不适合逐行结构差异大的数据</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>2.2 物理存储格式</h3>
+
+<p>VARIANT 在 Parquet 文件中存储为带两个 binary 字段的 group：</p>
+
+<pre><code>optional group variant_col (Variant(1)) {
+  required binary metadata;   -- 类型信息（字段名字典、类型编码）
+  required binary value;      -- 实际数据
+}</code></pre>
+
+<p><code>metadata</code> 携带结构信息（字段名到 ID 的映射），<code>value</code> 存储编码后的值。这种自描述设计使<strong>每行可以有不同结构</strong>，同时支持列级读取。</p>
+
+<p>VARIANT 的类型范围比 JSON <strong>更宽</strong>：除 JSON 原生的 string / number / boolean / null / array / object 之外，还原生支持 <strong>date、timestamp（含 / 不含时区）、decimal、binary</strong>。存为 date 的字段查询时不需要运行期转换，范围过滤直接生效。</p>
+
+<h3>2.3 Shredding 做了什么</h3>
+
+<p><strong>写入时</strong>：引擎分析被写入的 VARIANT 值，将高频出现的字段<strong>额外</strong>提取为独立的 typed Parquet 列（<code>typed_value</code>）。主 VARIANT 二进制列<strong>完整保留</strong> —— 无信息丢失、不施加 schema 约束，shredded 列是额外的「快速通道」。</p>
+
+<p><strong>读取时（理论上）</strong>：查询访问被 shredded 的字段时直接读 typed 列，跳过二进制解码；谓词可下推到 typed 列，实现 row group / page 级跳过。</p>
+
+<div class="box bad">
+  <span class="t">现实检查</span>
+  上一段「读取时」是 spec 的<strong>承诺</strong>，不是当前的<strong>行为</strong>。截至 2026-07-29，在 Spark 4.1/4.2 + Iceberg 1.11.0 上，<code>variant_get()</code> 仍是<strong>纯运行时函数</strong>：读完整 variant binary → 解析元数据 → 定位字段 → 类型转换。我们的 <code>EXPLAIN FORMATTED</code> 直接证实了这一点（见 <a href="#t1">§4.1</a>）。
+</div>
+
+<h3>2.4 Manifest 中的 shredded subcolumn 统计（V3 新增）</h3>
+
+<p>为支持 shredded subcolumn 的 file pruning，V3 扩展了 manifest 中 VARIANT 列的 bounds 编码方式：</p>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>列类型</th><th><code>lower_bounds</code> / <code>upper_bounds</code> 编码</th></tr></thead>
+  <tbody>
+    <tr><td>普通列</td><td><code>Map&lt;columnId, binary&gt;</code>，binary 是 primitive 值的序列化</td></tr>
+    <tr><td><strong>VARIANT 列（V3）</strong></td><td>binary 改为<strong>二进制序列化的 Variant object</strong>：<code>{ "$.event_ts": &lt;bound&gt;, "$.location.longitude": &lt;bound&gt; }</code>，key 为 JSONPath 格式的 subcolumn path</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>对现有 manifest 格式完全兼容（value 仍是 binary）。<strong>Bounds 收集条件</strong>：该文件内 subcolumn 所有值类型一致才收集；混合类型或全 null 不收集。<code>value_counts</code> / <code>null_value_counts</code> 等统计推迟到 <strong>Iceberg format V4</strong>。</p>
+
+<h3>2.5 读写函数</h3>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>函数</th><th>行为</th></tr></thead>
+  <tbody>
+    <tr><td><code>parse_json(str)</code></td><td>解析 JSON 字符串，保留 JSON 原始类型（字符串化的日期<strong>不</strong>自动转换）。Kafka / webhook / 应用日志直接落地用这个</td></tr>
+    <tr><td><code>to_variant(value)</code></td><td>将 SQL 类型值转为 VARIANT，<strong>保留原类型</strong>（DATE → date，不变为字符串）。从已有 SQL 类型数据用这个</td></tr>
+    <tr><td><code>variant_get(col, '$.path', 'TYPE')</code></td><td>提取字段并返回指定 SQL 类型，无需额外 CAST</td></tr>
+    <tr><td><code>try_variant_get(...)</code></td><td>同上但类型不匹配返回 null 而非报错 —— <strong>脏数据场景必备</strong></td></tr>
+    <tr><td><code>schema_of_variant_agg(col)</code></td><td>聚合推断整列的 schema，Agent 场景的核心函数</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box warn">
+  <span class="t">dot notation 不可用</span>
+  <code>detail.map_id</code> 这种写法在 Spark 4.1.2 上直接报错 <code>INVALID_EXTRACT_BASE_FIELD_TYPE</code>（<em>Need a complex type [STRUCT, ARRAY, MAP] but got "VARIANT"</em>）。必须用 <code>variant_get()</code>。
+</div>
+
+<hr />
+
+<!-- ================================================================ -->
+<h2 id="layers">3. 四层性能来源辨析（本文核心）</h2>
+
+<p>市面上几乎所有 Variant 性能讨论 —— 包括我们自己早期的测试报告 —— 都把下面四件事混为一谈，导致归因错误。<strong>它们的实现状态完全不同，必须分开看。</strong></p>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>#</th><th>机制</th><th>省什么</th><th>依赖 shredding？</th><th class="ctr">当前状态</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>①</strong></td>
+      <td><strong>二进制编码免 JSON 文本解析</strong><br /><span class="src">binary offset 直接定位 vs 文本线性扫描</span></td>
+      <td>CPU</td>
+      <td><span class="b b-mute">不依赖</span></td>
+      <td class="ctr"><span class="b b-ok">已兑现</span></td>
+    </tr>
+    <tr>
+      <td><strong>②</strong></td>
+      <td><strong>存储节省</strong><br /><span class="src">消除 JSON 语法字符 + 列式字典编码</span></td>
+      <td>存储 / IO</td>
+      <td><span class="b b-mute">部分依赖</span></td>
+      <td class="ctr"><span class="b b-ok">已兑现</span></td>
+    </tr>
+    <tr>
+      <td><strong>③</strong></td>
+      <td><strong>列级读取下推 / 投影裁剪</strong><br /><span class="src">只读请求路径的 <code>typed_value</code> 列，不重建整个 Variant</span></td>
+      <td>少读<strong>列</strong></td>
+      <td><span class="b b-warn">强依赖</span></td>
+      <td class="ctr"><span class="b b-bad">未兑现</span></td>
+    </tr>
+    <tr>
+      <td><strong>④</strong></td>
+      <td><strong>file / row-group skipping</strong><br /><span class="src">shredded 子列 min/max 统计 → 跳过整个文件或 row group</span></td>
+      <td>少读<strong>文件</strong></td>
+      <td><span class="b b-warn">强依赖</span></td>
+      <td class="ctr"><span class="b b-bad">未兑现（最薄弱）</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box key">
+  <span class="t">为什么这个区分至关重要</span>
+  <p>① 和 ② <strong>与 shredding 无关</strong>，是 Variant 格式本身的收益，<strong>今天就能拿到</strong>。</p>
+  <p>③ 和 ④ 才是 Variant 的「杀手级」卖点 —— 把半结构化字段当成真正的列来裁剪、下推、跳过 —— 而它们<strong>在当前任何已发布版本中都拿不到</strong>。</p>
+  <p>后果：一份报告如果测出 Variant 快了，然后归因给 "Shredding 生效"，那么它<strong>几乎肯定归因错了</strong> —— 快的是 ①，而不是 ③。这正是我们自己踩过的坑（<a href="#t3">§4.3</a>）。</p>
+</div>
+
+<p>还有一条容易和上面四条混淆的独立线：<strong>向量化读取</strong>（Arrow VarBinary 批量读 <code>metadata</code> + <code>value</code>）。它已经合并进 Iceberg 1.12.0，但<strong>只服务非 shredded 表</strong>，对 shredded 表会主动关闭批量读退回逐行。详见 <a href="#u16292">§6.2</a>。</p>
+
+<hr />
+
+<!-- ================================================================ -->
+<h2 id="tests">4. 我们的实测数据</h2>
+
+<p>三组测试呈现了<strong>与工作负载强相关</strong>的不同表现。单看任何一组都会得出错误结论，必须合起来读。</p>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>测试</th><th class="num">数据量</th><th>JSON 特征</th><th class="ctr">结论</th><th class="ctr">shredding 实际状态</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><a href="#t1">游戏行为日志</a><br /><span class="src">2026-06-01</span></td>
+      <td class="num">42 亿行<br />342 GB</td>
+      <td>~150 B，~6 字段，1 层</td>
+      <td class="ctr"><span class="b b-bad">Variant 慢<br />0.31x ~ 0.78x</span></td>
+      <td class="ctr"><span class="b b-ok">已启用</span><br /><span class="src">表属性正确</span></td>
+    </tr>
+    <tr>
+      <td><a href="#t2">COVID 多源数据</a><br /><span class="src">2026-05</span></td>
+      <td class="num">2 亿行</td>
+      <td>多源异构</td>
+      <td class="ctr"><span class="b b-ok">Variant 快<br />16% ~ 43%</span></td>
+      <td class="ctr"><span class="b b-mute">未使用列裁剪</span></td>
+    </tr>
+    <tr>
+      <td><a href="#t3">Agent Trace Log</a><br /><span class="src">2026-06-15</span></td>
+      <td class="num">4.11 亿行<br />20 GB</td>
+      <td>500–2000 B，20+ 字段，2–3 层</td>
+      <td class="ctr"><span class="b b-ok">Variant 快<br />1.38x ~ 1.90x</span></td>
+      <td class="ctr"><span class="b b-bad">大概率未启用</span><br /><span class="src">配置键写错</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ---------------------------------------------------------------- -->
+<h3 id="t1">4.1 游戏行为日志：42 亿行，Variant 全面落后</h3>
+
+<p class="src">环境：4,206,291,624 行 · <code>bucket(8, aid)</code> 分桶 · S3 Tables Iceberg V3 zstd · Spark 4.1.2 + Iceberg 1.11.0 · 1 次 warmup + 3 次正式取均值</p>
+
+<h4>存储</h4>
+<div class="tbl">
+<table>
+  <thead><tr><th>分桶策略</th><th class="num">JSON</th><th class="num">Variant</th><th class="num">平均文件大小</th><th class="num">Variant 节省</th></tr></thead>
+  <tbody>
+    <tr><td>无分桶</td><td class="num">344.6 GB</td><td class="num">294.4 GB</td><td class="num">54 / 124 MB</td><td class="num"><span class="win">14.6%</span></td></tr>
+    <tr><td>bucket(8, aid)</td><td class="num">342.4 GB</td><td class="num">293.1 GB</td><td class="num">~55 MB</td><td class="num"><span class="win">14.4%</span></td></tr>
+    <tr><td>bucket(64, aid)</td><td class="num">251.2 GB</td><td class="num">249.6 GB</td><td class="num">~5.4 MB</td><td class="num"><span class="lose">0.65%</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box key">
+  <span class="t">存储节省与文件大小强相关</span>
+  平均文件 50–130 MB 时节省稳定在 <strong>14–15%</strong>；降到 5.4 MB 时几乎归零（0.65%）。原因：小文件下每列只有约 8.8 万行（42 亿 / 47,424 文件），<strong>字典编码复用率低</strong>，而 Parquet 元数据开销占比升到 0.5–1%，正好抵消列式收益。<strong>大量分桶 + Variant 是反模式。</strong>
+</div>
+
+<h4>查询性能</h4>
+<div class="tbl">
+<table>
+  <thead><tr><th>Query</th><th>场景</th><th class="num">JSON (ms)</th><th class="num">Variant (ms)</th><th class="num">比率</th></tr></thead>
+  <tbody>
+    <tr><td>Q1</td><td>单玩家 + map_id 过滤（点查 + 嵌套谓词）</td><td class="num">28,540</td><td class="num">64,760</td><td class="num"><span class="lose">0.44x</span></td></tr>
+    <tr><td>Q2</td><td>时间范围 + map_type 过滤（分区裁剪）</td><td class="num">713</td><td class="num">2,315</td><td class="num"><span class="lose">0.31x</span></td></tr>
+    <tr><td>Q3</td><td>单玩家按 map_id 聚合（3 次 variant_get）</td><td class="num">15,434</td><td class="num">42,493</td><td class="num"><span class="lose">0.36x</span></td></tr>
+    <tr><td>Q4</td><td>多字段提取（5 个嵌套字段）</td><td class="num">24,645</td><td class="num">58,352</td><td class="num"><span class="lose">0.42x</span></td></tr>
+    <tr><td>Q5</td><td>嵌套条件聚合</td><td class="num">15,390</td><td class="num">41,627</td><td class="num"><span class="lose">0.37x</span></td></tr>
+    <tr><td>Q6</td><td>1 天数据大范围聚合</td><td class="num">11,782</td><td class="num">15,147</td><td class="num"><span class="lose">0.78x</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>单函数对照更干净：<code>variant_get(detail, '$.map_id', 'STRING')</code> = <strong>40,120 ms</strong> vs <code>get_json_object(detail, '$.map_id')</code> = <strong>27,844 ms</strong>。</p>
+
+<div class="box bad">
+  <span class="t">根因：EXPLAIN 直接证伪了列裁剪</span>
+  <p><code>EXPLAIN FORMATTED</code> 显示 <code>Output: [aid, detail]</code> —— <strong>即使字段已被 shredded 成独立 Parquet 列（该表 shredding 后 Parquet 从 3 列增至约 990 列），<code>variant_get</code> 仍读取完整 detail 列，无任何列裁剪。</strong></p>
+  <p>诊断链条：</p>
+  <ul>
+    <li><span class="b b-ok">✓</span> Parquet 存储层：shredded 列确实写入了</li>
+    <li><span class="b b-ok">✓</span> Spark 4.1 已定义 <code>SupportsPushDownVariantExtractions</code> 接口</li>
+    <li><span class="b b-bad">✗</span> <strong>Iceberg 1.11.0 的 <code>SparkScanBuilder</code> 未实现该接口</strong> ← gap 所在</li>
+    <li><span class="b b-bad">✗</span> 结果：<code>variant_get()</code> 退化为纯运行时函数</li>
+  </ul>
+  <p>Q6（0.78x）差距最小，因为大范围扫描下 IO 开始成为瓶颈，Variant 少读 14% 数据的存储优势部分抵消了 CPU 劣势。</p>
+</div>
+
+<div class="box ok">
+  <span class="t">社区独立印证</span>
+  2026-06-04 Apache Iceberg Variant 社区同步中，Shagang(Sang) 用 GitHub activity 数据测试：shredding 后裂解出约 <strong>300 列</strong>，但查询只投影单列时仍需<strong>从 300 个裂解列重建整个 Variant</strong>，性能「明显差于」纯 JSON。Steve Loughran 的基准显示 implicit shredding 下读取<strong>慢近 5x</strong>。<strong>两条独立路径得出同一诊断。</strong>
+</div>
+
+<!-- ---------------------------------------------------------------- -->
+<h3 id="t2">4.2 COVID 多源数据：2 亿行，Variant 反超</h3>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>规模</th><th class="ctr">Variant vs JSON String</th><th>备注</th></tr></thead>
+  <tbody>
+    <tr><td>~100 万行</td><td class="ctr">基本持平（1.08x）</td><td>字段少时两者接近</td></tr>
+    <tr><td>~2 亿行</td><td class="ctr"><span class="win">Variant 快 16%</span></td><td>二进制编码免去逐行 JSON 文本解析</td></tr>
+    <tr><td>Q6 全表聚合（covidcast 2 亿行）</td><td class="ctr"><span class="win">Variant 快 20%</span></td><td>16 executor 下进一步放大到快 41%~43%</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>存储侧：2 亿行物理实测节省 <strong>16%</strong>（15.3 vs 17.7 bytes/row）。此优势<strong>与 Catalog 后端无关</strong> —— S3 Tables 与 Glue 趋势一致。</p>
+
+<p>这组数据的重要性在于：<strong>它是「机制 ①」的第一个干净样本</strong>。大表全表扫描时 CPU 不再被逐行 <code>variant_get</code> 调用主导，二进制编码免解析的优势显现。</p>
+
+<!-- ---------------------------------------------------------------- -->
+<h3 id="t3">4.3 Agent Trace Log：4.11 亿行，Variant 大胜 —— 但原因不是 shredding</h3>
+
+<p class="src">环境：411,141,272 行 OTel spans（Kafka Structured Streaming 实时写入）· S3 Tables Iceberg V3 zstd · Spark 4.1.2 on EKS（10 executors × 4 cores, 12 GB）· 分区 <code>days(start_time)</code></p>
+
+<h4>结果</h4>
+<div class="tbl">
+<table>
+  <thead><tr><th>Query</th><th>场景</th><th class="num">Variant (ms)</th><th class="num">JSON (ms)</th><th class="num">Speedup</th><th class="ctr">胜出</th></tr></thead>
+  <tbody>
+    <tr><td>Q1</td><td>按 service 聚合 token 消耗</td><td class="num">29,479</td><td class="num">41,259</td><td class="num"><span class="win">1.40x</span></td><td class="ctr">Variant</td></tr>
+    <tr><td>Q2</td><td>全表聚合（所有 service 的 token 统计）</td><td class="num">34,451</td><td class="num">65,417</td><td class="num"><span class="win">1.90x</span></td><td class="ctr">Variant</td></tr>
+    <tr><td>Q3</td><td>按 attribute 值过滤计数</td><td class="num">26,775</td><td class="num">36,977</td><td class="num"><span class="win">1.38x</span></td><td class="ctr">Variant</td></tr>
+    <tr><td>Q4</td><td>慢 span Top-100（LIMIT）</td><td class="num">359</td><td class="num">180</td><td class="num"><span class="lose">0.50x</span></td><td class="ctr">JSON</td></tr>
+    <tr><td>Q5</td><td>trace_id 单点查询（调用链重建）</td><td class="num">55,074</td><td class="num">36,132</td><td class="num"><span class="lose">0.66x</span></td><td class="ctr">JSON</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>存储：Variant <strong>20.39 GB</strong>（381 文件 / 平均 54.80 MB）vs JSON <strong>23.65 GB</strong>（76 文件 / 平均 318.60 MB），节省 <strong>13.8%</strong>（3.26 GB）。</p>
+
+<div class="box bad">
+  <span class="t">归因修正：这不是 shredding 的功劳，而且这张表大概率没开 shredding</span>
+  <p>原报告把 1.38x~1.90x 归因给 "Shredding 将高频 key 物化为独立列，聚合时直接列式读取"。<strong>这个归因是错的</strong>，有四条独立证据：</p>
+</div>
+
+<h4>证据 1：配置键在 Spark 中不存在</h4>
+
+<p>报告的测试环境写的是：</p>
+<pre><code>spark.sql.parquet.variantShreddingEnabled: "true"</code></pre>
+
+<p>核对 Spark master 的 <code>SQLConf.scala</code>，所有 variant 相关配置都在 <code>spark.sql.variant.*</code> 下，<strong>没有</strong> <code>spark.sql.parquet.variantShreddingEnabled</code> 这一项：</p>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>真实配置键</th><th class="ctr">默认值</th><th>作用</th></tr></thead>
+  <tbody>
+    <tr><td><code>spark.sql.variant.writeShredding.enabled</code></td><td class="ctr">true</td><td>允许 Parquet writer 写 shredded variant</td></tr>
+    <tr><td><code>spark.sql.variant.allowReadingShredded</code></td><td class="ctr">true</td><td>允许 reader 读 shredded variant</td></tr>
+    <tr><td><code>spark.sql.variant.pushVariantIntoScan</code></td><td class="ctr">true</td><td>scan schema 中用 struct 替换 variant</td></tr>
+    <tr><td><code>spark.sql.variant.shredding.maxSchemaWidth</code></td><td class="ctr">300</td><td>推断时最多 shred 多少字段</td></tr>
+    <tr><td><code>spark.sql.variant.inferShreddingSchema</code></td><td class="ctr">—</td><td>推断 shredding schema</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>Spark 对未知的 <code>spark.sql.*</code> 配置静默接受、不报错</strong>，所以这一行等于什么都没做，而且不会有任何警告。</p>
+
+<h4>证据 2：即使键名写对了，Iceberg 也不看它</h4>
+
+<p><code>spark.sql.variant.*</code> 是 <strong>Spark 内置 Parquet data source</strong> 的开关，而我们写的是 <strong>Iceberg 表</strong>。Iceberg 有自己独立的开关：</p>
+
+<pre><code>// Iceberg 1.11.0 core/src/main/java/org/apache/iceberg/TableProperties.java:161
+public static final String  PARQUET_SHRED_VARIANTS         = "write.parquet.shred-variants";
+public static final boolean PARQUET_SHRED_VARIANTS_DEFAULT = false;   // ← 默认 false</code></pre>
+
+<p>Iceberg 的 <code>Parquet.WriteBuilder.forTable(table)</code> 走的是 <code>setAll(table.properties())</code> —— <strong>只读表属性</strong>，<code>variantShreddingFunc</code> 由此装配。Spark session 里的 <code>spark.sql.variant.*</code> 完全不参与 Iceberg 的写入决策。</p>
+
+<p><strong>默认 false + 报告未设置该表属性 ⇒ 该表极可能是未 shredded 的纯 binary Variant 表。</strong></p>
+
+<h4>证据 3：对照组设对了</h4>
+
+<p>同期的游戏数据测试报告明确记录了表属性：</p>
+<pre><code>Table Properties: [format-version=3, write.parquet.shred-variants=true,
+                   write.parquet.compression-codec=zstd]</code></pre>
+
+<p>这也解释了为什么游戏报告能观察到「shredding 后 Parquet 从 3 列增至约 990 列」这类<strong>物理证据</strong>，而 Agent Trace 报告<strong>通篇没有任何 shredded 列数、<code>EXPLAIN</code> 输出或 Parquet schema 的直接证据</strong> —— 所有「Shredding 生效」的表述都是推断，不是观测。</p>
+
+<h4>证据 4：报告自身前后矛盾</h4>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>报告位置</th><th>说法</th><th>问题</th></tr></thead>
+  <tbody>
+    <tr><td>§Q1 分析</td><td>"Shredding 将高频 key 物化为独立列，聚合时<strong>直接列式读取</strong>"</td><td>与两周前同栈游戏测试的 <code>EXPLAIN FORMATTED</code> 直接冲突</td></tr>
+    <tr><td>§Q3 分析</td><td>"WHERE 条件中直接使用 Shredding 列进行过滤"</td><td>同上；<code>SupportsPushDownVariantExtractions</code> 在 Iceberg 1.11.0 中未实现</td></tr>
+    <tr><td>§未来预期</td><td>"当社区完成 <code>SupportsPushDownVariantExtractions</code>…<code>variant_get()</code> 将被优化为只读取 shredded 列"</td><td><strong>这句自我否认了前两条</strong></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>报告同时声称「列裁剪已生效」和「列裁剪尚未实现」，二者不能同时为真。同一套技术栈在两周前已被 <code>EXPLAIN</code> 证伪，所以<strong>正确的一半是「尚未实现」</strong>。</p>
+
+<h4>那 1.38x~1.90x 到底来自哪里？</h4>
+
+<p><strong>来自机制 ① —— Variant 二进制编码免去 JSON 文本解析。</strong>有意思的是，报告自己的根因分析其实说对了机制，只是错误地挂在了「Shredding」名下：</p>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>因素</th><th class="ctr">游戏 detail</th><th class="ctr">Agent Trace attributes</th></tr></thead>
+  <tbody>
+    <tr><td>JSON 字符串长度</td><td class="ctr">~150 bytes</td><td class="ctr"><strong>500–2000 bytes</strong></td></tr>
+    <tr><td>字段数</td><td class="ctr">~6</td><td class="ctr"><strong>20+</strong></td></tr>
+    <tr><td>路径深度</td><td class="ctr">1 层（<code>$.gold</code>）</td><td class="ctr"><strong>2–3 层</strong>（<code>$.gen_ai.usage.input_tokens</code>）</td></tr>
+  </tbody>
+</table>
+</div>
+
+<ul>
+  <li><code>get_json_object()</code> 需<strong>线性扫描</strong>文本到目标路径 —— 字符串越长、路径越深越慢</li>
+  <li><code>variant_get()</code> 通过 binary offset + metadata 字典<strong>直接定位</strong> —— 路径深度不影响</li>
+  <li>4.11 亿行 × 500~2000 字节的累积差异 → Variant 快 1.4x~1.9x</li>
+</ul>
+
+<h4>连带修正：Q5 的 0.66x 也归因错了</h4>
+
+<p>报告把点查慢归因为「Shredding 后 Parquet 列数更多、I/O 量更大」。若真未 shredded，这解释站不住。更可能是<strong>文件布局差异</strong>：</p>
+
+<p>Variant 表 <strong>381 文件 × 55 MB</strong> vs JSON 表 <strong>76 文件 × 319 MB</strong>。全表扫描找几行时，<strong>文件数多 5 倍意味着 5 倍的 footer 读取和任务调度开销</strong>。报告自己也注明了「Streaming 触发频率相同但 Spark 合并策略不同」导致文件数差异，却<strong>未把它纳入性能归因</strong>。</p>
+
+<p>Q4 的 0.50x 绝对值只有 359 ms vs 180 ms，可忽略。</p>
+
+<h4>修正后的结论表</h4>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>报告原结论</th><th>修正</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>"Shredding 对聚合查询效果显著（Q2 近 2x）"</td>
+      <td><span class="b b-bad">✗</span> 应为「<strong>Variant 二进制编码</strong>对聚合查询效果显著」。Shredding 大概率未启用；即便启用，其列裁剪在 Iceberg 1.11.0 也不生效</td>
+    </tr>
+    <tr>
+      <td>"WHERE 过滤 ~1.4x：Shredding 列支持谓词下推"</td>
+      <td><span class="b b-bad">✗</span> 谓词下推<strong>未实现</strong>（PR #15385 仍 Draft，等 Spark 4.3）。1.4x 来自免去 JSON 文本解析</td>
+    </tr>
+    <tr>
+      <td>"存储节省 13.8% 来自 Shredding 拆列 + 字典编码"</td>
+      <td><span class="b b-warn">⚠</span> 部分错误。若未 shredded，节省来自<strong>二进制编码消除 JSON 语法开销</strong>。旁证：独立基准显示<strong>纯二进制编码（Spark 4.0，无 shredding）即可省 31.4%</strong>（10M 记录，279.32 → 191.58 MB）</td>
+    </tr>
+    <tr>
+      <td>"Variant + Shredding 适合聚合分析"</td>
+      <td><span class="b b-ok">✓</span> 方向对，但 <strong>"+Shredding" 三个字应去掉</strong></td>
+    </tr>
+    <tr>
+      <td>"未来下推完成后优势从 1.9x → 5-10x"</td>
+      <td><span class="b b-ok">✓</span> 逻辑成立，<strong>这才是 shredding 的真正贡献（尚未兑现）</strong>。参考 Iceberg PR #16714 基准：下推 ON vs OFF 差 <strong>14.8×</strong></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box ok">
+  <span class="t">好消息</span>
+  这份报告测的是「Variant 二进制编码 vs JSON 文本解析」，不是「Shredding vs 不 Shredding」。<strong>结论方向（Agent Trace 类长 JSON 负载适合 Variant）依然可靠且有价值</strong> —— 而且这个收益<strong>不依赖尚未落地的 shredding 下推，现在就能拿到</strong>。
+</div>
+
+<!-- ---------------------------------------------------------------- -->
+<h3 id="t4">4.4 三组结果为何看似矛盾 —— 其实完全一致</h3>
+
+<p><strong>关键：三组测试都没有用上 shredding 的列裁剪</strong>（connector gap 导致）。所以它们本质上都是在比两个<strong>运行时函数</strong>：<code>variant_get()</code> vs <code>get_json_object()</code>。谁赢完全取决于工作负载：</p>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>负载特征</th><th class="ctr">JSON 文本解析成本</th><th class="ctr">Variant 二进制解析成本</th><th class="ctr">谁赢</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>短 JSON、字段少、路径浅、海量行逐行提取<br /><span class="src">游戏 detail：150 B / 6 字段 / 1 层</span></td>
+      <td class="ctr"><strong>低</strong><br /><span class="src">短串字符匹配极快</span></td>
+      <td class="ctr">相对偏高<br /><span class="src">binary 头 + 元数据查找 + 类型转换</span></td>
+      <td class="ctr"><span class="lose">JSON<br />0.31x~0.78x</span></td>
+    </tr>
+    <tr>
+      <td>大表全表扫描聚合<br /><span class="src">COVID covidcast：2 亿行</span></td>
+      <td class="ctr">高<br /><span class="src">逐行文本解析累积</span></td>
+      <td class="ctr">不随行数放大<br /><span class="src">IO 优势叠加（少读 16%）</span></td>
+      <td class="ctr"><span class="win">Variant<br />快 16~43%</span></td>
+    </tr>
+    <tr>
+      <td>长 JSON、字段多、路径深<br /><span class="src">Agent Trace：500–2000 B / 20+ 字段 / 2–3 层</span></td>
+      <td class="ctr"><strong>高</strong><br /><span class="src">长串线性扫描 + 深路径</span></td>
+      <td class="ctr">不随长度 / 深度增长<br /><span class="src">offset 直接定位</span></td>
+      <td class="ctr"><span class="win">Variant<br />1.38x~1.90x</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box key">
+  <span class="t">统一规律</span>
+  <pre style="margin:8px 0 0"><code>当前阶段的 Variant 查询优势 = f(JSON 字符串长度, 字段数, 路径深度, 需解析的行数)
+                             —— 与 shredding 无关</code></pre>
+  <p style="margin-top:10px"><strong>真正的 Variant 加速（shredded 列裁剪，理论上可减少 IO 90%+）在三组测试里都还没体现。</strong>一旦 connector 实现下推接口，这三组数字都会被改写。</p>
+</div>
+
+<hr />
+
+<!-- ================================================================ -->
+<h2 id="pitfall">5. 配置踩坑：Iceberg 表属性 vs Spark session 配置</h2>
+
+<div class="box bad">
+  <span class="t">🚨 写 Iceberg 表时，不要用 <code>spark.sql.variant.*</code> 去开 shredding</span>
+  <p>这是两个<strong>完全独立、不可互换</strong>的配置通道：</p>
+  <ul>
+    <li><code>spark.sql.variant.*</code> → Spark <strong>内置 Parquet data source</strong> 的开关</li>
+    <li><code>write.parquet.shred-variants</code> → <strong>Iceberg</strong> 的开关（<strong>默认 false</strong>，必须显式设置）</li>
+  </ul>
+  <p>Iceberg 写入路径 <code>Parquet.WriteBuilder.forTable()</code> 只走 <code>setAll(table.properties())</code>，<strong>完全不读 Spark session 的 variant 配置</strong>。</p>
+  <p>叠加 <strong>Spark 对未知 <code>spark.sql.*</code> 键静默接受不报错</strong>这一行为，后果是：键名写错时你<strong>不会收到任何警告</strong>，表以未 shredded 方式写入，而你以为开了。我们的 Agent Trace 测试正是这么踩的。</p>
+</div>
+
+<h3>正确的启用方式</h3>
+
+<pre><code>-- 建表时
+CREATE TABLE catalog.db.events (
+  event_id BIGINT,
+  payload  VARIANT
+) USING iceberg
+TBLPROPERTIES (
+  'format-version'                              = '3',
+  'write.parquet.shred-variants'                = 'true',
+  'write.parquet.variant-inference-buffer-size' = '100'
+);
+
+-- 已有表开启（只影响后续写入的新文件）
+ALTER TABLE catalog.db.events
+SET TBLPROPERTIES ('write.parquet.shred-variants' = 'true');</code></pre>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>Iceberg 表属性</th><th class="ctr">默认值</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td><code>write.parquet.shred-variants</code></td><td class="ctr"><strong>false</strong></td><td>启用 shredded 写入</td></tr>
+    <tr><td><code>write.parquet.variant-inference-buffer-size</code></td><td class="ctr">100</td><td>schema 推断用的缓冲行数</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>配置优先级：<code>DataSource Write Option &gt; Spark Session Config（iceberg 前缀） &gt; Table Property &gt; Default</code></p>
+<ul>
+  <li>Session 级：<code>spark.conf.set("spark.sql.iceberg.shred-variants", "true")</code>&nbsp;— 注意是 <code>iceberg</code> 而非 <code>variant</code></li>
+  <li>Write option 级：<code>df.writeTo("table").option("shred-variants", "true").append()</code></li>
+</ul>
+
+<div class="box warn">
+  <span class="t">自查清单</span>
+  <ol style="margin:6px 0 0">
+    <li><code>SHOW TBLPROPERTIES &lt;table&gt;;</code> → 确认 <code>write.parquet.shred-variants=true</code></li>
+    <li>读一个数据文件的 Parquet footer → 看 variant 列下是否有 <code>typed_value</code> 子列（未 shredded 只有 <code>metadata</code> + <code>value</code>）</li>
+    <li><code>EXPLAIN FORMATTED</code> → 看 scan 的 <code>Output</code> 是否仍是完整 variant 列</li>
+  </ol>
+</div>
+
+<div class="box key">
+  <span class="t">方法论教训</span>
+  <p>任何 Variant 性能测试报告，如果<strong>没有给出 shredded 列数、Parquet schema 或 EXPLAIN 输出</strong>，那么它关于 shredding 的一切结论都只是推断。物理证据的门槛应该是：<strong>列数从 N 变成了 N+M</strong>。</p>
+</div>
+
+<hr />
+
+<!-- ================================================================ -->
+<h2 id="upstream">6. 上游进展追踪（截至 2026-07-29）</h2>
+
+<h3 id="u-iceberg">6.1 Iceberg 侧：实现已写好，但都还没合并</h3>
+
+<p>原先追踪的 issue #16448（"SparkScanBuilder 未实现接口"）<strong>现在已有对应实现 PR</strong>，作者均为 qlong：</p>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>PR / Issue</th><th>内容</th><th class="ctr">状态</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/apache/iceberg/pull/16714">#16714</a></td>
+      <td><strong>选择性 shredded variant Parquet readers</strong> —— 只读请求路径的 <code>typed_value</code> 列，不再物化整个 blob</td>
+      <td class="ctr"><span class="b b-warn">Open</span><br /><span class="src">3 轮 review 意见<br />等 review，目标 <code>spark/v4.1</code></span></td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/iceberg/pull/16715">#16715</a></td>
+      <td><strong><code>SupportsPushDownVariantExtractions</code> 实现</strong> —— <code>SparkVariantExtractionScanBuilder</code>，开关 <code>spark.sql.iceberg.variant-extraction-push-down.enabled</code>（默认开）</td>
+      <td class="ctr"><span class="b b-warn">Open</span><br /><span class="src">等 review</span></td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/iceberg/issues/16448">#16448</a></td>
+      <td>原始 issue（列裁剪 plan change）</td>
+      <td class="ctr"><span class="b b-warn">Open</span><br /><span class="src">2026-05-20 开</span></td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/iceberg/issues/16726">#16726</a></td>
+      <td>配套 issue：reader 侧只读选定 path</td>
+      <td class="ctr"><span class="b b-warn">Open</span><br /><span class="src">2026-06-08 开</span></td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/iceberg/pull/15384">#15384</a></td>
+      <td>variant extract API + <strong>manifest bounds 字节序修复</strong>（little-endian）；被 #16714/#16715 依赖</td>
+      <td class="ctr"><span class="b b-warn">Open</span><br /><span class="src">已获 +1，但被要求修改</span></td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/iceberg/pull/15385">#15385</a></td>
+      <td><code>variant_get</code> 谓词下推用于 file skipping</td>
+      <td class="ctr"><span class="b b-bad">Draft</span><br /><span class="src">作者："Will publish this<br />when Spark 4.3 is released"</span></td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/apache/iceberg/pull/16133">#16133</a></td>
+      <td>Parquet row group skipping for shredded variant</td>
+      <td class="ctr"><span class="b b-bad">已被 stale bot<br />自动关闭</span><br /><span class="src">2026-07-06</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>合并顺序</strong>：#16714 先 → #16715 后（端到端测试需要两者）。两个 PR 都还差至少一个 approving review。</p>
+
+<h4>#16714 自带的基准数据 —— 下推生效后确实翻盘</h4>
+
+<p>这是本轮调研最有价值的发现。作者用一天的 GitHub activity 数据（JSON + 299 个 shredded 列）做基准，取 3 次运行中位数：</p>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>配置</th><th class="num">总耗时</th><th class="num">相对基线</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Variant + 下推 ON + 新选择性 readers</strong>（基线）</td><td class="num"><strong>49.74 s</strong></td><td class="num">—</td></tr>
+    <tr><td>JSON string</td><td class="num">63.66 s</td><td class="num"><span class="lose">+28.0%（慢）</span></td></tr>
+    <tr><td>Variant + 下推 OFF</td><td class="num"><strong>735.39 s</strong></td><td class="num"><span class="lose">+1379%（慢 14.8×）</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>单查询最极端：c-q08 <strong>3.701 s（下推 ON）vs 87.059 s（下推 OFF）</strong>，差 23 倍。</p>
+
+<div class="box key">
+  <span class="t">这组数字直接印证了我们的诊断</span>
+  <ul>
+    <li>「下推 OFF」那一行（慢 14.8×）<strong>就是我们实测环境的状态</strong> —— 也解释了为什么我们的游戏日志测试中 <code>variant_get</code> 全面慢于 <code>get_json_object</code></li>
+    <li>一旦下推生效，Variant 从「慢 28%」变成「<strong>比 JSON string 快 28%</strong>」，<strong>攻守互换</strong></li>
+    <li>比率量级与我们的 0.31x~0.78x 不同，原因是负载差异（我们的游戏日志字段少、结构统一，JSON 解析本就极快，是 Variant 最不利的场景）</li>
+  </ul>
+</div>
+
+<h3 id="u16292">6.2 另一条线：向量化读取（#16292，已合并，但对 shredded 表无效）</h3>
+
+<p><a href="https://github.com/apache/iceberg/pull/16292">PR #16292</a> — "Spark: Add vectorized Parquet reads for variant columns"，作者 nssalian：</p>
+
+<div class="tbl">
+<table>
+  <tbody>
+    <tr><th style="width:110px">状态</th><td><span class="b b-ok">已合并（2026-07-19）</span>，milestone = <strong>Iceberg 1.12.0</strong></td></tr>
+    <tr><th>做什么</th><td>把 variant 的 <code>metadata</code> / <code>value</code> 两个子列作为 <strong>Arrow VarBinary 批量（向量化）</strong>读取。此前 variant 列会强制整表退化为 row-at-a-time 逐行读</td></tr>
+    <tr><th>改动</th><td><code>arrow/</code> 新增 <code>VectorizedVariantVisitor</code> / <code>VariantVectorHolder</code>；<code>spark/v4.0</code> + <code>v4.1</code> 新增 <code>VariantColumnVector</code>；<code>ColumnVectorWithFilter</code> 加 <code>VariantType</code> 分支，使 variant 能与 DV / position delete 共存</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box warn">
+  <span class="t">关键：它对 shredded 表明确不生效</span>
+  <p><code>SparkBatch</code> 里做了一个<strong>逐文件判断</strong>：<code>lowerBounds.containsKey(variantFieldId)</code> —— 该 key 存在即说明是 shredded payload，此时<strong>主动关闭批量读、退回逐行</strong>。variant 列的 metrics mode 为 <code>None</code>/<code>Counts</code> 时同样退回。</p>
+</div>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>对比维度</th><th>#16292（已合并）</th><th>#16714 + #16715（未合并）</th></tr></thead>
+  <tbody>
+    <tr><td>解决的问题</td><td><strong>非 shredded</strong> variant 的逐行读开销</td><td><strong>shredded</strong> variant 的列裁剪 / 下推</td></tr>
+    <tr><td>手段</td><td>Arrow 向量化批量读 value + metadata</td><td>只读请求路径的 <code>typed_value</code> 列</td></tr>
+    <tr><td>对 shredded 表</td><td><span class="b b-bad">主动禁用向量化，退回逐行</span></td><td><span class="b b-ok">正是为其设计</span></td></tr>
+    <tr><td>我们 42 亿行实测受益</td><td><span class="b b-bad">无（我们的表是 shredded）</span></td><td><span class="b b-ok">会（基准显示 14.8×）</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>这与社区 Sync 纪要里「<strong>向量化读取器接近就绪，提升非裂解 Variant 读取性能</strong>」一条完全对应 —— 注意原文限定词就是「<strong>非裂解</strong>」。</p>
+
+<p><strong>结论</strong>：#16292 是好消息（Variant 基础读取性能改善，且是目前<strong>唯一</strong>确定进 1.12.0 milestone 的 variant 读取相关改动），但<strong>它不解决我们实测到的问题</strong>。</p>
+
+<p class="src">关联：<a href="https://github.com/apache/iceberg/pull/16087">#16087</a>（向量化 builder 的 variant 处理修复，其临时补丁被 #16292 移除）；<a href="https://github.com/apache/iceberg/pull/16913">#16913</a>（<code>ColumnVectorWithFilter</code> 子向量修复，Open）。⚠️ 副作用需留意：#16292 让 variant 走上向量化路径并触及 DV / position delete 交互，而 #16913 仍 Open 说明这块 nested/child vector 语义还在收敛。若在 1.12 上跑 <strong>Variant + DV 组合</strong>，建议留一轮回归验证。</p>
+
+<h3 id="u-spark">6.3 Spark 侧：4.2 已发布但不含 variant 性能修复</h3>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>版本</th><th class="ctr">日期</th><th>Variant 相关</th></tr></thead>
+  <tbody>
+    <tr><td>Spark 4.1</td><td class="ctr">2026-05-21</td><td>Variant + shredding 写入 GA；定义 <code>SupportsPushDownVariantExtractions</code> 接口</td></tr>
+    <tr><td><strong>Spark 4.2.0</strong></td><td class="ctr">2026-07-11 已发布</td><td><span class="b b-bad">⚠️ 未包含 variant 性能修复</span> —— #16715 中被追问过，作者已确认</td></tr>
+    <tr><td><strong>Spark 4.3</strong></td><td class="ctr">未发布</td><td><span class="b b-info">🎯 关键版本</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>Ticket</th><th>内容</th><th class="ctr">状态</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><a href="https://issues.apache.org/jira/browse/SPARK-55617">SPARK-55617</a></td>
+      <td><code>VariantGet</code> 加入 <code>V2ExpressionBuilder</code>，使 variant 谓词能经 DSv2 下推给 connector</td>
+      <td class="ctr"><span class="b b-ok">Resolved</span><br /><span class="src">Fix Version = 4.3.0<br />2026-06-15 解决</span></td>
+    </tr>
+    <tr>
+      <td><a href="https://issues.apache.org/jira/browse/SPARK-55817">SPARK-55817</a></td>
+      <td>打通 Parquet <strong>row-group skipping</strong> for shredded variant（<code>PushVariantIntoScan</code> 产生的 <code>v.`0`</code> 逻辑路径无法映射到物理列，导致 filter 被丢弃）</td>
+      <td class="ctr"><span class="b b-bad">Open</span><br /><span class="src">Target 4.2.0 但未进<br />PR #54598 已被 stale bot<br />关闭（2026-06-13）</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>6.4 当前能拿到什么、拿不到什么</h3>
+
+<p>作者 qlong 在 #16715 中的表述，是目前最权威的分期判断：</p>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>能力</th><th>时间线</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Extraction pushdown</strong><br />（列裁剪，少读列）</td>
+      <td>"<strong>can work today in simple cases</strong>" —— 只要 #16714 + #16715 合并，<strong>不必等 Spark 4.3</strong>；4.3 后自动进一步受益</td>
+    </tr>
+    <tr>
+      <td><strong>File / row-group skipping</strong><br />（少读文件）</td>
+      <td>"<strong>won't work until 4.3 is released</strong>" —— 依赖 SPARK-55617（已进 4.3）+ SPARK-55817（<strong>仍 Open</strong>）</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>6.5 对既有预期的修订</h3>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>原判断</th><th>修订后</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>"Iceberg connector 未实现 <code>SupportsPushDownVariantExtractions</code>"</td>
+      <td><span class="b b-ok">✓</span> 现象正确，但<strong>实现已存在于 PR #16714/#16715，尚未合并</strong> —— 从「没人做」变成「做完了在等 review」</td>
+    </tr>
+    <tr>
+      <td>"读取加速尚未兑现"</td>
+      <td><span class="b b-ok">✓</span> <strong>仍然成立</strong>（截至 2026-07-29 无任何 release 含此能力）</td>
+    </tr>
+    <tr>
+      <td>"社区已明确列为 1.12（2026 Q3）目标"</td>
+      <td><span class="b b-warn">⚠</span> <strong>需拆开看</strong>：Iceberg 最新 release 仍是 1.11.0（2026-05-20）。进了 1.12.0 milestone 的<strong>只有 #16292 向量化读取（非 shredded 路径）</strong>；shredding 下推的 #16714/#16715 <strong>均无 milestone</strong>，不能保证进 1.12</td>
+    </tr>
+    <tr>
+      <td>隐含预期"等 Iceberg 1.12 就好了"</td>
+      <td><span class="b b-bad">✗</span> <strong>不成立</strong>。完整收益需 <strong>Iceberg 侧合并 + Spark 4.3</strong>，且 row-group skipping 的 Spark PR 已 stale 关闭，属最薄弱环节</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box bad">
+  <span class="t">⚠️ 一个必须留意的风险信号</span>
+  三个关键 PR 被 stale bot 关闭或反复标记 stale（#16133 已关闭、SPARK PR #54598 已关闭、#15384/#15385 多次被标记后由作者手动救活）。<strong>这条线基本由 qlong 一人推动</strong>，#16714 至今 4 个参与者、<strong>0 个 approving review</strong>。这不是「即将落地」的形态，排期上不宜乐观。
+</div>
+
+<hr />
+
+<!-- ================================================================ -->
+<h2 id="aws">7. AWS 侧支持矩阵</h2>
+
+<h3>7.1 各服务 Variant 支持状态</h3>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>服务</th><th class="ctr">VARIANT</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Amazon S3 Tables</strong></td>
+      <td class="ctr"><span class="b b-ok">GA</span><br /><span class="src">2026-07-28</span></td>
+      <td>存储 + <strong>托管 Compaction 覆盖 Variant 列</strong>，15 个区域</td>
+    </tr>
+    <tr>
+      <td><strong>EMR 8.0</strong><br /><span class="src">Spark 4.0.2，2026-05-27 GA</span></td>
+      <td class="ctr"><span class="b b-ok">GA</span></td>
+      <td>公告明确含 "VARIANT data types"，EC2 / Serverless / EKS 三模式</td>
+    </tr>
+    <tr>
+      <td>EMR 7.12<br /><span class="src">Spark 3.5</span></td>
+      <td class="ctr"><span class="b b-bad">不支持</span></td>
+      <td><strong>Spark 3.5 无 VARIANT 类型</strong>，必须 Spark 4.0+</td>
+    </tr>
+    <tr>
+      <td>AWS Glue</td>
+      <td class="ctr"><span class="b b-warn">部分</span></td>
+      <td>基础读写支持，<strong>Shredding 暂不支持</strong></td>
+    </tr>
+    <tr>
+      <td>Athena（Trino）</td>
+      <td class="ctr"><span class="b b-bad">不支持</span></td>
+      <td>暂不支持 Iceberg V3</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>7.2 S3 Tables 公告的正确解读</h3>
+
+<p class="src">来源：<a href="https://aws.amazon.com/about-aws/whats-new/2026/07/amazon-s3-tables-variant-iceberg-v3/">AWS What's New, 2026-07-28</a></p>
+
+<p>官方描述的工作机制三条：</p>
+<ol>
+  <li>任何 <strong>Iceberg V3 兼容引擎</strong>在写入时将半结构化数据 <strong>shred 到 hidden columns</strong></li>
+  <li>Shredding 产生 <strong>Parquet column statistics</strong>，引擎据此做 <strong>file pruning</strong></li>
+  <li><strong>S3 Tables 的自动维护（含 Compaction）覆盖 Variant 列</strong></li>
+</ol>
+
+<p>可用区域（15 个）：US（N. Virginia / Ohio / Oregon）、Asia Pacific（Mumbai / Seoul / Singapore / Sydney / Tokyo）、Canada（Central）、Europe（Frankfurt / Ireland / London / Paris / Stockholm）、South America（São Paulo）。</p>
+
+<div class="box key">
+  <span class="t">这条公告「新」在哪里</span>
+  <p><strong>它不是「Variant 从不能用变成能用」。</strong>在此公告之前，用 OSS Spark 4.1.2 + Iceberg 1.11.0 通过 <strong>REST Catalog + SigV4</strong> 连 S3 Tables 写读 Variant 列<strong>已经可以跑通</strong> —— 我们 2026-04-21 的验证确认建表、异构 JSON 写入、<code>variant_get</code> 提取、谓词过滤、混合聚合全部通过。</p>
+  <p>真正的增量是<strong>服务侧的正式支持</strong>，其中最关键的是：<strong>托管 Compaction 现在正式覆盖 Variant 列</strong>。此前 Variant 列走的是「引擎能写、但服务侧自动维护行为未经官方支持 / 文档化」的灰色状态，小文件治理需要自己兜。这一条解除了生产化的最后一个运维顾虑 —— 结合 §4.3 中「381 文件 vs 76 文件」导致的点查退化，这个价值不小。</p>
+</div>
+
+<div class="box warn">
+  <span class="t">⚠️ 公告的 file pruning 声称需要实测确认</span>
+  <p>公告称 shredding 产生的 Parquet column statistics 可用于 <strong>file pruning</strong>。这与本文「查询加速尚未兑现」的判断<strong>并不直接矛盾</strong>，因为它们是 <a href="#layers">§3</a> 中的机制 ④ 和机制 ③，可以同时为真：公告讲的是<strong>少读文件</strong>，我们实测的瓶颈是<strong>读到的文件里仍要重建整个 Variant</strong>。</p>
+  <p>但要注意：<strong>file pruning 在开源栈上恰恰是最薄弱的一环</strong> —— 依赖的 SPARK-55817 仍是 Open，对应 Spark PR #54598 已被 stale bot 关闭（2026-06-13）；Iceberg 侧的 row group skipping PR #16133 也已自动关闭（2026-07-06）。</p>
+  <p>因此公告若声称 file pruning 可用，<strong>可能来自 AWS 自有分支或补丁，不能假设与开源栈等价</strong>。在没有 S3 Tables 上的新实测数据前，不要把这条公告当作「shredding 读取加速已兑现」的证据。</p>
+</div>
+
+<h3>7.3 Iceberg V3 逐特性支持（AWS）</h3>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>服务</th><th class="ctr">Deletion Vectors + Row Lineage</th><th class="ctr">Variant</th></tr></thead>
+  <tbody>
+    <tr><td>EMR 7.12（Spark 3.5）</td><td class="ctr"><span class="b b-ok">GA</span></td><td class="ctr"><span class="b b-bad">Spark 3.5 无 VARIANT</span></td></tr>
+    <tr><td>EMR 8.0（Spark 4.0.2）</td><td class="ctr"><span class="b b-ok">GA</span></td><td class="ctr"><span class="b b-ok">GA</span></td></tr>
+    <tr><td>S3 Tables</td><td class="ctr"><span class="b b-ok">GA</span><br /><span class="src">自动 Compaction 已 DV 感知</span></td><td class="ctr"><span class="b b-ok">GA（2026-07-28）</span><br /><span class="src">托管 Compaction 覆盖，15 区域</span></td></tr>
+    <tr><td>Athena（Trino）</td><td class="ctr"><span class="b b-bad">暂不支持 V3</span></td><td class="ctr"><span class="b b-bad">—</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box warn">
+  <span class="t">Spark 4.x 连 S3 Tables 的连接方式</span>
+  必须走 <strong>Iceberg REST Catalog + SigV4</strong>。<code>s3-tables-catalog-for-iceberg</code> 这个连接器是 <strong>Spark 3.x only</strong>，不适用于 Spark 4.x。
+</div>
+
+<hr />
+
+<!-- ================================================================ -->
+<h2 id="agent">8. 已兑现的价值：Schema 自描述与 Agent 场景</h2>
+
+<p>虽然 shredding 查询加速没兑现，但有一块价值<strong>完全不依赖 shredding、现在就能拿到</strong>，而且是 Variant 当下最独特的能力。</p>
+
+<h3>8.1 核心机制</h3>
+
+<p>传统 JSON String 列对引擎和 Agent 都是「黑盒」—— <code>DESCRIBE table</code> 只能看到 <code>payload STRING</code>，Agent 必须靠采样猜字段。而 Variant 列可通过一次 <code>schema_of_variant_agg()</code> 拿到精确字段名与类型。</p>
+
+<div class="box key">
+  <span class="t">价值转移</span>
+  Variant 把「理解半结构化数据结构」的成本从 <strong>Agent 探索 / 采样</strong> 转移到了 <strong>数据自描述</strong>。这让 Data Agent 从「需要被告知数据结构」进化为「自己去发现数据结构」。
+</div>
+
+<h3>8.2 三个实测验证场景</h3>
+
+<p class="src">环境：Phase 1 = 110 万行（100 万正常 + 10 万脏数据），Phase 2 增加 5 万行含新字段</p>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>场景</th><th>JSON String</th><th>Variant</th><th>Variant 优势</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>受限 Agent</strong><br /><span class="src">企业安全策略禁止 <code>SELECT * LIMIT N</code> 探索查询</span></td>
+      <td><span class="b b-bad">✗</span> 无法生成 SQL（不知字段）</td>
+      <td><span class="b b-ok">✓</span> <code>schema_of_variant</code> 发现字段结构</td>
+      <td><strong>零配置即可工作</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Schema 演进</strong><br /><span class="src">开发者新增 <code>match_result</code> / <code>match_score</code></span></td>
+      <td><span class="b b-bad">✗</span> 不知道有新字段</td>
+      <td><span class="b b-ok">✓</span> 立即自主发现新字段</td>
+      <td><strong>零维护成本</strong></td>
+    </tr>
+    <tr>
+      <td><strong>类型推断（含脏数据）</strong></td>
+      <td><span class="b b-bad">✗</span> 采样推断 → 遇 <code>'N/A'</code> 报错</td>
+      <td><span class="b b-ok">✓</span> 精确类型 + <code>try_variant_get</code></td>
+      <td><strong>SQL 正确率更高</strong></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>COVID 实验进一步验证：Agent 一次 <code>schema_of_variant_agg</code> 即可拿到全部 8 种 source 的完整 schema，生成 5 条业务 SQL <strong>全部正确、零失败</strong>；而多宽表方案需 6 次 <code>DESCRIBE</code> + 推断字段语义等价性，易出错。</p>
+
+<hr />
+
+<!-- ================================================================ -->
+<h2 id="advice">9. 选型建议</h2>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>场景</th><th class="ctr">建议</th><th>理由</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>AI Agent / Ad-hoc 数据探索</strong></td>
+      <td class="ctr"><span class="b b-ok">现在就用</span></td>
+      <td>schema 自描述价值不依赖 shredding 性能，当下即可兑现</td>
+    </tr>
+    <tr>
+      <td><strong>多源异构数据 Landing / 汇聚</strong></td>
+      <td class="ctr"><span class="b b-ok">用 Variant</span></td>
+      <td>单表存多 schema，避免表爆炸，schema 演进零成本</td>
+    </tr>
+    <tr>
+      <td><strong>长 JSON / 深路径 / 字段多的负载</strong><br /><span class="src">如 OTel spans、Agent trace、API 日志</span></td>
+      <td class="ctr"><span class="b b-ok">用 Variant</span></td>
+      <td>实测快 1.38x~1.90x，且<strong>此收益来自二进制编码，不等 shredding</strong></td>
+    </tr>
+    <tr>
+      <td><strong>大数据量全表扫描聚合</strong></td>
+      <td class="ctr"><span class="b b-ok">可用 Variant</span></td>
+      <td>实测 2 亿行下比 JSON String 快 16%~43%</td>
+    </tr>
+    <tr>
+      <td><strong>短 JSON + 字段少 + 海量行逐行提取</strong></td>
+      <td class="ctr"><span class="b b-bad">暂不用</span></td>
+      <td>实测慢 0.31x~0.78x。这是 Variant 当前最不利的场景</td>
+    </tr>
+    <tr>
+      <td><strong>高频点查 / 单列过滤（追求低延迟）</strong></td>
+      <td class="ctr"><span class="b b-warn">等下推落地</span></td>
+      <td>列裁剪下推未实现前，shredding 读取加速拿不到，甚至比 JSON 慢</td>
+    </tr>
+    <tr>
+      <td><strong>高频固定 schema OLAP（Dashboard）</strong></td>
+      <td class="ctr"><span class="b b-bad">仍用宽表</span></td>
+      <td>列式 + 谓词下推性能最优</td>
+    </tr>
+    <tr>
+      <td><strong>写多读少（日志高吞吐摄入）</strong></td>
+      <td class="ctr"><span class="b b-warn">关闭 shredding</span></td>
+      <td>shredding 写入慢约 <strong>2.7×</strong>，且读取收益当前拿不到</td>
+    </tr>
+    <tr>
+      <td><strong>大量分桶（bucket 数高 → 小文件）</strong></td>
+      <td class="ctr"><span class="b b-bad">反模式</span></td>
+      <td>文件降到 5.4 MB 时存储节省从 14.6% 塌到 <strong>0.65%</strong></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box key">
+  <span class="t">当前阶段的核心建议</span>
+  <p><strong>不要为「shredding 查询加速」选 Variant。</strong>在当前栈（Spark 4.1.2/4.2 + Iceberg 1.11.0）上，选 Variant 的正当理由是三条已兑现的价值：</p>
+  <ol style="margin:6px 0 0">
+    <li><strong>存储节省 13.8%~16%</strong>（前提：文件 &gt; 50 MB）</li>
+    <li><strong>Agent schema 自描述</strong>（<code>schema_of_variant_agg</code>）</li>
+    <li><strong>长 JSON 负载的二进制免解析收益</strong>（1.38x~1.90x）</li>
+  </ol>
+</div>
+
+<div class="box warn">
+  <span class="t">一个反直觉的选项</span>
+  若你的负载<strong>不依赖字段级列裁剪</strong>（整列取出、全表扫描聚合），Iceberg 1.12 的 #16292 向量化读取会带来收益 —— 但<strong>前提是表不 shredded</strong>。换言之短期内存在一个权衡：<strong>关掉 shredding 反而能吃到向量化批量读</strong>；开着 shredding 则既拿不到列裁剪（未合并）、又被排除在向量化之外（主动禁用）。
+</div>
+
+<hr />
+
+<!-- ================================================================ -->
+<h2 id="todo">10. 待验证事项</h2>
+
+<h3>10.1 确证 Agent Trace 表的 shredding 状态（按成本从低到高）</h3>
+
+<ol>
+  <li><strong>查表属性</strong>（1 分钟，决定性）：<code>SHOW TBLPROPERTIES tracelog.otel_spans_v2;</code> —— 看 <code>write.parquet.shred-variants</code> 是否 = true；缺失或 false 即未 shredded</li>
+  <li><strong>查 Parquet 物理 schema</strong>（决定性）：读一个数据文件的 footer，看 <code>attributes</code> 下是否只有 <code>metadata</code> + <code>value</code>（未 shredded），还是另有 <code>typed_value</code> 子列（已 shredded）</li>
+  <li><strong><code>EXPLAIN FORMATTED</code></strong> 跑 Q1/Q3，确认 scan 的 <code>Output</code> 是否仍是完整 attributes 列</li>
+  <li><strong>真正的 A/B</strong>：同一份数据写两张 Variant 表，<strong>唯一差别是 <code>write.parquet.shred-variants</code> true/false</strong>，重跑 Q1~Q5。<strong>这是唯一能隔离出 shredding 净效应的实验</strong> —— 现有报告缺的正是这个对照组</li>
+</ol>
+
+<p>附带价值：若 <code>otel_spans_v2</code> 确实未 shredded，那么升级到 Iceberg 1.12 后这张表<strong>能直接吃到 #16292 的向量化收益</strong>，而开了 shredding 的游戏日志表反而吃不到。这个反差值得在第 4 步的 A/B 中一并验证。</p>
+
+<h3>10.2 其他待验证</h3>
+
+<ul>
+  <li><strong>S3 Tables 的 file pruning 是否真实生效</strong> —— 在 S3 Tables 上复测单列查询，确认是否真的少读文件、以及是否已绕过 Variant 重建开销。这决定 AWS 是否用了自有分支</li>
+  <li><strong>cherry-pick #16714 + #16715 提前验证</strong> —— 自建 Iceberg 跑我们的游戏日志数据集。#16714 基准显示下推 ON/OFF 差 14.8×，值得在我们自己负载上确认，尤其我们的负载「字段少 + 结构统一」是 Variant 最不利场景，验证价值高</li>
+  <li><strong>Variant + DV 组合在 1.12 上的回归</strong> —— #16913 仍 Open，nested/child vector 语义还在收敛</li>
+</ul>
+
+<h3>10.3 跟踪信号（按重要性）</h3>
+
+<ol>
+  <li><strong>#16714 拿到 approving review</strong> → 最近的里程碑</li>
+  <li><strong>Spark 4.3 发布日期 + SPARK-55817 是否复活</strong> → 决定 file skipping 能否兑现</li>
+  <li><strong>Iceberg 1.12.0 release notes</strong> → 预期含 #16292（向量化，非 shredded），<strong>不要误读为 shredding 下推已就绪</strong></li>
+  <li><strong>#16913 合并情况</strong> → variant + DV 的 child vector 语义是否收敛</li>
+</ol>
+
+<hr />
+
+<!-- ================================================================ -->
+<h2 id="refs">附：资料来源</h2>
+
+<h3>公开一手资料（设计初衷部分）</h3>
+
+<div class="tbl">
+<table>
+  <thead><tr><th>来源</th><th>类型</th><th>核对到的关键原文</th></tr></thead>
+  <tbody>
+    <tr><td><a href="https://github.com/apache/parquet-format/blob/master/VariantEncoding.md">Parquet <code>VariantEncoding.md</code></a></td><td>Spec</td><td>"efficiently queried by path"；"each nested Variant value is contiguous and self-contained"</td></tr>
+    <tr><td><a href="https://github.com/apache/parquet-format/blob/master/VariantShredding.md">Parquet <code>VariantShredding.md</code></a></td><td>Spec</td><td>"data is often partially homogeneous"；"Parquet's columnar representation for more compact data encoding, column statistics for data skipping, and partial projections"</td></tr>
+    <tr><td><a href="https://issues.apache.org/jira/browse/SPARK-45891">SPARK-45891</a></td><td>SPIP<br /><span class="src">作者 Chenhao Li</span></td><td>"repeated JSON parsing and degraded performance"；"more efficient binary representation internally"；"keeps the flexibility of schemaless JSON data"</td></tr>
+    <tr><td><a href="https://github.com/apache/iceberg/issues/10392">Iceberg Issue #10392</a></td><td>Proposal<br /><span class="src">2024-05-29，归入 V3 Spec</span></td><td>"efficient binary encoding of dynamic semi-structured data"；"retain the flexibility of the source data, while allowing query engines to more efficiently operate on the data"</td></tr>
+    <tr><td>Databricks 工程博客<br /><span class="src">开源 Variant for Delta Lake &amp; Apache Spark</span></td><td>厂商博客</td><td>"Without Variant, customers had to choose between flexibility and performance."；"order of magnitude performance improvements"</td></tr>
+    <tr><td><a href="https://spark.apache.org/docs/latest/api/sql/index.html">Spark SQL Built-in Functions</a></td><td>官方文档</td><td>确认 <code>schema_of_variant</code>、<code>schema_of_variant_agg</code>、<code>variant_get</code>、<code>try_variant_get</code>、<code>parse_json</code> 为公开内置函数</td></tr>
+    <tr><td><a href="https://aws.amazon.com/about-aws/whats-new/2026/07/amazon-s3-tables-variant-iceberg-v3/">AWS What's New</a><br /><span class="src">2026-07-28</span></td><td>官方公告</td><td>S3 Tables 支持 Variant；shred to hidden columns；Parquet column statistics → file pruning；托管 Compaction 覆盖 Variant 列；15 区域</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box warn">
+  <span class="t">诚实记录</span>
+  上述来源的动机 / 目标文本均已逐条核对，<strong>无一处提及 AI、LLM、Agent 或机器学习</strong>作为设计动机。本文中凡涉及 Agent 价值之处，均属本团队推断 + 实测，已在 <a href="#why">§1.3</a> 显式区分。
+</div>
+
+<h3>上游 PR / Ticket</h3>
+
+<p class="src">
+Iceberg：
+<a href="https://github.com/apache/iceberg/pull/16714">#16714</a> ·
+<a href="https://github.com/apache/iceberg/pull/16715">#16715</a> ·
+<a href="https://github.com/apache/iceberg/issues/16448">#16448</a> ·
+<a href="https://github.com/apache/iceberg/issues/16726">#16726</a> ·
+<a href="https://github.com/apache/iceberg/pull/15384">#15384</a> ·
+<a href="https://github.com/apache/iceberg/pull/15385">#15385</a> ·
+<a href="https://github.com/apache/iceberg/pull/16133">#16133</a> ·
+<a href="https://github.com/apache/iceberg/pull/16292">#16292</a> ·
+<a href="https://github.com/apache/iceberg/pull/16087">#16087</a> ·
+<a href="https://github.com/apache/iceberg/pull/16913">#16913</a>
+<br />
+Spark：
+<a href="https://issues.apache.org/jira/browse/SPARK-55617">SPARK-55617</a> ·
+<a href="https://issues.apache.org/jira/browse/SPARK-55817">SPARK-55817</a> ·
+<a href="https://github.com/apache/spark/pull/54598">PR #54598</a>
+</p>
+
+<h3>本团队实测报告</h3>
+
+<ul class="src" style="list-style:none;padding-left:0">
+  <li>· 游戏行为日志 Variant Shredding 性能报告（2026-06-01，42 亿行）</li>
+  <li>· Agent Trace Log 性能测试报告（2026-06-15，4.11 亿行 OTel spans）</li>
+  <li>· Iceberg V3 Variant 实验报告（COVID 多源数据，2 亿行）</li>
+  <li>· Variant Agent Schema 理解验证（110 万行 + 5 万行 schema 演进）</li>
+  <li>· S3 Tables Variant 功能验证（2026-04-21）</li>
+  <li>· Apache Iceberg Variant 社区同步纪要（2026-06-04）</li>
+  <li>· 独立基准：10M JSON 记录 STRING vs VARIANT 存储对比（279.32 → 191.58 MB，−31.4%）</li>
+</ul>
+
+</main>
+</div>
+
+<footer class="page">
+  <p>Apache Iceberg Variant 与 Shredding 技术文档 &nbsp;·&nbsp; 最后更新 2026-07-29</p>
+  <p><a href="../index.html">&larr; 返回 Tech Pages</a></p>
+</footer>
+
+</body>
+</html>
