@@ -5,262 +5,375 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>藏经阁 - 技术修行录</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap');
 
     :root {
-      --bg: #1a1510;
-      --bg-secondary: #231e17;
+      --bg: #12100d;
+      --bg-warm: #1a1610;
+      --shelf: #1f1b14;
+      --shelf-border: #3a3020;
+      --shelf-inner: #252018;
       --card-bg: #2a2319;
       --card-border: #3d3428;
       --card-hover: #352c21;
       --text: #e8dcc8;
-      --text-muted: #9c8b74;
+      --text-dim: #c4b59e;
+      --text-muted: #8b7a63;
       --accent: #c9a84c;
+      --accent-glow: rgba(201, 168, 76, 0.15);
       --accent-dim: #8b6f2e;
-      --scroll-shadow: rgba(201, 168, 76, 0.06);
+      --wood: #4a3a28;
+      --wood-light: #5c4a35;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+      font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.8;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background:
-        radial-gradient(ellipse at 20% 50%, rgba(201, 168, 76, 0.03) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(201, 168, 76, 0.02) 0%, transparent 40%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    header {
+    /* ===== Hero ===== */
+    .hero {
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 45vh;
+      padding: 60px 24px;
       text-align: center;
-      padding: 80px 24px 48px;
-      border-bottom: 1px solid var(--card-border);
+      overflow: hidden;
     }
 
-    header::after {
+    .hero::before {
       content: '';
       position: absolute;
-      bottom: -1px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 2px;
-      background: var(--accent);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse 600px 400px at 50% 40%, rgba(201, 168, 76, 0.06), transparent),
+        radial-gradient(ellipse 300px 300px at 20% 80%, rgba(201, 168, 76, 0.03), transparent),
+        radial-gradient(ellipse 300px 300px at 80% 20%, rgba(139, 111, 46, 0.04), transparent);
+      pointer-events: none;
     }
 
-    .header-icon {
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-      opacity: 0.8;
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--shelf-border), var(--accent-dim), var(--shelf-border), transparent);
     }
 
-    header h1 {
-      font-size: 2.2rem;
+    .hero-seal {
+      width: 80px;
+      height: 80px;
+      border: 2px solid var(--accent-dim);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .hero-seal::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border: 1px solid var(--card-border);
+      border-radius: 50%;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: 12px;
+      margin-bottom: 12px;
+      text-shadow: 0 0 40px rgba(201, 168, 76, 0.2);
+    }
+
+    .hero .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      letter-spacing: 4px;
+      margin-bottom: 28px;
+    }
+
+    .hero .verse {
+      font-size: 0.85rem;
+      color: var(--accent-dim);
+      letter-spacing: 2px;
+      padding: 8px 20px;
+      border: 1px solid var(--card-border);
+      border-radius: 2px;
+    }
+
+    /* ===== Stats Bar ===== */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      padding: 28px 24px;
+      background: var(--shelf);
+      border-bottom: 1px solid var(--shelf-border);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-item .number {
+      font-size: 1.6rem;
       font-weight: 700;
       color: var(--accent);
-      letter-spacing: 8px;
-      margin-bottom: 12px;
+      display: block;
+      line-height: 1.2;
     }
 
-    header .subtitle {
-      font-size: 0.95rem;
+    .stat-item .label {
+      font-size: 0.75rem;
       color: var(--text-muted);
       letter-spacing: 2px;
     }
 
-    header .verse {
-      margin-top: 24px;
-      font-size: 0.85rem;
-      color: var(--accent-dim);
-      font-style: italic;
-      letter-spacing: 1px;
-    }
-
-    main {
-      position: relative;
-      z-index: 1;
-      max-width: 780px;
+    /* ===== Bookshelf ===== */
+    .bookshelf {
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 48px 24px 80px;
+      padding: 60px 24px 80px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
     }
 
-    section.category {
-      margin-bottom: 48px;
+    .shelf-unit {
+      background: var(--shelf);
+      border: 1px solid var(--shelf-border);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+      transition: border-color 0.3s ease;
     }
 
-    .category-header {
+    .shelf-unit:hover {
+      border-color: var(--accent-dim);
+    }
+
+    .shelf-unit.wide {
+      grid-column: 1 / -1;
+    }
+
+    .shelf-top {
+      background: var(--shelf-inner);
+      padding: 18px 24px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--card-border);
+      justify-content: space-between;
+      border-bottom: 1px solid var(--shelf-border);
     }
 
-    .category-header::before {
+    .shelf-top h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 3px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .shelf-top h2::before {
       content: '';
-      width: 3px;
-      height: 20px;
+      display: inline-block;
+      width: 4px;
+      height: 18px;
       background: var(--accent);
       border-radius: 2px;
     }
 
-    .category-header h2 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: 2px;
-    }
-
-    .category-header .count {
-      font-size: 0.75rem;
+    .shelf-badge {
+      font-size: 0.7rem;
       color: var(--text-muted);
-      background: var(--bg-secondary);
+      background: var(--bg);
       border: 1px solid var(--card-border);
-      padding: 2px 8px;
-      border-radius: 10px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      letter-spacing: 1px;
     }
 
-    ul.article-list {
-      list-style: none;
+    .shelf-content {
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
-    ul.article-list li {
+    .scroll-item {
+      display: block;
       position: relative;
+      padding: 12px 18px 12px 32px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 4px;
-      padding: 14px 20px;
+      border-radius: 3px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
       transition: all 0.2s ease;
     }
 
-    ul.article-list li::before {
-      content: '—';
+    .scroll-item::before {
+      content: '\25C7';
       position: absolute;
-      left: 20px;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
       color: var(--accent-dim);
-      opacity: 0;
-      transition: opacity 0.2s ease;
+      font-size: 0.6rem;
+      transition: all 0.2s ease;
     }
 
-    ul.article-list li:hover {
+    .scroll-item:hover {
       background: var(--card-hover);
       border-color: var(--accent-dim);
-      box-shadow: 0 2px 20px var(--scroll-shadow);
-      padding-left: 36px;
-    }
-
-    ul.article-list li:hover::before {
-      opacity: 1;
-    }
-
-    ul.article-list a {
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.95rem;
-      letter-spacing: 0.5px;
-      transition: color 0.2s ease;
-    }
-
-    ul.article-list li:hover a {
       color: var(--accent);
+      transform: translateX(4px);
+      box-shadow: -4px 0 0 var(--accent), 0 2px 12px rgba(201, 168, 76, 0.08);
     }
 
+    .scroll-item:hover::before {
+      color: var(--accent);
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    /* ===== Footer ===== */
     footer {
-      position: relative;
-      z-index: 1;
       text-align: center;
-      padding: 32px 24px;
-      border-top: 1px solid var(--card-border);
+      padding: 40px 24px;
+      border-top: 1px solid var(--shelf-border);
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 2px;
+      background: var(--accent-dim);
+    }
+
+    footer p {
       color: var(--text-muted);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       letter-spacing: 1px;
     }
 
     footer a {
       color: var(--accent-dim);
       text-decoration: none;
+      transition: color 0.2s;
     }
 
-    footer a:hover {
-      color: var(--accent);
-    }
+    footer a:hover { color: var(--accent); }
 
-    @media (max-width: 600px) {
-      header { padding: 60px 20px 36px; }
-      header h1 { font-size: 1.8rem; letter-spacing: 4px; }
-      main { padding: 32px 16px 60px; }
-      ul.article-list li { padding: 12px 16px; }
-      ul.article-list li:hover { padding-left: 28px; }
-      ul.article-list li::before { left: 16px; }
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .bookshelf {
+        grid-template-columns: 1fr;
+        padding: 36px 16px 60px;
+        gap: 24px;
+      }
+      .shelf-unit.wide { grid-column: auto; }
+      .hero { min-height: 36vh; padding: 48px 20px; }
+      .stats-bar { gap: 32px; }
+      .stat-item .number { font-size: 1.3rem; }
+      .shelf-content { padding: 12px; }
+      .scroll-item { padding: 10px 14px 10px 28px; font-size: 0.85rem; }
+      .scroll-item::before { left: 10px; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="header-icon">&#x1F4DC;</div>
+  <div class="hero">
+    <div class="hero-seal">&#x1F4DC;</div>
     <h1>藏 经 阁</h1>
     <p class="subtitle">技术修行录</p>
-    <p class="verse">深藏若拙，厚积薄发</p>
-  </header>
-  <main>
-    <section class="category">
-      <div class="category-header">
-        <h2>EMR</h2>
-        <span class="count">1 篇</span>
-      </div>
-      <ul class="article-list">
-        <li><a href="emr/EMR%20Managed%20Scaling%20%E7%BC%A9%E5%AE%B9%E8%A7%84%E5%88%99%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html">EMR Managed Scaling 缩容规则与最佳实践</a></li>
-      </ul>
-    </section>
-    <section class="category">
-      <div class="category-header">
+    <p class="verse">深藏若拙 &middot; 厚积薄发</p>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="number">8</span>
+      <span class="label">篇 目</span>
+    </div>
+    <div class="stat-item">
+      <span class="number">4</span>
+      <span class="label">门 类</span>
+    </div>
+    <div class="stat-item">
+      <span class="number">&#x221E;</span>
+      <span class="label">求 索</span>
+    </div>
+  </div>
+
+  <main class="bookshelf">
+    <section class="shelf-unit wide">
+      <div class="shelf-top">
         <h2>Iceberg</h2>
-        <span class="count">5 篇</span>
+        <span class="shelf-badge">5 篇</span>
       </div>
-      <ul class="article-list">
-        <li><a href="iceberg/Flink%20ConvertEqualityDeletes%20%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94.html">Flink ConvertEqualityDeletes 技术调研</a></li>
-        <li><a href="iceberg/redshift-iceberg-materialized-view-guide.html">Amazon Redshift 上的 Iceberg 物化视图 - 技术深度指南</a></li>
-        <li><a href="iceberg/Iceberg_Compaction_.html">Apache Iceberg Compaction 机制详解</a></li>
-        <li><a href="iceberg/apache-gravitino-research-report.html">Apache Gravitino 技术调研报告</a></li>
-        <li><a href="iceberg/iceberg-variant-shredding-tech-guide.html">Apache Iceberg Variant 与 Shredding：机制、上游进展与实测归因</a></li>
-      </ul>
+      <div class="shelf-content">
+        <a class="scroll-item" href="iceberg/Flink%20ConvertEqualityDeletes%20%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94.html">Flink ConvertEqualityDeletes 技术调研</a>
+        <a class="scroll-item" href="iceberg/redshift-iceberg-materialized-view-guide.html">Amazon Redshift 上的 Iceberg 物化视图 - 技术深度指南</a>
+        <a class="scroll-item" href="iceberg/Iceberg_Compaction_.html">Apache Iceberg Compaction 机制详解</a>
+        <a class="scroll-item" href="iceberg/apache-gravitino-research-report.html">Apache Gravitino 技术调研报告</a>
+        <a class="scroll-item" href="iceberg/iceberg-variant-shredding-tech-guide.html">Apache Iceberg Variant 与 Shredding：机制、上游进展与实测归因</a>
+      </div>
     </section>
-    <section class="category">
-      <div class="category-header">
+
+    <section class="shelf-unit">
+      <div class="shelf-top">
+        <h2>EMR</h2>
+        <span class="shelf-badge">1 篇</span>
+      </div>
+      <div class="shelf-content">
+        <a class="scroll-item" href="emr/EMR%20Managed%20Scaling%20%E7%BC%A9%E5%AE%B9%E8%A7%84%E5%88%99%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html">EMR Managed Scaling 缩容规则与最佳实践</a>
+      </div>
+    </section>
+
+    <section class="shelf-unit">
+      <div class="shelf-top">
         <h2>Kinesis</h2>
-        <span class="count">1 篇</span>
+        <span class="shelf-badge">1 篇</span>
       </div>
-      <ul class="article-list">
-        <li><a href="kinesis/msf-kpu-cost-optimization.html">MSF 流式分析：CPU 利用率优化 &amp; KPU 成本缩减方案</a></li>
-      </ul>
+      <div class="shelf-content">
+        <a class="scroll-item" href="kinesis/msf-kpu-cost-optimization.html">MSF 流式分析：CPU 利用率优化 &amp; KPU 成本缩减方案</a>
+      </div>
     </section>
-    <section class="category">
-      <div class="category-header">
+
+    <section class="shelf-unit">
+      <div class="shelf-top">
         <h2>OpenSearch</h2>
-        <span class="count">1 篇</span>
+        <span class="shelf-badge">1 篇</span>
       </div>
-      <ul class="article-list">
-        <li><a href="opensearch/opensearch-token-term-frequency-guide.html">OpenSearch 查看分词与词频技术指南</a></li>
-      </ul>
+      <div class="shelf-content">
+        <a class="scroll-item" href="opensearch/opensearch-token-term-frequency-guide.html">OpenSearch 查看分词与词频技术指南</a>
+      </div>
     </section>
   </main>
+
   <footer>
-    &copy; <span id="year"></span> 藏经阁 &middot; Powered by <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
+    <p>&copy; <span id="year"></span> 藏经阁 &middot; Powered by <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a></p>
   </footer>
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
