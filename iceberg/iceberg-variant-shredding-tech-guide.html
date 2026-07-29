@@ -153,7 +153,7 @@
   <a href="#pitfall">5. 配置踩坑（重要）</a>
   <a href="#upstream">6. 上游进展追踪</a>
   <a href="#aws">7. AWS 侧支持矩阵</a>
-  <a href="#agent">8. 已兑现的价值</a>
+  <a href="#agent">8. Schema 自描述</a>
   <a href="#advice">9. 选型建议</a>
   <a href="#todo">10. 待验证事项</a>
   <a href="#refs">附：资料来源</a>
@@ -165,7 +165,7 @@
 <h2 id="tldr">0. 结论速览</h2>
 
 <div class="lede">
-  <p><strong>Variant 当前处于「功能可用、存储已兑现、Agent 价值已兑现，但 shredding 查询加速尚未兑现」的阶段。</strong></p>
+  <p><strong>Variant 当前处于「功能可用、存储已兑现、Schema 自描述已兑现，但 shredding 查询加速尚未兑现」的阶段。</strong></p>
   <p>如果你只带走三句话：</p>
   <ul>
     <li><strong>Variant 有两种完全不同的性能收益，必须分开谈。</strong>「二进制编码免去 JSON 文本解析」现在就能拿到；「shredding 列裁剪 / 谓词下推」在<em>任何已发布版本</em>中都还拿不到。混淆这两者是几乎所有 Variant 性能报告的通病。</li>
@@ -189,9 +189,9 @@
       <td>相同数据比 JSON String 省 <strong>13.8% ~ 16%</strong>（大文件），纯二进制编码单独可达 31.4%</td>
     </tr>
     <tr>
-      <td>Agent / Schema 自描述</td>
+      <td>运行时 Schema 自描述</td>
       <td class="ctr"><span class="b b-ok">已兑现</span></td>
-      <td><code>schema_of_variant_agg</code> 让 Agent 零采样发现 schema，是 Variant 当下最独特的价值</td>
+      <td><code>schema_of_variant_agg</code> 无需采样即可得到精确字段名与类型</td>
     </tr>
     <tr>
       <td>查询性能 —— 二进制编码免解析</td>
@@ -261,14 +261,11 @@
   我们实测中「读取慢、列裁剪不生效」恰恰是 shredding spec 第 (b)(c) 两条目标<strong>尚未在 Iceberg connector 落地</strong>的直接表现。设计目标是清晰的，缺的只是实现。
 </div>
 
-<h3>1.3 诚实说明：设计文档里没有 AI Agent</h3>
+<h3>1.3 附带能力：运行时 Schema 自描述</h3>
 
-<div class="box warn">
-  <span class="t">⚠️ 事实与推断的边界</span>
-  <p>我们检索了 Parquet spec、Spark SPIP、Iceberg proposal、Databricks / Snowflake 工程博客等<strong>全部能找到的 Variant 原始设计资料，没有任何一处把 AI Agent / LLM 列为 Variant 的设计动机或目标</strong>。Variant 的设计初衷纯粹是数据工程问题。</p>
-  <p><strong>有出处的事实</strong>：Spark 提供公开内置函数 <code>schema_of_variant</code> / <code>schema_of_variant_agg</code>，可在查询运行时从数据本身推断 Variant 结构和类型，无需事先定义 schema。这是 "schemaless / 保留源数据灵活性" 设计目标的自然结果。</p>
-  <p><strong>本团队的推断</strong>：Variant 把「理解半结构化数据结构」的成本从「Agent 探索 / 采样」转移到了「数据自描述」，对需要自主生成 SQL 的 Data Agent 价值很大。这一推断已被我们实测验证（见 <a href="#agent">§8</a>），但<strong>不应被表述为「Variant 是为 AI 设计的」</strong>。</p>
-</div>
+<p>Spark 提供公开内置函数 <code>schema_of_variant</code> / <code>schema_of_variant_agg</code>，可在查询运行时<strong>从数据本身推断出 Variant 的结构和类型</strong>，无需事先定义或维护 schema。这是 §1.1 中 "schemaless / 保留源数据灵活性" 设计目标的自然结果 —— schema 信息内嵌在数据里、可被运行时读出。</p>
+
+<p>相比之下，JSON String 列对引擎是不透明的：<code>DESCRIBE table</code> 只能看到 <code>payload STRING</code>，任何消费方想知道里面有什么字段都得自己采样猜。这条能力与 shredding 无关，<strong>当下即可使用</strong>，实测见 <a href="#agent">§8</a>。</p>
 
 <hr />
 
@@ -337,7 +334,7 @@
     <tr><td><code>to_variant(value)</code></td><td>将 SQL 类型值转为 VARIANT，<strong>保留原类型</strong>（DATE → date，不变为字符串）。从已有 SQL 类型数据用这个</td></tr>
     <tr><td><code>variant_get(col, '$.path', 'TYPE')</code></td><td>提取字段并返回指定 SQL 类型，无需额外 CAST</td></tr>
     <tr><td><code>try_variant_get(...)</code></td><td>同上但类型不匹配返回 null 而非报错 —— <strong>脏数据场景必备</strong></td></tr>
-    <tr><td><code>schema_of_variant_agg(col)</code></td><td>聚合推断整列的 schema，Agent 场景的核心函数</td></tr>
+    <tr><td><code>schema_of_variant_agg(col)</code></td><td>聚合推断整列的 schema —— 无需采样即可知道有哪些字段及其类型</td></tr>
   </tbody>
 </table>
 </div>
@@ -1045,37 +1042,32 @@ SET TBLPROPERTIES ('write.parquet.shred-variants' = 'true');</code></pre>
 <hr />
 
 <!-- ================================================================ -->
-<h2 id="agent">8. 已兑现的价值：Schema 自描述与 Agent 场景</h2>
+<h2 id="agent">8. 已兑现的价值：运行时 Schema 自描述</h2>
 
-<p>虽然 shredding 查询加速没兑现，但有一块价值<strong>完全不依赖 shredding、现在就能拿到</strong>，而且是 Variant 当下最独特的能力。</p>
+<p>虽然 shredding 查询加速没兑现，但有一块能力<strong>完全不依赖 shredding、现在就能拿到</strong>。</p>
 
 <h3>8.1 核心机制</h3>
 
-<p>传统 JSON String 列对引擎和 Agent 都是「黑盒」—— <code>DESCRIBE table</code> 只能看到 <code>payload STRING</code>，Agent 必须靠采样猜字段。而 Variant 列可通过一次 <code>schema_of_variant_agg()</code> 拿到精确字段名与类型。</p>
-
-<div class="box key">
-  <span class="t">价值转移</span>
-  Variant 把「理解半结构化数据结构」的成本从 <strong>Agent 探索 / 采样</strong> 转移到了 <strong>数据自描述</strong>。这让 Data Agent 从「需要被告知数据结构」进化为「自己去发现数据结构」。
-</div>
+<p>JSON String 列对引擎是不透明的 —— <code>DESCRIBE table</code> 只能看到 <code>payload STRING</code>，要知道里面有哪些字段只能靠采样。而 Variant 列一次 <code>schema_of_variant_agg()</code> 就能拿到精确字段名与类型，且随数据变化自动更新。</p>
 
 <h3>8.2 三个实测验证场景</h3>
 
-<p class="src">环境：Phase 1 = 110 万行（100 万正常 + 10 万脏数据），Phase 2 增加 5 万行含新字段</p>
+<p class="src">环境：Phase 1 = 110 万行（100 万正常 + 10 万脏数据），Phase 2 增加 5 万行含新字段。测试方式为不允许探索性 <code>SELECT * LIMIT N</code>、仅凭 Catalog 元信息生成 SQL</p>
 
 <div class="tbl">
 <table>
   <thead><tr><th>场景</th><th>JSON String</th><th>Variant</th><th>Variant 优势</th></tr></thead>
   <tbody>
     <tr>
-      <td><strong>受限 Agent</strong><br /><span class="src">企业安全策略禁止 <code>SELECT * LIMIT N</code> 探索查询</span></td>
-      <td><span class="b b-bad">✗</span> 无法生成 SQL（不知字段）</td>
-      <td><span class="b b-ok">✓</span> <code>schema_of_variant</code> 发现字段结构</td>
+      <td><strong>禁止采样时构造 SQL</strong><br /><span class="src">只能读 Catalog 元信息</span></td>
+      <td><span class="b b-bad">✗</span> 无法构造（不知字段）</td>
+      <td><span class="b b-ok">✓</span> <code>schema_of_variant</code> 得到字段结构</td>
       <td><strong>零配置即可工作</strong></td>
     </tr>
     <tr>
-      <td><strong>Schema 演进</strong><br /><span class="src">开发者新增 <code>match_result</code> / <code>match_score</code></span></td>
-      <td><span class="b b-bad">✗</span> 不知道有新字段</td>
-      <td><span class="b b-ok">✓</span> 立即自主发现新字段</td>
+      <td><strong>Schema 演进</strong><br /><span class="src">新增 <code>match_result</code> / <code>match_score</code></span></td>
+      <td><span class="b b-bad">✗</span> 元信息里看不到新字段</td>
+      <td><span class="b b-ok">✓</span> 新字段立即可见</td>
       <td><strong>零维护成本</strong></td>
     </tr>
     <tr>
@@ -1088,7 +1080,12 @@ SET TBLPROPERTIES ('write.parquet.shred-variants' = 'true');</code></pre>
 </table>
 </div>
 
-<p>COVID 实验进一步验证：Agent 一次 <code>schema_of_variant_agg</code> 即可拿到全部 8 种 source 的完整 schema，生成 5 条业务 SQL <strong>全部正确、零失败</strong>；而多宽表方案需 6 次 <code>DESCRIBE</code> + 推断字段语义等价性，易出错。</p>
+<p>COVID 实验进一步验证：一次 <code>schema_of_variant_agg</code> 即可拿到全部 8 种 source 的完整 schema，据此生成的 5 条业务 SQL <strong>全部正确、零失败</strong>；而多宽表方案需 6 次 <code>DESCRIBE</code> 并自行判断字段语义是否等价，易出错。</p>
+
+<div class="box key">
+  <span class="t">这条能力的适用边界</span>
+  它省掉的是<strong>采样探索这一步</strong>，适用于任何「消费方事先不知道 payload 结构」的场景 —— 多源数据汇聚、ad-hoc 探索、schema 频繁演进的管道。<strong>如果 payload 结构本来就固定且已知，这条价值为零</strong>，用宽表更合适。
+</div>
 
 <hr />
 
@@ -1100,9 +1097,9 @@ SET TBLPROPERTIES ('write.parquet.shred-variants' = 'true');</code></pre>
   <thead><tr><th>场景</th><th class="ctr">建议</th><th>理由</th></tr></thead>
   <tbody>
     <tr>
-      <td><strong>AI Agent / Ad-hoc 数据探索</strong></td>
+      <td><strong>Ad-hoc 探索 / 消费方不知 payload 结构</strong></td>
       <td class="ctr"><span class="b b-ok">现在就用</span></td>
-      <td>schema 自描述价值不依赖 shredding 性能，当下即可兑现</td>
+      <td>Schema 自描述省掉采样探索，不依赖 shredding 性能，当下即可兑现</td>
     </tr>
     <tr>
       <td><strong>多源异构数据 Landing / 汇聚</strong></td>
@@ -1153,7 +1150,7 @@ SET TBLPROPERTIES ('write.parquet.shred-variants' = 'true');</code></pre>
   <p><strong>不要为「shredding 查询加速」选 Variant。</strong>在当前栈（Spark 4.1.2/4.2 + Iceberg 1.11.0）上，选 Variant 的正当理由是三条已兑现的价值：</p>
   <ol style="margin:6px 0 0">
     <li><strong>存储节省 13.8%~16%</strong>（前提：文件 &gt; 50 MB）</li>
-    <li><strong>Agent schema 自描述</strong>（<code>schema_of_variant_agg</code>）</li>
+    <li><strong>运行时 Schema 自描述</strong>（<code>schema_of_variant_agg</code>，省掉采样探索）</li>
     <li><strong>长 JSON 负载的二进制免解析收益</strong>（1.38x~1.90x）</li>
   </ol>
 </div>
@@ -1218,10 +1215,7 @@ SET TBLPROPERTIES ('write.parquet.shred-variants' = 'true');</code></pre>
 </table>
 </div>
 
-<div class="box warn">
-  <span class="t">诚实记录</span>
-  上述来源的动机 / 目标文本均已逐条核对，<strong>无一处提及 AI、LLM、Agent 或机器学习</strong>作为设计动机。本文中凡涉及 Agent 价值之处，均属本团队推断 + 实测，已在 <a href="#why">§1.3</a> 显式区分。
-</div>
+<p class="src">上述来源的动机 / 目标文本均已逐条核对。Snowflake 工程博客（Variant in Iceberg）抓取时返回 404，未能核到原文，故未列入。</p>
 
 <h3>上游 PR / Ticket</h3>
 
@@ -1250,7 +1244,7 @@ Spark：
   <li>· 游戏行为日志 Variant Shredding 性能报告（2026-06-01，42 亿行）</li>
   <li>· Agent Trace Log 性能测试报告（2026-06-15，4.11 亿行 OTel spans）</li>
   <li>· Iceberg V3 Variant 实验报告（COVID 多源数据，2 亿行）</li>
-  <li>· Variant Agent Schema 理解验证（110 万行 + 5 万行 schema 演进）</li>
+  <li>· Variant Schema 自描述验证（110 万行 + 5 万行 schema 演进）</li>
   <li>· S3 Tables Variant 功能验证（2026-04-21）</li>
   <li>· Apache Iceberg Variant 社区同步纪要（2026-06-04）</li>
   <li>· 独立基准：10M JSON 记录 STRING vs VARIANT 存储对比（279.32 → 191.58 MB，−31.4%）</li>
