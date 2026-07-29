@@ -3,102 +3,235 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tech Pages - 技术分享</title>
+  <title>藏经阁 - 技术修行录</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap');
+
     :root {
-      --bg: #f7f7f9;
-      --card-bg: #ffffff;
-      --text: #222;
-      --muted: #666;
-      --accent: #ff9900;
-      --border: #e5e5e8;
+      --bg: #1a1510;
+      --bg-secondary: #231e17;
+      --card-bg: #2a2319;
+      --card-border: #3d3428;
+      --card-hover: #352c21;
+      --text: #e8dcc8;
+      --text-muted: #9c8b74;
+      --accent: #c9a84c;
+      --accent-dim: #8b6f2e;
+      --scroll-shadow: rgba(201, 168, 76, 0.06);
     }
-    * { box-sizing: border-box; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.8;
+      min-height: 100vh;
     }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(201, 168, 76, 0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(201, 168, 76, 0.02) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
     header {
-      padding: 48px 24px 24px;
+      position: relative;
       text-align: center;
+      padding: 80px 24px 48px;
+      border-bottom: 1px solid var(--card-border);
     }
-    header h1 {
-      margin: 0 0 8px;
-      font-size: 2rem;
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 2px;
+      background: var(--accent);
     }
-    header p {
-      margin: 0;
-      color: var(--muted);
-    }
-    main {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 24px 64px;
-    }
-    section.category {
-      margin-top: 32px;
-    }
-    section.category h2 {
-      font-size: 1.25rem;
-      border-left: 4px solid var(--accent);
-      padding-left: 10px;
+
+    .header-icon {
+      font-size: 2.5rem;
       margin-bottom: 16px;
+      opacity: 0.8;
     }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 8px;
+      margin-bottom: 12px;
+    }
+
+    header .subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+    }
+
+    header .verse {
+      margin-top: 24px;
+      font-size: 0.85rem;
+      color: var(--accent-dim);
+      font-style: italic;
+      letter-spacing: 1px;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    section.category {
+      margin-bottom: 48px;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .category-header::before {
+      content: '';
+      width: 3px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .category-header h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 2px;
+    }
+
+    .category-header .count {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-secondary);
+      border: 1px solid var(--card-border);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
     ul.article-list {
       list-style: none;
-      margin: 0;
-      padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
     }
+
     ul.article-list li {
+      position: relative;
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px 20px;
-      transition: box-shadow 0.15s ease, transform 0.15s ease;
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: 14px 20px;
+      transition: all 0.2s ease;
     }
+
+    ul.article-list li::before {
+      content: '—';
+      position: absolute;
+      left: 20px;
+      color: var(--accent-dim);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
     ul.article-list li:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-      transform: translateY(-1px);
+      background: var(--card-hover);
+      border-color: var(--accent-dim);
+      box-shadow: 0 2px 20px var(--scroll-shadow);
+      padding-left: 36px;
     }
+
+    ul.article-list li:hover::before {
+      opacity: 1;
+    }
+
     ul.article-list a {
       color: var(--text);
       text-decoration: none;
-      font-weight: 500;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      transition: color 0.2s ease;
     }
-    ul.article-list a:hover {
+
+    ul.article-list li:hover a {
       color: var(--accent);
     }
+
     footer {
+      position: relative;
+      z-index: 1;
       text-align: center;
-      color: var(--muted);
-      font-size: 0.85rem;
-      padding: 24px;
+      padding: 32px 24px;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
     }
+
     footer a {
+      color: var(--accent-dim);
+      text-decoration: none;
+    }
+
+    footer a:hover {
       color: var(--accent);
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 60px 20px 36px; }
+      header h1 { font-size: 1.8rem; letter-spacing: 4px; }
+      main { padding: 32px 16px 60px; }
+      ul.article-list li { padding: 12px 16px; }
+      ul.article-list li:hover { padding-left: 28px; }
+      ul.article-list li::before { left: 16px; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Tech Pages</h1>
-    <p>技术分享文章合集</p>
+    <div class="header-icon">&#x1F4DC;</div>
+    <h1>藏 经 阁</h1>
+    <p class="subtitle">技术修行录</p>
+    <p class="verse">深藏若拙，厚积薄发</p>
   </header>
   <main>
     <section class="category">
-      <h2>EMR</h2>
+      <div class="category-header">
+        <h2>EMR</h2>
+        <span class="count">1 篇</span>
+      </div>
       <ul class="article-list">
         <li><a href="emr/EMR%20Managed%20Scaling%20%E7%BC%A9%E5%AE%B9%E8%A7%84%E5%88%99%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html">EMR Managed Scaling 缩容规则与最佳实践</a></li>
       </ul>
     </section>
     <section class="category">
-      <h2>Iceberg</h2>
+      <div class="category-header">
+        <h2>Iceberg</h2>
+        <span class="count">5 篇</span>
+      </div>
       <ul class="article-list">
         <li><a href="iceberg/Flink%20ConvertEqualityDeletes%20%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94.html">Flink ConvertEqualityDeletes 技术调研</a></li>
         <li><a href="iceberg/redshift-iceberg-materialized-view-guide.html">Amazon Redshift 上的 Iceberg 物化视图 - 技术深度指南</a></li>
@@ -108,20 +241,26 @@
       </ul>
     </section>
     <section class="category">
-      <h2>Kinesis</h2>
+      <div class="category-header">
+        <h2>Kinesis</h2>
+        <span class="count">1 篇</span>
+      </div>
       <ul class="article-list">
-        <li><a href="kinesis/msf-kpu-cost-optimization.html">MSF 流式分析：CPU 利用率优化 & KPU 成本缩减方案</a></li>
+        <li><a href="kinesis/msf-kpu-cost-optimization.html">MSF 流式分析：CPU 利用率优化 &amp; KPU 成本缩减方案</a></li>
       </ul>
     </section>
     <section class="category">
-      <h2>OpenSearch</h2>
+      <div class="category-header">
+        <h2>OpenSearch</h2>
+        <span class="count">1 篇</span>
+      </div>
       <ul class="article-list">
         <li><a href="opensearch/opensearch-token-term-frequency-guide.html">OpenSearch 查看分词与词频技术指南</a></li>
       </ul>
     </section>
   </main>
   <footer>
-    &copy; <span id="year"></span> Tech Pages &middot; Powered by <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
+    &copy; <span id="year"></span> 藏经阁 &middot; Powered by <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
   </footer>
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
