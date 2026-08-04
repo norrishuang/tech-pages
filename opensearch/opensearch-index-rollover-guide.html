@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenSearch Index Rollover 指导手册</title>
+  <style>
+    :root { --ink:#17212b; --muted:#52606d; --line:#d5dde5; --paper:#fff; --ground:#f4f7f9; --blue:#1769aa; --cyan:#00a1c9; --green:#1f7a5a; --gold:#b76e00; --red:#a93c35; --code:#10212f; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--ground); color:var(--ink); font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif; }
+    .top { background:#102d43; color:#fff; border-bottom:4px solid var(--cyan); }
+    .top-inner { width:min(1180px,calc(100% - 40px)); margin:auto; padding:46px 0 38px; }
+    .eyebrow { color:#83d7e9; font-size:13px; font-weight:700; letter-spacing:0; text-transform:uppercase; }
+    h1 { max-width:840px; margin:8px 0 12px; font-size:38px; line-height:1.2; letter-spacing:0; }
+    .lead { max-width:810px; margin:0; color:#d6e4eb; font-size:18px; }
+    .layout { width:min(1180px,calc(100% - 40px)); margin:28px auto 56px; display:grid; grid-template-columns:244px minmax(0,1fr); gap:32px; align-items:start; }
+    nav { position:sticky; top:20px; padding:16px; background:#e9f0f4; border:1px solid var(--line); border-radius:6px; }
+    nav strong { display:block; margin:0 0 8px; font-size:14px; }
+    nav a { display:block; padding:5px 0; color:#315064; font-size:14px; text-decoration:none; }
+    nav a:hover { color:var(--blue); text-decoration:underline; }
+    main { min-width:0; }
+    section { padding:30px 34px; margin-bottom:20px; background:var(--paper); border:1px solid var(--line); border-radius:6px; box-shadow:0 1px 2px #10212f0d; }
+    h2 { margin:0 0 14px; padding-bottom:10px; border-bottom:2px solid #d8edf2; font-size:26px; line-height:1.3; }
+    h3 { margin:28px 0 10px; color:#123e5b; font-size:20px; line-height:1.4; }
+    h4 { margin:20px 0 8px; font-size:16px; }
+    p, li { color:#263641; }
+    ul, ol { padding-left:24px; }
+    li + li { margin-top:5px; }
+    code { padding:1px 5px; border:1px solid #d9e1e6; border-radius:3px; background:#f1f5f7; color:#173b52; font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; overflow-wrap:anywhere; }
+    .callout { margin:18px 0; padding:14px 16px; border-left:4px solid var(--blue); background:#edf6fa; }
+    .callout.warn { border-color:var(--gold); background:#fff8e8; }
+    .callout.danger { border-color:var(--red); background:#fff1f0; }
+    .callout strong { color:#123e5b; }
+    .steps { counter-reset:step; list-style:none; padding:0; }
+    .steps li { position:relative; min-height:32px; padding:4px 0 14px 45px; }
+    .steps li::before { counter-increment:step; content:counter(step); position:absolute; left:0; top:3px; display:grid; width:27px; height:27px; place-items:center; border-radius:50%; background:#1769aa; color:#fff; font-weight:700; font-size:13px; }
+    .flow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:18px 0; }
+    .node { padding:8px 12px; border:1px solid #b9d1dc; border-radius:4px; background:#f3fbfd; color:#16445c; font-weight:700; font-size:14px; }
+    .arrow { color:#5c7a88; font-weight:700; }
+    .node.warm { border-color:#efcd87; background:#fff8e8; color:#7a4a00; }
+    .node.cold { border-color:#bfc9df; background:#f0f3fa; color:#374b72; }
+    .node.delete { border-color:#e9b9b4; background:#fff1f0; color:#812d29; }
+    .code { position:relative; margin:14px 0 20px; border:1px solid #203a4d; border-radius:5px; overflow:hidden; background:var(--code); }
+    .code-head { display:flex; align-items:center; justify-content:space-between; min-height:34px; padding:0 10px 0 14px; background:#173449; color:#c8e4ee; font:12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+    button { border:1px solid #7590a0; border-radius:3px; background:transparent; color:#fff; padding:4px 8px; cursor:pointer; font-size:12px; }
+    button:hover { background:#28546c; }
+    pre { margin:0; padding:17px; overflow:auto; color:#e7f4f7; font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; tab-size:2; }
+    table { width:100%; border-collapse:collapse; margin:14px 0; font-size:14px; }
+    th, td { padding:10px; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { background:#edf3f6; color:#183a50; }
+    .tag { display:inline-block; margin-right:6px; padding:2px 7px; border-radius:3px; background:#e1f1f5; color:#14506a; font-size:12px; font-weight:700; }
+    .sources a { color:var(--blue); }
+    footer { width:min(1180px,calc(100% - 40px)); margin:0 auto 35px; color:var(--muted); font-size:13px; }
+    @media (max-width:820px) { h1 { font-size:30px; } .layout { display:block; } nav { position:static; margin-bottom:20px; } section { padding:24px 20px; } }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="eyebrow">Operations Guide · OpenSearch Index State Management</div>
+      <h1>使用 Index Rollover 管理日志索引</h1>
+      <p class="lead">一套面向 OpenSearch 与 Amazon OpenSearch Service 的实操手册：按时间、分片大小或文档数自动滚动索引；按保留期删除历史数据；以及将只读数据迁移到 Warm / Cold 层。</p>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav aria-label="目录">
+      <strong>目录</strong>
+      <a href="#overview">1. 概念与前提</a>
+      <a href="#baseline">2. 通用初始化</a>
+      <a href="#rollover">3. 只做 Rollover</a>
+      <a href="#retention">4. 可选：保留期删除</a>
+      <a href="#tiers">5. 热温冷分层</a>
+      <a href="#validate">6. 验证与排障</a>
+      <a href="#production">7. 上线清单</a>
+      <a href="#references">参考资料</a>
+    </nav>
+
+    <main>
+      <section id="overview">
+        <h2>1. 概念与前提</h2>
+        <p><b>Rollover</b> 会在当前写入索引达到某个阈值时创建下一代索引，例如 <code>logs-app-000002</code>，并将写别名切换到新索引。业务方、Filebeat 或 Logstash 始终向同一个别名 <code>logs-app</code> 写入，因此不需要感知实际索引名称变化。</p>
+        <div class="flow">
+          <span class="node">写入端</span><span class="arrow">→</span><span class="node">别名 logs-app</span><span class="arrow">→</span><span class="node">logs-app-000001</span><span class="arrow">→</span><span class="node">logs-app-000002</span>
+        </div>
+        <div class="callout danger"><strong>最重要的约束：</strong>所有写请求必须指向写别名，不要写入具体索引名。否则 rollover 虽然会创建新索引，但日志仍会继续进入旧索引。</div>
+        <h3>适用范围与版本说明</h3>
+        <ul>
+          <li>本文主流程使用 Index State Management（ISM）插件，适用于 OpenSearch 集群和 Amazon OpenSearch Service 的托管域。</li>
+          <li>文中的 <code>warm_migration</code>、<code>cold_migration</code>、<code>cold_delete</code> 是 Amazon OpenSearch Service 的 UltraWarm/Cold Storage 专用动作；自建 OpenSearch 请使用节点属性与 shard allocation 的方案。</li>
+          <li>用 <code>min_*</code> 配置 ISM 的 rollover 动作。任意一个已配置的最小阈值满足即会滚动，这正对应“达到最大允许年龄/大小/文档数即切换”的语义。</li>
+        </ul>
+        <h3>命名约定</h3>
+        <table>
+          <tr><th>对象</th><th>示例</th><th>用途</th></tr>
+          <tr><td>索引模式</td><td><code>logs-app-*</code></td><td>模板和 ISM 自动附加策略的匹配范围</td></tr>
+          <tr><td>写别名</td><td><code>logs-app</code></td><td>生产者唯一的写入目标</td></tr>
+          <tr><td>首代索引</td><td><code>logs-app-000001</code></td><td>必须以递增序号结尾，便于自动创建下一代</td></tr>
+          <tr><td>ISM 策略</td><td><code>logs-app-rollover</code></td><td>定义 rollover、迁移和删除动作</td></tr>
+        </table>
+      </section>
+
+      <section id="baseline">
+        <h2>2. 通用初始化：模板、策略、首代索引</h2>
+        <p>以下三步是三个场景共用的基线。示例采用 3 个主分片、1 个副本；请按数据量、节点数和容灾要求调整。</p>
+        <ol class="steps">
+          <li>创建 ISM 策略。后续章节从该策略的 <code>rollover</code> 参数开始选择具体方案。</li>
+          <li>创建 composable index template，将策略通过 <code>ism_template</code> 自动附加给匹配的新索引，并声明 <code>rollover_alias</code>。</li>
+          <li>手动创建第一代索引，给别名设定 <code>is_write_index: true</code>。之后由 ISM 创建和切换后续索引。</li>
+        </ol>
+        <h3>2.1 创建基础索引模板</h3>
+        <p>模板不负责创建第一个索引，只为所有后续索引继承 settings、mappings 和别名设置。不要在模板的 <code>aliases</code> 内设置 <code>is_write_index</code>，写索引标记只在首代索引创建时设置。</p>
+        <div class="code"><div class="code-head">Dev Tools / REST <button data-copy>复制</button></div><pre>PUT _index_template/logs-app-template
+{
+  "index_patterns": ["logs-app-*"],
+  "priority": 200,
+  "template": {
+    "settings": {
+      "number_of_shards": 3,
+      "number_of_replicas": 1,
+      "refresh_interval": "30s",
+      "plugins.index_state_management.rollover_alias": "logs-app"
+    },
+    "mappings": {
+      "dynamic": true,
+      "properties": {
+        "@timestamp": { "type": "date" },
+        "message": { "type": "text" },
+        "level": { "type": "keyword" }
+      }
+    }
+  }
+}</pre></div>
+        <h3>2.2 创建首代索引和写别名</h3>
+        <div class="code"><div class="code-head">Dev Tools / REST <button data-copy>复制</button></div><pre>PUT logs-app-000001
+{
+  "aliases": {
+    "logs-app": {
+      "is_write_index": true
+    }
+  }
+}</pre></div>
+        <div class="callout warn"><strong>摄入端配置：</strong>把 Filebeat / Logstash output 的 <code>index</code> 设置为 <code>logs-app</code>。不要继续使用类似 <code>logs-app-%{+YYYY.MM.dd}</code> 的按日直写名称，否则它绕过了写别名和 ISM rollover。</div>
+      </section>
+
+      <section id="rollover">
+        <h2>3. 只做 Index Rollover</h2>
+        <p>选择一个主阈值，再加一个兜底阈值。日志工作负载通常优先以 <b>主分片大小</b> 控制；按天滚动适合数据量稳定、查询天然按日进行的场景；按文档数适合每条记录大小比较稳定的结构化数据。</p>
+        <h3>3.1 策略 A：按天滚动</h3>
+        <p>每天至少生成一个新索引。若流量极大，建议同时加入 <code>min_primary_shard_size</code>，避免单个分片超过目标大小。</p>
+        <div class="code"><div class="code-head">Dev Tools / REST <button data-copy>复制</button></div><pre>PUT _plugins/_ism/policies/logs-app-rollover
+{
+  "policy": {
+    "description": "Roll over logs-app daily or when a primary shard becomes large",
+    "default_state": "hot",
+    "ism_template": [{
+      "index_patterns": ["logs-app-*"],
+      "priority": 200
+    }],
+    "states": [{
+      "name": "hot",
+      "actions": [{
+        "rollover": {
+          "min_index_age": "1d",
+          "min_primary_shard_size": "40gb",
+          "copy_alias": true
+        }
+      }],
+      "transitions": []
+    }]
+  }
+}</pre></div>
+        <h3>3.2 策略 B：按 shard 数据量滚动</h3>
+        <p>优先使用 <code>min_primary_shard_size</code>，它以每个主分片为单位，更符合 shard 规划。不要只看整个索引大小：3 个主分片的 90 GB 索引，平均每个主分片约 30 GB。</p>
+        <div class="code"><div class="code-head">Dev Tools / REST <button data-copy>复制</button></div><pre>PUT _plugins/_ism/policies/logs-app-rollover
+{
+  "policy": {
+    "description": "Roll over when any primary shard reaches 40 GiB",
+    "default_state": "hot",
+    "ism_template": [{
+      "index_patterns": ["logs-app-*"],
+      "priority": 200
+    }],
+    "states": [{
+      "name": "hot",
+      "actions": [{
+        "rollover": {
+          "min_primary_shard_size": "40gb",
+          "min_index_age": "7d",
+          "copy_alias": true
+        }
+      }],
+      "transitions": []
+    }]
+  }
+}</pre></div>
+        <h3>3.3 策略 C：按文档数量滚动</h3>
+        <p><code>min_doc_count</code> 统计该索引内的文档数。应配合时间兜底，防止低流量索引长期保持写入状态。</p>
+        <div class="code"><div class="code-head">Dev Tools / REST <button data-copy>复制</button></div><pre>PUT _plugins/_ism/policies/logs-app-rollover
+{
+  "policy": {
+    "description": "Roll over after 50 million documents or seven days",
+    "default_state": "hot",
+    "ism_template": [{
+      "index_patterns": ["logs-app-*"],
+      "priority": 200
+    }],
+    "states": [{
+      "name": "hot",
+      "actions": [{
+        "rollover": {
+          "min_doc_count": 50000000,
+          "min_index_age": "7d",
+          "copy_alias": true
+        }
+      }],
+      "transitions": []
+    }]
+  }
+}</pre></div>
+        <h3>阈值怎么选</h3>
+        <table>
+          <tr><th>信号</th><th>建议</th><th>说明</th></tr>
+          <tr><td>主分片大小</td><td>以 30-50 GiB 为常见起点</td><td>根据查询延迟、恢复窗口和节点磁盘吞吐压测后调整；UltraWarm 官方建议最大分片约 50 GiB。</td></tr>
+          <tr><td>索引年龄</td><td>1d 或 7d 作为兜底</td><td>不是所有日志流量都均匀，年龄阈值保证生命周期持续推进。</td></tr>
+          <tr><td>文档数</td><td>按平均文档大小估算</td><td>文档大小变化明显时，优先用分片大小。</td></tr>
+          <tr><td>副本数</td><td>热数据常用 1</td><td>副本会增加总磁盘占用，但不计入 <code>min_primary_shard_size</code>。</td></tr>
+        </table>
+      </section>
+
+      <section id="retention">
+        <h2>4. 可选：Rollover 后按保留期删除</h2>
+        <p>在同一 ISM 策略中加入 <code>delete</code> 状态即可。以下示例在索引创建 30 天后删除。删除不可恢复，生产前请确认快照策略、合规保留期与恢复演练。</p>
+        <div class="flow">
+          <span class="node">Hot：写入并滚动</span><span class="arrow">→</span><span class="node delete">Delete：30d 后删除</span>
+        </div>
+        <div class="code"><div class="code-head">Dev Tools / REST <button data-copy>复制</button></div><pre>PUT _plugins/_ism/policies/logs-app-retention
+{
+  "policy": {
+    "description": "Roll over at 40 GiB per primary shard and delete after 30 days",
+    "default_state": "hot",
+    "ism_template": [{
+      "index_patterns": ["logs-app-*"],
+      "priority": 200
+    }],
+    "states": [
+      {
+        "name": "hot",
+        "actions": [{
+          "rollover": {
+            "min_primary_shard_size": "40gb",
+            "min_index_age": "7d",
+            "copy_alias": true
+          }
+        }],
+        "transitions": [{
+          "state_name": "delete",
+          "conditions": {
+            "min_index_age": "30d"
+          }
+        }]
+      },
+      {
+        "name": "delete",
+        "actions": [{
+          "delete": {}
+        }],
+        "transitions": []
+      }
+    ]
+  }
+}</pre></div>
+        <div class="callout"><strong>年龄从何时开始算：</strong><code>min_index_age</code> 基于索引创建时间，而非每条日志的 <code>@timestamp</code>。若存在大量迟到日志或必须按事件时间合规删除，应使用单独的归档/删除流程，而不是仅依赖索引年龄。</div>
+      </section>
+
+      <section id="tiers">
+        <h2>5. 热温冷分层</h2>
+        <p>分层解决的是成本与性能的取舍：新数据在 Hot 层接受持续写入和低延迟查询；只读、低频查询数据转到 Warm；极少访问的数据可转 Cold。先确定部署模型，再选择下方对应方案。</p>
+        <div class="flow">
+          <span class="node">Hot：可写</span><span class="arrow">→</span><span class="node warm">Warm：只读、低频查询</span><span class="arrow">→</span><span class="node cold">Cold：极低频</span><span class="arrow">→</span><span class="node delete">删除</span>
+        </div>
+        <h3>5.1 Amazon OpenSearch Service：UltraWarm 和 Cold Storage</h3>
+        <p>这是 Amazon OpenSearch Service 托管域的专用方案。UltraWarm 使用 S3 与缓存存储只读数据，适合日志等不可变数据；Cold Storage 用于更低频的长期留存。先在域配置中启用相应容量，并确保执行策略的角色具有 UltraWarm/Cold 权限。</p>
+        <div class="callout warn"><strong>迁移前检查：</strong>索引必须不再写入；迁移会消耗资源并可能耗时。不要让当前写索引进入 Warm/Cold。对于高频实时搜索、需要更新或删除文档的索引，应继续保留在 Hot 层。</div>
+        <div class="code"><div class="code-head">Amazon OpenSearch Service ISM 策略 <button data-copy>复制</button></div><pre>PUT _plugins/_ism/policies/logs-app-tiered
+{
+  "policy": {
+    "description": "Hot to UltraWarm to Cold Storage, then delete",
+    "default_state": "hot",
+    "ism_template": [{
+      "index_patterns": ["logs-app-*"],
+      "priority": 200
+    }],
+    "states": [
+      {
+        "name": "hot",
+        "actions": [{
+          "rollover": {
+            "min_primary_shard_size": "40gb",
+            "min_index_age": "1d",
+            "copy_alias": true
+          }
+        }],
+        "transitions": [{
+          "state_name": "warm",
+          "conditions": { "min_index_age": "7d" }
+        }]
+      },
+      {
+        "name": "warm",
+        "actions": [{
+          "warm_migration": {}
+        }],
+        "transitions": [{
+          "state_name": "cold",
+          "conditions": { "min_index_age": "30d" }
+        }]
+      },
+      {
+        "name": "cold",
+        "actions": [{
+          "cold_migration": {
+            "timestamp_field": "@timestamp"
+          }
+        }],
+        "transitions": [{
+          "state_name": "delete",
+          "conditions": { "min_index_age": "90d" }
+        }]
+      },
+      {
+        "name": "delete",
+        "actions": [{ "cold_delete": {} }],
+        "transitions": []
+      }
+    ]
+  }
+}</pre></div>
+        <p><span class="tag">示例时间线</span>第 0-7 天 Hot，7-30 天 Warm，30-90 天 Cold，90 天后删除。按业务检索频率、恢复目标和成本预算修改，不要直接照搬。</p>
+        <h3>5.2 自建 OpenSearch：节点属性和 shard allocation</h3>
+        <p>开源/自建集群没有 UltraWarm S3 tier 动作。为节点标记层级，例如 Hot 节点配置 <code>node.attr.box_type: hot</code>、Warm 节点配置 <code>node.attr.box_type: warm</code>，再通过 ISM 的 <code>allocation</code> 动作把只读索引迁移到 Warm 节点。Cold 可使用同样的节点属性方式，或采用快照归档后删除。</p>
+        <div class="code"><div class="code-head">自建集群 Warm 迁移状态片段 <button data-copy>复制</button></div><pre>{
+  "name": "warm",
+  "actions": [
+    { "read_only": {} },
+    {
+      "allocation": {
+        "require": { "box_type": "warm" },
+        "wait_for": true
+      }
+    },
+    { "replica_count": { "number_of_replicas": 0 } }
+  ],
+  "transitions": [{
+    "state_name": "delete",
+    "conditions": { "min_index_age": "90d" }
+  }]
+}</pre></div>
+        <div class="callout"><strong>自建集群建议：</strong>迁移前先将索引设为只读；确认 Warm 节点可容纳主分片，且 shard allocation 没有被磁盘水位、分配过滤器或集群恢复限额阻塞。若需要长期低成本存储，快照到对象存储通常比在线 Cold 节点更合适。</div>
+      </section>
+
+      <section id="validate">
+        <h2>6. 验证、监控与常见故障</h2>
+        <h3>6.1 部署后立即验证</h3>
+        <div class="code"><div class="code-head">Dev Tools / REST <button data-copy>复制</button></div><pre># 1. 确认模板和首代索引已生效
+GET _index_template/logs-app-template
+GET _alias/logs-app
+GET logs-app-000001/_settings?filter_path=*.settings.index.plugins.index_state_management*
+
+# 2. 确认策略与索引受管状态
+GET _plugins/_ism/policies/logs-app-rollover
+GET _plugins/_ism/explain/logs-app-000001
+
+# 3. 查看分片大小、文档数、索引健康
+GET _cat/indices/logs-app-*?v&s=index
+GET _cat/shards/logs-app-*?v&s=index,shard,prirep
+
+# 4. 需要时手动执行一次 rollover 验证写别名切换
+POST /logs-app/_rollover</pre></div>
+        <h3>6.2 常见问题</h3>
+        <table>
+          <tr><th>症状</th><th>原因与处理</th></tr>
+          <tr><td><code>Missing rollover_alias index setting</code></td><td>索引没有匹配到模板或模板缺少 <code>plugins.index_state_management.rollover_alias</code>。先检查 <code>GET index/_settings</code>，再修正模板；对现有索引可补充 setting 后重试。</td></tr>
+          <tr><td>新索引已创建，但日志仍写进旧索引</td><td>摄入端直写了具体索引名，或别名没有 <code>is_write_index: true</code>。将 output 改成写别名，并用 <code>GET _alias/logs-app</code> 检查。</td></tr>
+          <tr><td>ISM 策略没有附加到新索引</td><td>检查 <code>ism_template.index_patterns</code>、优先级和索引名称。已有索引需要手动附加策略，模板只影响新建索引。</td></tr>
+          <tr><td>Hot 到 Warm 迁移卡住</td><td>确认索引不再写入、UltraWarm 已启用且有容量；检查用户角色权限、分片大小和集群健康。自建集群还要检查 allocation 约束与 Warm 节点磁盘。</td></tr>
+          <tr><td>删除比预期晚</td><td>ISM 按其 job interval 轮询，不是精确到秒的定时器；同时检查策略 explain 输出及索引的实际创建时间。</td></tr>
+        </table>
+      </section>
+
+      <section id="production">
+        <h2>7. 生产上线清单</h2>
+        <ul>
+          <li>写入端只使用别名，读请求使用别名或索引模式，避免耦合到代际索引名。</li>
+          <li>先在非生产域用小阈值验证：写入、rollover、新索引模板继承、别名切换、查询和删除全流程。</li>
+          <li>为 rollover、ISM 失败、磁盘水位、unassigned shards、Warm/Cold 容量设置告警。</li>
+          <li>删除策略上线前确认自动快照覆盖范围、保留天数、恢复责任人和恢复演练结果。</li>
+          <li>每次修改模板或策略后记住：通常只影响后续新建索引；用 explain API 确认现有索引状态。</li>
+          <li>依据真实查询延迟和恢复时间调整主分片目标大小，不以单一经验值替代压测。</li>
+        </ul>
+      </section>
+
+      <section id="references" class="sources">
+        <h2>参考资料</h2>
+        <ul>
+          <li>OpenSearch Documentation: <a href="https://docs.opensearch.org/latest/im-plugin/ism/policies/" target="_blank" rel="noopener">Index State Management policies and actions</a></li>
+          <li>OpenSearch Documentation: <a href="https://docs.opensearch.org/latest/api-reference/index-apis/rollover/" target="_blank" rel="noopener">Roll Over Index API</a></li>
+          <li>Amazon OpenSearch Service Developer Guide: <a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/ultrawarm.html" target="_blank" rel="noopener">UltraWarm storage and automated migrations</a></li>
+          <li>内部参考：<code>[Public]Amazon OpenSearch 日志分析.md</code> 中的日志存储、ISM、滚动索引与冷热分层章节。</li>
+        </ul>
+        <p>文档生成日期：2026-08-04。部署前请以目标 OpenSearch / Amazon OpenSearch Service 版本的官方文档为准，确认插件动作与服务特性可用性。</p>
+      </section>
+    </main>
+  </div>
+  <footer>OpenSearch Index Rollover 指导手册</footer>
+  <script>
+    document.querySelectorAll("[data-copy]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const text = button.closest(".code").querySelector("pre").innerText;
+        await navigator.clipboard.writeText(text);
+        const original = button.textContent;
+        button.textContent = "已复制";
+        setTimeout(() => { button.textContent = original; }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>

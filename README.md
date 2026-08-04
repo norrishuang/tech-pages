@@ -41,6 +41,7 @@
 ### OpenSearch
 
 - [OpenSearch 查看分词与词频技术指南](opensearch/opensearch-token-term-frequency-guide.html)
+- [OpenSearch Index Rollover 指导手册](opensearch/opensearch-index-rollover-guide.html)
 
 ## 部署
 
