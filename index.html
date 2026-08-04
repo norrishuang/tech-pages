@@ -3,167 +3,133 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>藏经阁 - 技术修行录</title>
+  <title>藏经阁 - 技术知识库</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
 
     :root {
-      --bg: #12100d;
-      --bg-warm: #1a1610;
-      --shelf: #1f1b14;
-      --shelf-border: #3a3020;
-      --shelf-inner: #252018;
-      --card-bg: #2a2319;
-      --card-border: #3d3428;
-      --card-hover: #352c21;
-      --text: #e8dcc8;
-      --text-dim: #c4b59e;
-      --text-muted: #8b7a63;
-      --accent: #c9a84c;
-      --accent-glow: rgba(201, 168, 76, 0.15);
-      --accent-dim: #8b6f2e;
-      --wood: #4a3a28;
-      --wood-light: #5c4a35;
+      --bg: #111413;
+      --surface: #191d1b;
+      --surface-raised: #202522;
+      --surface-hover: #282f2b;
+      --line: #353d38;
+      --line-strong: #58635c;
+      --text: #eff4ef;
+      --text-dim: #bec8c0;
+      --text-muted: #7f8b83;
+      --accent: #71e6b0;
+      --accent-strong: #b7f55e;
+      --accent-dim: #3e9870;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+      font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.8;
+      line-height: 1.6;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* ===== Hero ===== */
     .hero {
       position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 45vh;
-      padding: 60px 24px;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background:
-        radial-gradient(ellipse 600px 400px at 50% 40%, rgba(201, 168, 76, 0.06), transparent),
-        radial-gradient(ellipse 300px 300px at 20% 80%, rgba(201, 168, 76, 0.03), transparent),
-        radial-gradient(ellipse 300px 300px at 80% 20%, rgba(139, 111, 46, 0.04), transparent);
-      pointer-events: none;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--shelf-border), var(--accent-dim), var(--shelf-border), transparent);
-    }
-
-    .hero-seal {
-      width: 80px;
-      height: 80px;
-      border: 2px solid var(--accent-dim);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin-bottom: 28px;
-      position: relative;
-    }
-
-    .hero-seal::after {
-      content: '';
-      position: absolute;
-      inset: -6px;
-      border: 1px solid var(--card-border);
-      border-radius: 50%;
+      max-width: 1160px;
+      min-height: 330px;
+      margin: 0 auto;
+      padding: 88px 28px 64px;
+      border-bottom: 1px solid var(--line);
     }
 
     .hero h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 900;
-      color: var(--accent);
-      letter-spacing: 12px;
-      margin-bottom: 12px;
-      text-shadow: 0 0 40px rgba(201, 168, 76, 0.2);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.1;
+      margin-bottom: 18px;
     }
 
     .hero .subtitle {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      letter-spacing: 4px;
-      margin-bottom: 28px;
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 30px;
     }
 
     .hero .verse {
-      font-size: 0.85rem;
-      color: var(--accent-dim);
-      letter-spacing: 2px;
-      padding: 8px 20px;
-      border: 1px solid var(--card-border);
-      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.76rem;
+      letter-spacing: 0;
+      text-transform: uppercase;
     }
 
-    /* ===== Stats Bar ===== */
+    .hero .verse::before {
+      content: ">";
+      color: var(--accent-strong);
+      font-weight: 600;
+    }
+
     .stats-bar {
+      max-width: 1160px;
+      margin: 0 auto;
       display: flex;
-      justify-content: center;
-      gap: 48px;
-      padding: 28px 24px;
-      background: var(--shelf);
-      border-bottom: 1px solid var(--shelf-border);
+      gap: 0;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--line);
     }
 
     .stat-item {
-      text-align: center;
+      min-width: 132px;
+      padding: 22px 28px 20px 0;
+      margin-right: 28px;
+      border-right: 1px solid var(--line);
+      text-align: left;
     }
 
     .stat-item .number {
-      font-size: 1.6rem;
-      font-weight: 700;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 1.45rem;
+      font-weight: 600;
       color: var(--accent);
       display: block;
-      line-height: 1.2;
+      line-height: 1.1;
+      margin-bottom: 8px;
     }
 
     .stat-item .label {
-      font-size: 0.75rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.68rem;
       color: var(--text-muted);
-      letter-spacing: 2px;
+      letter-spacing: 0;
+      text-transform: uppercase;
     }
 
-    /* ===== Bookshelf ===== */
     .bookshelf {
-      max-width: 1100px;
+      max-width: 1160px;
       margin: 0 auto;
-      padding: 60px 24px 80px;
+      padding: 52px 28px 80px;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 32px;
+      gap: 20px;
     }
 
     .shelf-unit {
-      background: var(--shelf);
-      border: 1px solid var(--shelf-border);
-      border-radius: 6px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 4px;
       overflow: hidden;
       position: relative;
-      transition: border-color 0.3s ease;
+      transition: border-color 0.2s ease, transform 0.2s ease;
     }
 
     .shelf-unit:hover {
-      border-color: var(--accent-dim);
+      border-color: var(--line-strong);
+      transform: translateY(-2px);
     }
 
     .shelf-unit.wide {
@@ -171,158 +137,153 @@
     }
 
     .shelf-top {
-      background: var(--shelf-inner);
-      padding: 18px 24px;
+      background: var(--surface-raised);
+      padding: 17px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--shelf-border);
+      border-bottom: 1px solid var(--line);
     }
 
     .shelf-top h2 {
-      font-size: 1.1rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.88rem;
       font-weight: 600;
       color: var(--text);
-      letter-spacing: 3px;
+      letter-spacing: 0;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
     }
 
     .shelf-top h2::before {
-      content: '';
+      content: "#";
       display: inline-block;
-      width: 4px;
-      height: 18px;
-      background: var(--accent);
-      border-radius: 2px;
+      color: var(--accent);
     }
 
     .shelf-badge {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      background: var(--bg);
-      border: 1px solid var(--card-border);
-      padding: 3px 10px;
-      border-radius: 12px;
-      letter-spacing: 1px;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--accent-dim);
+      border-radius: 3px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.68rem;
+      line-height: 1;
+      padding: 5px 7px;
+      letter-spacing: 0;
     }
 
     .shelf-content {
-      padding: 16px;
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
 
     .scroll-item {
-      display: block;
+      display: flex;
+      align-items: center;
       position: relative;
-      padding: 12px 18px 12px 32px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      min-height: 48px;
+      padding: 11px 48px 11px 14px;
+      background: transparent;
+      border: 1px solid transparent;
       border-radius: 3px;
       color: var(--text-dim);
       text-decoration: none;
-      font-size: 0.9rem;
-      letter-spacing: 0.3px;
-      transition: all 0.2s ease;
+      font-size: 0.92rem;
+      letter-spacing: 0;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
 
     .scroll-item::before {
-      content: '\25C7';
+      content: "DOC";
       position: absolute;
-      left: 12px;
+      right: 13px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--accent-dim);
-      font-size: 0.6rem;
-      transition: all 0.2s ease;
+      color: var(--text-muted);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.61rem;
+      transition: color 0.2s ease;
     }
 
-    .scroll-item:hover {
-      background: var(--card-hover);
-      border-color: var(--accent-dim);
-      color: var(--accent);
-      transform: translateX(4px);
-      box-shadow: -4px 0 0 var(--accent), 0 2px 12px rgba(201, 168, 76, 0.08);
+    .scroll-item:hover,
+    .scroll-item:focus-visible {
+      background: var(--surface-hover);
+      border-color: var(--line-strong);
+      color: var(--text);
+      outline: none;
     }
 
-    .scroll-item:hover::before {
-      color: var(--accent);
-      transform: translateY(-50%) rotate(45deg);
+    .scroll-item:hover::before,
+    .scroll-item:focus-visible::before {
+      color: var(--accent-strong);
     }
 
-    /* ===== Footer ===== */
     footer {
-      text-align: center;
-      padding: 40px 24px;
-      border-top: 1px solid var(--shelf-border);
-      position: relative;
-    }
-
-    footer::before {
-      content: '';
-      position: absolute;
-      top: -1px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 2px;
-      background: var(--accent-dim);
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 28px;
+      border-top: 1px solid var(--line);
     }
 
     footer p {
       color: var(--text-muted);
-      font-size: 0.78rem;
-      letter-spacing: 1px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0;
     }
 
     footer a {
-      color: var(--accent-dim);
+      color: var(--accent);
       text-decoration: none;
       transition: color 0.2s;
     }
 
-    footer a:hover { color: var(--accent); }
+    footer a:hover { color: var(--accent-strong); }
 
-    /* ===== Responsive ===== */
     @media (max-width: 768px) {
       .bookshelf {
         grid-template-columns: 1fr;
-        padding: 36px 16px 60px;
-        gap: 24px;
+        padding: 30px 16px 52px;
+        gap: 14px;
       }
       .shelf-unit.wide { grid-column: auto; }
-      .hero { min-height: 36vh; padding: 48px 20px; }
-      .stats-bar { gap: 32px; }
-      .stat-item .number { font-size: 1.3rem; }
-      .shelf-content { padding: 12px; }
-      .scroll-item { padding: 10px 14px 10px 28px; font-size: 0.85rem; }
-      .scroll-item::before { left: 10px; }
+      .hero { min-height: 280px; padding: 62px 16px 46px; }
+      .hero .subtitle { font-size: 1rem; }
+      .stats-bar { padding: 0 16px; }
+      .stat-item { min-width: 0; flex: 1; margin-right: 14px; padding: 18px 14px 17px 0; }
+      .stat-item:last-child { margin-right: 0; border-right: 0; }
+      .stat-item .number { font-size: 1.2rem; }
+      .shelf-top { padding: 15px 14px; }
+      .shelf-content { padding: 7px; }
+      .scroll-item { font-size: 0.86rem; padding: 10px 43px 10px 10px; }
+      footer { margin: 0 16px; padding: 22px 0; }
     }
   </style>
 </head>
 <body>
   <div class="hero">
-    <div class="hero-seal">&#x1F4DC;</div>
-    <h1>藏 经 阁</h1>
-    <p class="subtitle">技术修行录</p>
-    <p class="verse">深藏若拙 &middot; 厚积薄发</p>
+    <h1>藏经阁</h1>
+    <p class="subtitle">面向数据系统与云原生的技术知识库</p>
+    <p class="verse">Engineering notes, research and practice</p>
   </div>
 
   <div class="stats-bar">
     <div class="stat-item">
       <span class="number">9</span>
-      <span class="label">篇 目</span>
+      <span class="label">Documents</span>
     </div>
     <div class="stat-item">
       <span class="number">4</span>
-      <span class="label">门 类</span>
+      <span class="label">Domains</span>
     </div>
     <div class="stat-item">
       <span class="number">&#x221E;</span>
-      <span class="label">求 索</span>
+      <span class="label">Explore</span>
     </div>
   </div>
 
