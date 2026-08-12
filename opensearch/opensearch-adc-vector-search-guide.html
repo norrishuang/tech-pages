@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="OpenSearch k-NN 中 ADC（Asymmetric Distance Computation）的功能、边界、适用场景与实测结论。" />
+  <title>OpenSearch ADC 向量检索技术说明</title>
+  <style>
+    :root {
+      --ink: #1b2530;
+      --muted: #64717d;
+      --line: #d9e0e5;
+      --canvas: #f5f7f8;
+      --paper: #ffffff;
+      --navy: #123b5d;
+      --blue: #087ea4;
+      --teal: #0b7a75;
+      --green-bg: #e9f7f1;
+      --blue-bg: #eaf4fb;
+      --amber-bg: #fff5dd;
+      --red-bg: #fceeee;
+      --code: #16232e;
+      --shadow: 0 12px 32px rgba(27, 37, 48, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    code {
+      color: #aa3c1f;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.91em;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .masthead {
+      background: var(--navy);
+      color: #fff;
+      padding: 52px 0 44px;
+      border-bottom: 5px solid #35b6c5;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: #a8e8eb;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      color: var(--navy);
+      line-height: 1.24;
+    }
+
+    .masthead h1 {
+      max-width: 880px;
+      margin: 0;
+      color: #fff;
+      font-size: clamp(2.1rem, 4vw, 3.35rem);
+      letter-spacing: 0;
+    }
+
+    .lede {
+      max-width: 850px;
+      margin: 16px 0 0;
+      color: #d6e5ec;
+      font-size: 1.08rem;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-top: 24px;
+      color: #bdd2dc;
+      font-size: 0.86rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 244px minmax(0, 1fr);
+      gap: 30px;
+      padding: 30px 0 60px;
+    }
+
+    .toc {
+      position: sticky;
+      top: 20px;
+      align-self: start;
+      padding: 16px 0;
+    }
+
+    .toc strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .toc a {
+      display: block;
+      padding: 7px 0 7px 13px;
+      border-left: 2px solid var(--line);
+      color: #53616c;
+      font-size: 0.91rem;
+      text-decoration: none;
+    }
+
+    .toc a:hover { border-left-color: var(--blue); color: var(--blue); }
+
+    article {
+      min-width: 0;
+      padding: clamp(24px, 4vw, 48px);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+    }
+
+    section + section {
+      margin-top: 52px;
+      padding-top: 44px;
+      border-top: 1px solid var(--line);
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 1.58rem;
+    }
+
+    h3 {
+      margin: 30px 0 10px;
+      font-size: 1.1rem;
+    }
+
+    p { margin: 0 0 14px; }
+    ul { padding-left: 22px; margin: 10px 0 16px; }
+    li + li { margin-top: 6px; }
+
+    .callout {
+      margin: 20px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--blue);
+      background: var(--blue-bg);
+    }
+
+    .callout strong { color: var(--navy); }
+    .callout.warn { border-left-color: #c8871c; background: var(--amber-bg); }
+    .callout.good { border-left-color: var(--teal); background: var(--green-bg); }
+    .callout.risk { border-left-color: #bd4d4d; background: var(--red-bg); }
+
+    .fact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 22px 0;
+    }
+
+    .fact {
+      min-height: 128px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--teal);
+      background: #fbfcfd;
+    }
+
+    .fact .value {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--navy);
+      font-size: 1.45rem;
+      font-weight: 750;
+      line-height: 1.12;
+    }
+
+    .fact .label {
+      color: var(--muted);
+      font-size: 0.87rem;
+      line-height: 1.45;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 44px 1fr 44px 1fr;
+      align-items: stretch;
+      margin: 24px 0;
+    }
+
+    .step {
+      min-height: 166px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: #fbfcfd;
+    }
+
+    .step .num {
+      display: inline-grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .step h3 { margin: 12px 0 7px; }
+    .step p { color: var(--muted); font-size: 0.9rem; line-height: 1.55; }
+
+    .arrow {
+      display: grid;
+      place-items: center;
+      color: var(--blue);
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .formula {
+      margin: 18px 0;
+      padding: 16px 18px;
+      overflow-x: auto;
+      background: var(--code);
+      color: #dfeaf1;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.87rem;
+      line-height: 1.6;
+      white-space: pre;
+    }
+
+    table {
+      width: 100%;
+      margin: 18px 0 22px;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    th, td {
+      padding: 12px 13px;
+      vertical-align: top;
+      border: 1px solid var(--line);
+      text-align: left;
+    }
+
+    th {
+      color: var(--navy);
+      background: #edf3f6;
+      font-weight: 700;
+    }
+
+    .small { color: var(--muted); font-size: 0.87rem; }
+    .tag {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 3px;
+      background: #e8eff3;
+      color: #3a5264;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.74rem;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .source-list {
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .source-list li {
+      margin: 0;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .source-list small {
+      display: block;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .footnote {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    @media (max-width: 860px) {
+      .shell { width: min(100% - 28px, 1180px); }
+      .layout { display: block; padding-top: 18px; }
+      .toc { position: static; padding: 12px 0 22px; }
+      .toc a { display: inline-block; margin-right: 12px; padding: 5px 0; border-left: 0; border-bottom: 2px solid var(--line); }
+      .fact-grid { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; gap: 8px; }
+      .arrow { min-height: 26px; transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="shell">
+      <p class="eyebrow">OpenSearch k-NN / Technical Brief</p>
+      <h1>OpenSearch ADC 向量检索技术说明</h1>
+      <p class="lede">
+        ADC 解决的是量化检索中的重复计算问题：索引已经把文档向量量化并写入磁盘或段文件，
+        查询时不应再把每个候选文档的原始向量重新量化一遍。ADC 复用这些预量化文档向量，
+        只变换一次查询向量即可完成候选打分，从而降低 CPU 和数据访问开销。
+      </p>
+      <div class="meta">
+        <span>更新时间：2026-08-11</span>
+        <span>实测环境：Amazon OpenSearch Service / us-east-1</span>
+        <span>实测版本：OpenSearch 3.3 与 3.7</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell layout">
+    <nav class="toc" aria-label="目录">
+      <strong>目录</strong>
+      <a href="#summary">结论摘要</a>
+      <a href="#what">ADC 是什么</a>
+      <a href="#capability">具体功能与边界</a>
+      <a href="#flow">执行路径</a>
+      <a href="#scenarios">适用场景</a>
+      <a href="#testing">实际测试结论</a>
+      <a href="#recommendation">落地建议</a>
+      <a href="#sources">证据与来源</a>
+    </nav>
+
+    <article>
+      <section id="summary">
+        <h2>结论摘要</h2>
+        <div class="callout good">
+          <strong>一句话说明：</strong>ADC（Asymmetric Distance Computation，非对称距离计算）让“保持 FP32 的查询向量”
+          与“索引中已经存在的量化文档向量”直接计算距离。它的作用不是提高量化率，也不是替代精确重排序；
+          它的作用是避免在每次搜索的候选打分阶段，重复量化文档向量。
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>没有 ADC：对称量化思路</th>
+              <th>有 ADC：复用预量化文档向量</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                查询向量和候选文档向量都要映射到低精度空间后才能比较。若候选文档保留的是原始 FP32，
+                则查询过程中要对每个候选重复量化，候选越多，CPU 重复工作越多。
+              </td>
+              <td>
+                文档在建索引时已经量化并持久化。查询时按 segment 变换一次 FP32 查询向量，
+                然后直接与候选的量化字节向量计算距离，省掉逐候选文档量化。
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          <strong>为什么需要它：</strong>量化索引的目标是把高维 FP32 向量变小，以降低内存和成本；但如果查询阶段又反复把候选原始向量做量化，
+          节省的存储空间会换来额外 CPU 开销。ADC 把“文档量化”前移到索引阶段并复用结果，让量化检索真正成为轻量的候选评分路径。
+          若业务还要求最终结果尽可能接近全精度，仍可在 ADC/ANN 召回后对少量候选做全精度 rescore。
+        </p>
+        <div class="fact-grid">
+          <div class="fact">
+            <span class="value">CPU 优化</span>
+            <span class="label">消除逐文档量化的重复工作；收益发生在量化候选的打分路径。</span>
+          </div>
+          <div class="fact">
+            <span class="value">非独立模式</span>
+            <span class="label">ADC 依附于 Scalar Quantization（SQ）和段级量化元数据，不是新的 <code>mode</code> 或查询 DSL。</span>
+          </div>
+          <div class="fact">
+            <span class="value">不替代 Rescore</span>
+            <span class="label">需要全精度结果时，重排序仍须读取原始向量并做精确距离计算。</span>
+          </div>
+        </div>
+        <p>
+          在我们的 100M × 768 维 <code>on_disk</code> 对比中，3.3 到 3.7 的吞吐从 2.84 QPS 提升到 674.86 QPS。
+          这不是 ADC 单独带来的 237 倍提升：主因是 3.6 引入、3.7 默认启用的 prefetch 消除了内存极度不足时的随机 I/O 阻塞；
+          ADC 是同一版本演进中减少 CPU 侧量化开销的辅助优化，内部估算贡献约为 1.2-1.5 倍，不能脱离整体链路单独承诺。
+        </p>
+      </section>
+
+      <section id="what">
+        <h2>ADC 是什么</h2>
+        <p>
+          对称量化会把查询和文档都压到同一种低精度表示后再计算距离；ADC 则保留查询的浮点信息，
+          仅让文档保持已写入索引的量化字节表示。这样既避免每次搜索重复量化候选向量，也比纯 Hamming 比较保留更多查询侧信息。
+        </p>
+        <div class="formula">ADC query transform (per segment, conceptual)
+
+q'_d = (q_d - x_d) / (y_d - x_d)
+
+x_d = dimension d 中被量化为 0 的文档值均值
+y_d = dimension d 中被量化为 1 的文档值均值
+
+随后：score(q', quantized_doc) -> L2 / inner product / cosine 的对应距离计算</div>
+        <p class="small">
+          上式是 OpenSearch <code>SegmentLevelQuantizationUtil</code> 源码注释给出的变换语义；实际实现按段读取量化状态，
+          因而不同 segment 可以有各自的量化参数。
+        </p>
+      </section>
+
+      <section id="capability">
+        <h2>具体功能与边界</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>项目</th>
+              <th>当前能力</th>
+              <th>工程含义</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>量化文档向量复用</td>
+              <td>直接从 segment 读取已量化的二进制向量，不在查询期重新量化文档。</td>
+              <td>降低候选打分 CPU 与临时对象开销。</td>
+            </tr>
+            <tr>
+              <td>查询向量处理</td>
+              <td>按 segment 的量化状态对 FP32 查询向量变换一次。</td>
+              <td>查询侧仍以浮点信息参与距离计算，属于非对称计算。</td>
+            </tr>
+            <tr>
+              <td>支持的空间</td>
+              <td>上游测试覆盖 <code>L2</code>、<code>inner_product</code>、<code>cosinesimil</code>；<code>hamming</code> 不走 ADC。</td>
+              <td>对二进制原生向量/Hamming 场景没有价值。</td>
+            </tr>
+            <tr>
+              <td>触发条件</td>
+              <td>需要段存在 Scalar Quantization 元数据，且该元数据启用 ADC。</td>
+              <td>不是给业务方单独配置的搜索参数；应通过受支持的量化索引配置获得该路径。</td>
+            </tr>
+            <tr>
+              <td>精确重排序</td>
+              <td>全精度路径仍读取原始 FP32 向量并使用配置的距离度量。</td>
+              <td>ADC 不消除 <code>on_disk</code> rescore 的 I/O 成本，也不等价于 full-precision exact search。</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout warn">
+          <strong>版本边界：</strong>上游代码显示 <code>enableADC</code> 与随机旋转参数会从 OpenSearch 3.2 起随 Scalar Quantization 参数序列化。
+          而“使用预量化向量执行 ADC”的改动在上游 k-NN PR #3113 中于 2026-02 合入，且可在 3.7 tag 中追溯。
+          对 Amazon OpenSearch Service，应以目标引擎版本和服务端发布说明为准，不建议依赖未文档化的内部布尔参数手工开启。
+        </div>
+      </section>
+
+      <section id="flow">
+        <h2>执行路径：ADC 在两阶段检索中的位置</h2>
+        <div class="flow">
+          <div class="step">
+            <span class="num">1</span>
+            <h3>ANN 召回候选</h3>
+            <p>HNSW 在内存中的量化码与图结构上返回候选。<code>ef_search</code> 控制图遍历的计算量。</p>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="step">
+            <span class="num">2</span>
+            <h3>ADC 量化打分</h3>
+            <p>查询向量按段变换一次，直接与预量化字节向量计算距离，省去逐文档的量化工作。</p>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="step">
+            <span class="num">3</span>
+            <h3>可选全精度 Rescore</h3>
+            <p>若启用重排序，从原始向量存储读取候选并精确计算距离；<code>oversample</code> 决定候选量。</p>
+          </div>
+        </div>
+        <p>
+          对 <code>on_disk</code> 32x 场景，阶段 1 用量化码加 HNSW 图压缩内存，阶段 3 用原始向量恢复最终排序精度。
+          ADC 位于量化评分链路，解决的是计算重复；prefetch 则负责让全精度候选读取按物理地址分组、与计算重叠，解决随机 I/O 等待。
+          两者互补，不能混为同一种优化。
+        </p>
+      </section>
+
+      <section id="scenarios">
+        <h2>适用场景与不适用边界</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>场景</th>
+              <th>适合度</th>
+              <th>判断理由</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>大规模向量 + SQ / <code>on_disk</code></td>
+              <td><span class="tag">推荐</span></td>
+              <td>文档量化已经是内存与成本优化的前提，ADC 可进一步减少量化候选打分的 CPU 开销。</td>
+            </tr>
+            <tr>
+              <td>成本敏感、可接受约 0.95 召回的语义检索</td>
+              <td><span class="tag">推荐</span></td>
+              <td>适合将 RAM 需求换为磁盘存储；通过 oversample + rescore 把精度补回来。</td>
+            </tr>
+            <tr>
+              <td>高并发、内存不足的 <code>on_disk</code></td>
+              <td><span class="tag">需配合</span></td>
+              <td>ADC 仅优化 CPU；必须同时使用 3.6+ prefetch、预热 page cache 和合适的 IOPS，才能解决主瓶颈。</td>
+            </tr>
+            <tr>
+              <td>向量完全在内存、FP32 精度优先</td>
+              <td><span class="tag">收益有限</span></td>
+              <td>没有量化候选打分的主要成本，ADC 不是首要优化；优先关注 HNSW 参数、SIMD 与副本扩展。</td>
+            </tr>
+            <tr>
+              <td>二进制向量 / Hamming 检索</td>
+              <td><span class="tag">不适合</span></td>
+              <td>该数据类型本身以二进制距离计算为主，ADC 路径不适用于 Hamming space。</td>
+            </tr>
+            <tr>
+              <td>严格精确检索或极窄半径判定</td>
+              <td><span class="tag">谨慎</span></td>
+              <td>ADC 属于量化路径优化，不应代替 exact search；精确性要求高时需验证 full-precision rescore 或精确检索方案。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="testing">
+        <h2>我们的实际测试结论</h2>
+        <p>
+          以下数据来自知识库中的 2026-08 实测。数据集为 LAION 100M、768 维；单节点 16 vCPU / 123.6 GB RAM / 787 GB gp3；
+          FAISS HNSW，12 shards、0 replicas，<code>on_disk</code> 32x，<code>m=16</code>、<code>ef_construction=200</code>。
+          FP32 原始向量约 286 GiB，远超节点内存，因此这是一个典型的 memory-starving 场景。
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>指标</th>
+              <th>OpenSearch 3.3</th>
+              <th>OpenSearch 3.7</th>
+              <th>解释</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>最大 QPS</td>
+              <td>2.84</td>
+              <td><strong>674.86</strong></td>
+              <td>237x；主因是 prefetch 缓解磁盘随机读，ADC 为 CPU 侧辅助增益。</td>
+            </tr>
+            <tr>
+              <td>串行 P95</td>
+              <td>0.913s</td>
+              <td><strong>10.6ms</strong></td>
+              <td>86x 改善；表明 I/O 等待从主导因素变为可被流水化的成本。</td>
+            </tr>
+            <tr>
+              <td>Recall@100</td>
+              <td>0.9494</td>
+              <td>0.9525</td>
+              <td>基本稳定，吞吐提升不是通过牺牲该批测试的召回获得。</td>
+            </tr>
+            <tr>
+              <td>最佳吞吐参数</td>
+              <td>-</td>
+              <td><code>ef_search=200</code>，<code>oversample=2</code></td>
+              <td>较 <code>ef=800, oversample=1</code>，QPS +75%，且 Recall@100 更高。</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout">
+          <strong>实测解释：</strong>ADC 不能被单独从 3.3/3.7 的总增益中剥离出来。当前最佳证据是：
+          上游代码明确说明其目标为避免 search-time redundant quantization；而本次版本差异的压倒性因素是 prefetch。
+          因此，ADC 应被视为量化检索链路的“免费 CPU 优化”，而不是独立容量规划或升级 ROI 的唯一理由。
+        </div>
+        <h3>对生产调优的直接启示</h3>
+        <ul>
+          <li>对于 3.6+ 的 <code>on_disk</code> SQ，优先从 <code>ef_search=200</code>、<code>oversample=2</code> 起测，再按目标 Recall 上调。</li>
+          <li>部署、恢复或扩容后先做 2-3 轮 warmup；冷 page cache 的首查延迟不能代表稳态。</li>
+          <li>单节点约 675 QPS 已饱和时，加并发只会增加排队延迟；扩吞吐应加副本或节点，而不是继续堆客户端并发。</li>
+          <li>不要把 <code>memory_optimized_search</code> 的经验直接套用到高召回或径向检索；知识库实测显示其 <code>ef_search</code> 调节可能失效，需要单独验证。</li>
+        </ul>
+      </section>
+
+      <section id="recommendation">
+        <h2>落地建议</h2>
+        <ol>
+          <li><strong>先选量化策略，再看 ADC。</strong>业务配置的决策对象是 SQ、<code>on_disk</code>、压缩倍数、<code>ef_search</code>、<code>oversample</code> 和 rescore；ADC 是其中自动进入的执行层优化。</li>
+          <li><strong>不要手工依赖内部开关。</strong>上游实现存在 <code>enableADC</code>，但本报告未发现面向用户的稳定 DSL 或服务端配置契约。生产上应只使用 OpenSearch 正式文档支持的量化和查询接口。</li>
+          <li><strong>把 I/O 和 CPU 分开诊断。</strong>高 ReadIOPS、page fault、冷缓存导致的抖动，优先排查 prefetch、EBS IOPS、page cache 和 rescore 候选数；CPU 饱和再评估 SIMD、ADC 与批量评分路径。</li>
+          <li><strong>用真实语料校验 Recall。</strong>ADC 的目标是加快量化路径而非保证精度；压缩比、相似度度量、模型分布、过滤条件和 <code>k</code> 都可能改变 Recall/NDCG。</li>
+        </ol>
+      </section>
+
+      <section id="sources">
+        <h2>证据与来源</h2>
+        <p>事实来源按“项目实测优先描述项目结论、上游公开实现验证当前机制”的原则整理。</p>
+        <ul class="source-list">
+          <li>
+            <a href="https://github.com/opensearch-project/k-NN/pull/3113">OpenSearch k-NN PR #3113 - Use pre-quantized vectors for ADC</a>
+            <small>上游一手实现：明确描述 ADC 直接使用预量化向量，避免搜索时重复量化；已合入主线。</small>
+          </li>
+          <li>
+            <a href="https://github.com/opensearch-project/k-NN/blob/main/src/main/java/org/opensearch/knn/index/query/SegmentLevelQuantizationUtil.java">SegmentLevelQuantizationUtil.java</a>
+            <small>上游一手源码：ADC 启用条件、按段查询向量变换公式，以及 L2 / inner product 的使用上下文。</small>
+          </li>
+          <li>
+            <a href="https://github.com/opensearch-project/k-NN/blob/main/src/main/java/org/opensearch/knn/quantization/models/quantizationParams/ScalarQuantizationParams.java">ScalarQuantizationParams.java</a>
+            <small>上游一手源码：Scalar Quantization 参数包含 <code>enableADC</code>；3.2+ 的序列化兼容分支可见。</small>
+          </li>
+          <li>
+            <a href="https://github.com/opensearch-project/k-NN/releases/tag/3.7.0.0">OpenSearch k-NN 3.7.0.0 tag</a>
+            <small>版本锚点：用于确认本报告讨论的上游实现与 3.7 分支的关联。</small>
+          </li>
+          <li>
+            <span>私有知识库：<code>wiki/sources/opensearch-vector-100m-cost-comparison.md</code></span>
+            <small>2026-08 的 100M × 768d、3.3 vs 3.7 <code>on_disk</code> 实测：吞吐、延迟、Recall、参数矩阵和归因。</small>
+          </li>
+          <li>
+            <span>私有知识库：<code>wiki/concepts/opensearch-vector-prefetch.md</code>、<code>wiki/concepts/opensearch-disk-based-vector-search.md</code></span>
+            <small>两阶段检索、prefetch 的 I/O 机制、内存模型及生产调优边界。</small>
+          </li>
+        </ul>
+        <p class="footnote">
+          口径说明：ADC 的独立性能收益没有在本次压测中以 A/B 开关方式单独测量。文中的 1.2-1.5x 为知识库中的辅助贡献估计，
+          不是可对外承诺的基准值；生产容量规划应以目标语料、实例、压缩比、过滤条件与预热状态的实测结果为准。
+        </p>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
