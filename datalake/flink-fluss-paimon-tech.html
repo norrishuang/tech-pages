@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="zh"><head>
+<meta charset="UTF-8"><style id="qw-theme">:root {
+  --color-bg: #faf9fc !important;
+  --color-text: #131920 !important;
+  --flow-size-overview-canvas-min-height: 480px !important;
+  --color-navbar-bg: #f9f9fb !important;
+  --color-navbar-fg: #131920 !important;
+  --color-navbar-fg-muted: color-mix(in srgb, #131920 65%, #f9f9fb) !important;
+  --color-navbar-divider: #0000001f !important;
+  --color-leftnav-bg: #f9f9fb !important;
+  --color-bg-chat-view: #f9f9fb !important;
+  --color-bg-secondary: #fff !important;
+  --color-bg-tertiary: #f9fafb !important;
+  --color-bg-hover: #f3f4f6 !important;
+  --color-surface: #f9fafb !important;
+  --color-surface-hover: #f3f4f6 !important;
+  --color-surface-active: #e5e7eb !important;
+  --color-border: #0000001f !important;
+  --color-border-light: #0000000f !important;
+  --color-border-strong: #d1d5db !important;
+  --background-toggle-off-default: #fff0 !important;
+  --color-primary: #4200db !important;
+  --color-primary-dark: #35009e !important;
+  --color-primary-light: #8575ff !important;
+  --color-primary-bg: #e8e6ff !important;
+  --color-primary-hover-border: #35009e !important;
+  --color-nav-icon-active: #4200db !important;
+  --color-nav-hover-border: #4200db !important;
+  --color-primary-alpha-3: color-mix(in srgb, #4200db 3%, transparent) !important;
+  --color-primary-alpha-5: color-mix(in srgb, #4200db 5%, transparent) !important;
+  --color-primary-alpha-8: color-mix(in srgb, #4200db 8%, transparent) !important;
+  --color-primary-alpha-12: color-mix(in srgb, #4200db 12%, transparent) !important;
+  --color-primary-alpha-15: color-mix(in srgb, #4200db 15%, transparent) !important;
+  --color-primary-alpha-20: color-mix(in srgb, #4200db 20%, transparent) !important;
+  --color-primary-alpha-25: color-mix(in srgb, #4200db 25%, transparent) !important;
+  --color-primary-alpha-30: color-mix(in srgb, #4200db 30%, transparent) !important;
+  --color-primary-alpha-40: color-mix(in srgb, #4200db 40%, transparent) !important;
+  --color-primary-alpha-50: color-mix(in srgb, #4200db 50%, transparent) !important;
+  --color-primary-alpha-60: color-mix(in srgb, #4200db 60%, transparent) !important;
+  --color-primary-subtle: color-mix(in srgb, #4200db 12%, transparent) !important;
+  --color-primary-border: color-mix(in srgb, #4200db 30%, transparent) !important;
+  --color-focus-ring: #4200db !important;
+  --color-sidebar-hover: color-mix(in srgb, #4200db 12%, transparent) !important;
+  --color-sidebar-hover-solid: color-mix(in srgb, #4200db 12%, #faf9fc) !important;
+  --color-selection-copy: #3b82f64d !important;
+  --color-selection-capture: color-mix(in srgb, #4200db 25%, transparent) !important;
+  --block-hover-outline: 1px dashed color-mix(in srgb, #4200db 50%, transparent) !important;
+  --block-selected-outline: 1px solid #8575ff !important;
+  --block-selection-outline-offset: 2px !important;
+  --block-selected-halo: 0 0 8px color-mix(in srgb, #4200db 40%, transparent) !important;
+  --color-accent: #4200db !important;
+  --color-accent-foreground: #4200db !important;
+  --color-accent-dark: #35009e !important;
+  --color-accent-light: #e8e6ff !important;
+  --color-accent-inverse: #fff !important;
+  --color-link: #4200db !important;
+  --color-brand-ai-gradient-start: #6842ff !important;
+  --color-brand-ai-gradient-mid: #d600ba !important;
+  --color-brand-ai-gradient-end: #ff4b14 !important;
+  --color-primary-gradient-end: #e8e6ff !important;
+  --color-primary-bg-solid: #e8e6ff !important;
+  --color-user-bubble: #f3f3f7 !important;
+  --color-user-bubble-text: #131920 !important;
+  --color-text-secondary: #5e5e5e !important;
+  --color-text-tertiary: #656871 !important;
+  --color-text-muted: #9ca3af !important;
+  --color-text-on-primary: #fff !important;
+  --color-success: #00802f !important;
+  --color-success-dark: #00471e !important;
+  --color-success-light: #d9ffd6 !important;
+  --color-success-hover: #005c26 !important;
+  --color-success-bg: #e6f5eb !important;
+  --color-success-border: #b3d9bf !important;
+  --color-success-foreground: #00802f !important;
+  --color-success-dark-foreground: #00471e !important;
+  --color-success-text: #00471e !important;
+  --color-error: #db0000 !important;
+  --color-error-dark: #700000 !important;
+  --color-error-light: #ffe0e0 !important;
+  --color-error-hover: #ffe0e0 !important;
+  --color-error-bg: #fceaea !important;
+  --color-error-border: #f2cccc !important;
+  --color-error-active-border: #db0000 !important;
+  --color-error-foreground: #db0000 !important;
+  --color-error-dark-foreground: #700000 !important;
+  --color-error-inverse: #fff !important;
+  --color-error-text: #700000 !important;
+  --color-warning: #f2b100 !important;
+  --color-warning-dark: #573a00 !important;
+  --color-warning-light: #fffbbd !important;
+  --color-warning-hover: #db9200 !important;
+  --color-warning-bg: #fef7e6 !important;
+  --color-warning-border: #f9dfa3 !important;
+  --color-warning-foreground: #f2b100 !important;
+  --color-warning-dark-foreground: #573a00 !important;
+  --color-warning-inverse: #573a00 !important;
+  --color-surface-warning: #fffbbd !important;
+  --color-text-warning: #573a00 !important;
+  --color-info: #006ce0 !important;
+  --color-info-dark: #002a66 !important;
+  --color-info-light: #d1f1ff !important;
+  --color-info-hover: #003b8f !important;
+  --color-info-bg: #ebf3fc !important;
+  --color-info-border: #b3d1f0 !important;
+  --color-info-foreground: #006ce0 !important;
+  --color-info-dark-foreground: #002a66 !important;
+  --color-info-inverse: #fff !important;
+  --color-overlay: #00000080 !important;
+  --color-shadow: #00000014 !important;
+  --color-hover: #0000000d !important;
+  --color-tooltip-bg: #000000d9 !important;
+  --color-tooltip-text: #fff !important;
+  --color-voice-purple: #8575ff !important;
+  --color-voice-purple-dark: #4200db !important;
+  --color-voice-purple-light: #8575ff !important;
+  --color-voice-red: #db0000 !important;
+  --color-voice-red-dark: #700000 !important;
+  --color-voice-amber: #f2b100 !important;
+  --color-voice-purple-glow: #4200db66 !important;
+  --color-voice-red-glow: #db000066 !important;
+  --font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  --font-mono: "SF Mono", "Monaco", "Menlo", "Consolas", monospace !important;
+  --text-2xs: .5625rem !important;
+  --text-xs: .625rem !important;
+  --text-sm: .6875rem !important;
+  --text-base: .75rem !important;
+  --text-md: .8125rem !important;
+  --text-lg: .875rem !important;
+  --text-xl: 1rem !important;
+  --text-2xl: 1.125rem !important;
+  --text-3xl: 1.25rem !important;
+  --text-4xl: 1.5rem !important;
+  --text-5xl: 2rem !important;
+  --spacing-1: calc(.25rem * 1) !important;
+  --spacing-1-5: calc(.25rem * 1.5) !important;
+  --spacing-2: calc(.25rem * 2) !important;
+  --spacing-3: calc(.25rem * 3) !important;
+  --spacing-4: calc(.25rem * 4) !important;
+  --spacing-5: calc(.25rem * 5) !important;
+  --spacing-6: calc(.25rem * 6) !important;
+  --spacing-7: calc(.25rem * 7) !important;
+  --spacing-8: calc(.25rem * 8) !important;
+  --spacing-9: calc(.25rem * 9) !important;
+  --spacing-10: calc(.25rem * 10) !important;
+  --border-radius-rounded-lg: 8px !important;
+  --radius-sm: 6px !important;
+  --radius-md: 10px !important;
+  --radius-card: 12px !important;
+  --radius-lg: 16px !important;
+  --radius-pill: 8px !important;
+  --shadow-sm: 0 1px 2px #0000000d !important;
+  --shadow-md: 0 4px 12px #00000014 !important;
+  --shadow-lg: 0 4px 16px 4px #00000029, 0 2px 6px 1px #00000029 !important;
+  --color-success-bg-solid: #d9ffd6 !important;
+  --color-error-bg-solid: #ffe0e0 !important;
+  --color-error-border-solid: #ffe0e0 !important;
+  --color-warning-bg-solid: #fffbbd !important;
+  --color-warning-text: #573a00 !important;
+  --color-info-bg-solid: #d1f1ff !important;
+  --color-info-bg-solid-alt: #d1f1ff !important;
+  --color-info-text: #002a66 !important;
+  --color-info-text-alt: #002a66 !important;
+  --color-emerald: #10b981 !important;
+  --color-teal: #4ecdc4 !important;
+  --color-code-bg: #f3f3f7 !important;
+  --color-code-header-bg: #f1f3f5 !important;
+  --color-code-text: #24292e !important;
+  --color-code-border: #e1e4e8 !important;
+  --color-code-muted: #6a737d !important;
+  --color-inline-code-bg: #f3f3f7 !important;
+  --color-inline-code-text: #24292e !important;
+  --color-inline-code-border: #e1e4e8 !important;
+  --color-scrollbar-thumb: #d1d5db !important;
+  --color-scrollbar-track: transparent !important;
+  --color-graph-node-text: #333 !important;
+  --color-graph-node-text-dim: #7f8c8d !important;
+  --color-graph-edge-default: #95a5a6 !important;
+  --color-graph-edge-cross: #e67e22 !important;
+  --color-graph-edge-text: #666 !important;
+  --color-graph-edge-stroke: #fff !important;
+  --color-graph-highlight-bg: #ff6b6b !important;
+  --color-graph-highlight-border: #e74c3c !important;
+  --color-graph-search-bg: gold !important;
+  --color-graph-search-border: orange !important;
+  --color-graph-focus-border: #c0392b !important;
+  --color-graph-external-border: #95a5a6 !important;
+  --color-graph-selected-border: #4200db !important;
+  --qs-data-cat-01: #4338ca !important;
+  --qs-data-cat-02: #d97706 !important;
+  --qs-data-cat-03: #0891b2 !important;
+  --qs-data-cat-04: #8b5cf6 !important;
+  --qs-data-cat-05: #15803d !important;
+  --qs-data-cat-06: #0c4a6e !important;
+  --qs-data-cat-07: #d946ef !important;
+  --qs-data-cat-08: #65a30d !important;
+  --qs-data-cat-09: #1d4ed8 !important;
+  --qs-data-cat-10: #831843 !important;
+  --qs-data-cat-11: #c2410c !important;
+  --qs-data-cat-12: #115e59 !important;
+  --qs-data-cat-other: #737373 !important;
+  --color-graph-cat-person: #4338ca !important;
+  --color-graph-cat-module: #4338ca !important;
+  --color-graph-cat-organization: #d97706 !important;
+  --color-graph-cat-org: #d97706 !important;
+  --color-graph-cat-variable: #d97706 !important;
+  --color-graph-cat-column: #d97706 !important;
+  --color-graph-cat-project: #0891b2 !important;
+  --color-graph-cat-sheet: #0891b2 !important;
+  --color-graph-cat-url: #0891b2 !important;
+  --color-graph-cat-product: #8b5cf6 !important;
+  --color-graph-cat-class: #8b5cf6 !important;
+  --color-graph-cat-dashboard: #8b5cf6 !important;
+  --color-graph-cat-place: #15803d !important;
+  --color-graph-cat-location: #15803d !important;
+  --color-graph-cat-function: #15803d !important;
+  --color-graph-cat-event: #0c4a6e !important;
+  --color-graph-cat-date: #0c4a6e !important;
+  --color-graph-cat-service: #0c4a6e !important;
+  --color-graph-cat-creativework: #d946ef !important;
+  --color-graph-cat-doc: #d946ef !important;
+  --color-graph-cat-message: #65a30d !important;
+  --color-graph-cat-channel: #65a30d !important;
+  --color-graph-cat-email: #65a30d !important;
+  --color-graph-cat-visual: #65a30d !important;
+  --color-graph-cat-file: #1d4ed8 !important;
+  --color-graph-cat-file-aggregate: #1d4ed8 !important;
+  --color-graph-cat-code: #1d4ed8 !important;
+  --color-graph-cat-decision: #831843 !important;
+  --color-graph-cat-action: #831843 !important;
+  --color-graph-cat-observation: #831843 !important;
+  --color-graph-cat-metric: #831843 !important;
+  --color-graph-cat-topic: #c2410c !important;
+  --color-graph-cat-concept: #c2410c !important;
+  --color-graph-cat-definedterm: #c2410c !important;
+  --color-graph-cat-instruction: #c2410c !important;
+  --color-graph-cat-import: #c2410c !important;
+  --color-graph-cat-dataset: #115e59 !important;
+  --color-graph-cat-occupation: #115e59 !important;
+  --color-graph-cat-method: #115e59 !important;
+  --color-graph-cat-folder: #737373 !important;
+  --color-graph-cat-unknown: #737373 !important;
+  --color-graph-rel-contains: #bdc3c7 !important;
+  --color-graph-rel-extends: #9b59b6 !important;
+  --color-graph-rel-implements: #3498db !important;
+  --color-graph-rel-imports: #e67e22 !important;
+  --color-graph-rel-uses: #2ecc71 !important;
+  --color-graph-rel-calls: #27ae60 !important;
+  --color-graph-rel-references: #f39c12 !important;
+  --color-graph-rel-related-to: #95a5a6 !important;
+  --color-graph-rel-works-on: #e74c3c !important;
+  --color-graph-rel-owns: #1abc9c !important;
+  --color-graph-rel-depends-on: #e67e22 !important;
+  --color-graph-rel-parent-of: #bdc3c7 !important;
+  --qs-content: #fff !important;
+  --qs-main: #fff !important;
+  --qs-primary-foreground: #131920 !important;
+  --qs-secondary-foreground: #656871 !important;
+  --qs-tertiary-foreground: #9ca3af !important;
+  --qs-placeholder-foreground: #656871 !important;
+  --qs-divider: #dedee3 !important;
+  --qs-default-border: #8c8c94 !important;
+  --qs-neutral-soft: #b4b4bb !important;
+  --qs-neutral-gray-50: #f9fafb !important;
+  --qs-tertiary-background: #f9fafb !important;
+  --qs-action-hover: #f3f3f7 !important;
+  --qs-primary-default: #4200db !important;
+  --qs-primary-dark: #35009e !important;
+  --qs-primary-light: #e8e6ff !important;
+  --qs-success-default: #00802f !important;
+  --qs-error-default: #db0000 !important;
+  --qs-font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif !important;
+  --mc-status-needs-input-bg: #fffbbd !important;
+  --mc-status-needs-input-fg: #573a00 !important;
+  --mc-status-error-bg: #ffe0e0 !important;
+  --mc-status-error-fg: #700000 !important;
+  --mc-status-running-bg: #d1f1ff !important;
+  --mc-status-running-fg: #002a66 !important;
+  --mc-badge-success-bg: #aeffa8 !important;
+  --mc-badge-success-fg: #00471e !important;
+  --mc-badge-warning-bg: #ffed4d !important;
+  --mc-badge-warning-fg: #573a00 !important;
+  --mc-schedule-tile-border: #ffe0fb !important;
+  --mc-schedule-tile-bg: color-mix(in srgb, #ffe0fb 28%, #fff) !important;
+  --safe-top: 0px !important;
+  --safe-bottom: 0px !important;
+  --safe-left: 0px !important;
+  --safe-right: 0px !important;
+  --qs-action-active: #e8e6ff !important;
+  --qs-action-disabled: #f3f3f7 !important;
+  --qs-active-border: #4200db !important;
+  --qs-application-navbar: #4200db !important;
+  --qs-application-navbar-dark: #35009e !important;
+  --qs-application-navbar-foreground: #fff !important;
+  --qs-application-navbar-light: #e8e6ff !important;
+  --qs-automation-dark: #660052 !important;
+  --qs-automation-default: #d600ba !important;
+  --qs-automation-light: #ffe0fb !important;
+  --qs-automation-medium: #b3008f !important;
+  --qs-automation-soft: #ff94f1 !important;
+  --qs-avatar-blue-bg: #d1f1ff !important;
+  --qs-avatar-blue-fg: #002a66 !important;
+  --qs-avatar-fuchsia-bg: #fce6ff !important;
+  --qs-avatar-fuchsia-fg: #590066 !important;
+  --qs-avatar-green-bg: #d9ffd6 !important;
+  --qs-avatar-green-fg: #00471e !important;
+  --qs-avatar-neutral-bg: #dedee3 !important;
+  --qs-avatar-neutral-fg: #131920 !important;
+  --qs-avatar-orange-bg: #ffe0d6 !important;
+  --qs-avatar-orange-fg: #661800 !important;
+  --qs-avatar-pink-bg: #ffe0fb !important;
+  --qs-avatar-pink-fg: #660052 !important;
+  --qs-avatar-primary-bg: #e8e6ff !important;
+  --qs-avatar-primary-fg: #35009e !important;
+  --qs-avatar-red-bg: #ffe0e0 !important;
+  --qs-avatar-red-fg: #700000 !important;
+  --qs-avatar-violet-bg: #f2e5ff !important;
+  --qs-avatar-violet-fg: #45008a !important;
+  --qs-avatar-yellow-bg: #fffbbd !important;
+  --qs-avatar-yellow-fg: #573a00 !important;
+  --qs-brand: #fff !important;
+  --qs-brand-foreground: #131920 !important;
+  --qs-brand-navbar: #131920 !important;
+  --qs-brand-navbar-dark: #000 !important;
+  --qs-brand-navbar-foreground: #fff !important;
+  --qs-brand-navbar-light: #dedee3 !important;
+  --qs-coachmark: #006ce0 !important;
+  --qs-connection-dark: #661800 !important;
+  --qs-connection-default: #db3300 !important;
+  --qs-connection-light: #ffe0d6 !important;
+  --qs-connection-soft: #ff997a !important;
+  --qs-content-inverse: #333843 !important;
+  --qs-content-inverse-active: #131920 !important;
+  --qs-contrast-foreground: #131920 !important;
+  --qs-default-badge: #b4b4bb !important;
+  --qs-default-badge-dot: #656871 !important;
+  --qs-dimension: #4200db !important;
+  --qs-dimension-experimental: #4200db !important;
+  --qs-dimension-experimental-foreground: #4200db !important;
+  --qs-dimension-foreground: #fff !important;
+  --qs-disabled: #8c8c94 !important;
+  --qs-disabled-border: #dedee3 !important;
+  --qs-disabled-foreground: #b4b4bb !important;
+  --qs-divider-light: #f3f3f7 !important;
+  --qs-error-active-border: #db0000 !important;
+  --qs-error-border: #ffe0e0 !important;
+  --qs-error-dark: #700000 !important;
+  --qs-error-foreground: #db0000 !important;
+  --qs-error-inverse: #fff !important;
+  --qs-error-light: #ffe0e0 !important;
+  --qs-error-medium: #900 !important;
+  --qs-error-soft: #ff9e9e !important;
+  --qs-focus-offset: 1px !important;
+  --qs-font-base-letter-spacing: .15px !important;
+  --qs-font-family: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif !important;
+  --qs-grid-gap: 16px !important;
+  --qs-grid-gap-xl: 24px !important;
+  --qs-hero-banner-button-hover: color-mix(in srgb, #fff, transparent 60%) !important;
+  --qs-hover-border: #333843 !important;
+  --qs-info-dark: #002a66 !important;
+  --qs-info-default: #006ce0 !important;
+  --qs-info-inverse: #fff !important;
+  --qs-info-light: #d1f1ff !important;
+  --qs-info-medium: #003b8f !important;
+  --qs-info-soft: #75cfff !important;
+  --qs-insight-dark: #590066 !important;
+  --qs-insight-default: #a000b8 !important;
+  --qs-insight-light: #fce6ff !important;
+  --qs-insight-soft: #f299ff !important;
+  --qs-main-foreground: #131920 !important;
+  --qs-main-secondary-foreground: #656871 !important;
+  --qs-measure: #00802f !important;
+  --qs-measure-experimental: #f2b100 !important;
+  --qs-measure-experimental-foreground: #f2b100 !important;
+  --qs-measure-foreground: #fff !important;
+  --qs-neutral-black: #000 !important;
+  --qs-neutral-dark: #333843 !important;
+  --qs-neutral-deep: #656871 !important;
+  --qs-neutral-default: #dedee3 !important;
+  --qs-neutral-light: #f3f3f7 !important;
+  --qs-neutral-lightest: #f9f9fb !important;
+  --qs-neutral-medium: #8c8c94 !important;
+  --qs-neutral-strong: #131920 !important;
+  --qs-neutral-white: #fff !important;
+  --qs-overlay: color-mix(in srgb, #131920, transparent 50%) !important;
+  --qs-primary-inverse: #fff !important;
+  --qs-primary-inverse-foreground: #fff !important;
+  --qs-primary-medium: #8575ff !important;
+  --qs-primary-soft: #b2a8ff !important;
+  --qs-secondary: #dedee3 !important;
+  --qs-secondary-dark: #b4b4bb !important;
+  --qs-secondary-light: #f3f3f7 !important;
+  --qs-spice: #ff9800 !important;
+  --qs-success-dark: #00471e !important;
+  --qs-success-inverse: #fff !important;
+  --qs-success-light: #d9ffd6 !important;
+  --qs-success-medium: #005c26 !important;
+  --qs-success-soft: #aeffa8 !important;
+  --qs-tag-default: #dedee3 !important;
+  --qs-tag-soft-border: #b4b4bb !important;
+  --qs-toggle-tile-lg: calc(.25rem * 15) !important;
+  --qs-toggle-tile-md: calc(.25rem * 12) !important;
+  --qs-toggle-tile-sm: calc(.25rem * 8) !important;
+  --qs-transparent: transparent !important;
+  --qs-visualization-dark: #45008a !important;
+  --qs-visualization-default: #7300e5 !important;
+  --qs-visualization-light: #f2e5ff !important;
+  --qs-visualization-soft: #d4a8ff !important;
+  --qs-warning-dark: #573a00 !important;
+  --qs-warning-default: #f2b100 !important;
+  --qs-warning-experimental: #f2b100 !important;
+  --qs-warning-experimental-light: #fffbbd !important;
+  --qs-warning-experimental-light-foreground: #fffbbd !important;
+  --qs-warning-inverse: #573a00 !important;
+  --qs-warning-light: #fffbbd !important;
+  --qs-warning-medium: #db9200 !important;
+  --qs-warning-soft: #ffed4d !important;
+  --qs-width-modal-lg: 1136px !important;
+  --qs-width-modal-md: 600px !important;
+  --qs-width-modal-sm: 384px !important;
+  --qs-duration-reorder: .125s !important;
+  --qs-ease-reorder: ease-in-out !important;
+  --react-pdf-text-layer: 1 !important;
+  --highlight-bg-color: #b400aa !important;
+  --highlight-selected-bg-color: #006400 !important;
+  --react-pdf-annotation-layer: 1 !important;
+  --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>") !important;
+  --input-focus-border-color: Highlight !important;
+  --input-focus-outline: 1px solid Canvas !important;
+  --input-unfocused-border-color: transparent !important;
+  --input-disabled-border-color: transparent !important;
+  --input-hover-border-color: black !important;
+  --link-outline: none !important;
+}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flink + Fluss + Paimon 流湖一体技术文档</title>
+<style>
+  :root {
+    --c-bg: #0d1117;
+    --c-bg-soft: #131a24;
+    --c-card: #161b22;
+    --c-card-hover: #1c232d;
+    --c-border: #2a3441;
+    --c-border-glow: #3d4a5c;
+    --c-text: #e6edf3;
+    --c-text-2: #9fb0c3;
+    --c-text-3: #6b7a8d;
+    --c-fluss: #ff7b47;
+    --c-fluss-glow: rgba(255,123,71,0.35);
+    --c-paimon: #4ea8ff;
+    --c-paimon-glow: rgba(78,168,255,0.35);
+    --c-flink: #22c9b8;
+    --c-flink-glow: rgba(34,201,184,0.3);
+    --c-doris: #b57bff;
+    --c-doris-glow: rgba(181,123,255,0.3);
+    --c-sr: #f6c453;
+    --c-warn: #f6a545;
+    --c-good: #37d99e;
+    --c-bad: #ff6b6b;
+    --font: 'Amazon Ember','Helvetica Neue','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono: 'SF Mono','Monaco','Menlo','Consolas',monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(255,123,71,0.08), transparent 60%),
+      radial-gradient(1000px 500px at 0% 10%, rgba(78,168,255,0.08), transparent 55%),
+      var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--font);
+    line-height: 1.6;
+    padding: 0 0 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+  /* HERO */
+  .hero {
+    position: relative; overflow: hidden;
+    padding: 64px 28px 52px;
+    border-bottom: 1px solid var(--c-border);
+    background:
+      linear-gradient(180deg, rgba(255,123,71,0.06), transparent),
+      linear-gradient(90deg, rgba(78,168,255,0.05), transparent 70%);
+  }
+  .hero-inner { max-width: 1080px; margin: 0 auto; }
+  .kicker {
+    display: inline-block; font-family: var(--mono); font-size: 12px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--c-fluss); border: 1px solid var(--c-fluss);
+    padding: 5px 12px; border-radius: 100px; margin-bottom: 20px;
+    box-shadow: 0 0 20px var(--c-fluss-glow);
+  }
+  h1.title {
+    font-size: 42px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.12;
+    background: linear-gradient(100deg, #fff 10%, var(--c-fluss) 55%, var(--c-paimon) 95%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+  }
+  .subtitle { font-size: 17px; color: var(--c-text-2); max-width: 760px; }
+  .hero-chips { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px; font-size: 13px;
+    padding: 7px 14px; border-radius: 100px; border: 1px solid var(--c-border);
+    background: var(--c-card); color: var(--c-text-2); font-family: var(--mono);
+  }
+  .chip .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .dot.flink { background: var(--c-flink); box-shadow: 0 0 10px var(--c-flink-glow); }
+  .dot.fluss { background: var(--c-fluss); box-shadow: 0 0 10px var(--c-fluss-glow); }
+  .dot.paimon { background: var(--c-paimon); box-shadow: 0 0 10px var(--c-paimon-glow); }
+  .dot.doris { background: var(--c-doris); box-shadow: 0 0 10px var(--c-doris-glow); }
+
+  /* TOC */
+  .toc {
+    margin: 36px auto 8px; display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 12px;
+  }
+  .toc a {
+    text-decoration: none; color: var(--c-text); background: var(--c-card);
+    border: 1px solid var(--c-border); border-radius: 12px; padding: 16px 18px;
+    transition: all .18s ease; display: block;
+  }
+  .toc a:hover { border-color: var(--c-border-glow); background: var(--c-card-hover); transform: translateY(-2px); }
+  .toc .n { font-family: var(--mono); font-size: 12px; color: var(--c-fluss); }
+  .toc .t { font-size: 15px; font-weight: 600; margin-top: 4px; }
+  .toc .d { font-size: 12px; color: var(--c-text-3); margin-top: 3px; }
+
+  /* SECTIONS */
+  section { margin-top: 64px; scroll-margin-top: 20px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+  .sec-num {
+    font-family: var(--mono); font-size: 13px; color: var(--c-bg); font-weight: 700;
+    background: linear-gradient(135deg, var(--c-fluss), #ff9d6f); padding: 4px 10px; border-radius: 8px;
+    box-shadow: 0 0 20px var(--c-fluss-glow);
+  }
+  h2 { font-size: 27px; font-weight: 700; letter-spacing: -0.3px; }
+  h3 { font-size: 19px; font-weight: 650; margin: 30px 0 12px; color: #fff; }
+  h4 { font-size: 15px; font-weight: 650; margin: 20px 0 8px; color: var(--c-text); }
+  p { color: var(--c-text-2); margin: 10px 0; }
+  .lead { font-size: 16px; color: var(--c-text); }
+  strong { color: #fff; font-weight: 650; }
+  code {
+    font-family: var(--mono); font-size: 0.88em; background: var(--c-code-bg,#0b1017);
+    border: 1px solid var(--c-border); padding: 1.5px 6px; border-radius: 5px; color: #ffd9c7;
+  }
+  .fluss-t { color: var(--c-fluss); font-weight: 650; }
+  .paimon-t { color: var(--c-paimon); font-weight: 650; }
+  .flink-t { color: var(--c-flink); font-weight: 650; }
+  .doris-t { color: var(--c-doris); font-weight: 650; }
+
+  ul, ol { margin: 10px 0 10px 4px; padding-left: 22px; color: var(--c-text-2); }
+  li { margin: 7px 0; }
+  li::marker { color: var(--c-fluss); }
+
+  .card {
+    background: var(--c-card); border: 1px solid var(--c-border); border-radius: 16px;
+    padding: 24px 26px; margin: 18px 0;
+  }
+  .callout {
+    border-left: 3px solid var(--c-fluss); background: linear-gradient(90deg, rgba(255,123,71,0.08), transparent);
+    padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 18px 0;
+  }
+  .callout.info { border-left-color: var(--c-paimon); background: linear-gradient(90deg, rgba(78,168,255,0.08), transparent); }
+  .callout.warn { border-left-color: var(--c-warn); background: linear-gradient(90deg, rgba(246,165,69,0.1), transparent); }
+  .callout.good { border-left-color: var(--c-good); background: linear-gradient(90deg, rgba(55,217,158,0.08), transparent); }
+  .callout .lbl { font-family: var(--mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+  .callout.warn .lbl { color: var(--c-warn); }
+  .callout.info .lbl { color: var(--c-paimon); }
+  .callout.good .lbl { color: var(--c-good); }
+  .callout .lbl.f { color: var(--c-fluss); }
+
+  /* TABLES */
+  .tbl-wrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--c-border); border-radius: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 560px; }
+  th { text-align: left; font-weight: 600; color: var(--c-text-3); padding: 13px 16px; background: var(--c-bg-soft);
+       border-bottom: 1px solid var(--c-border); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 12px 16px; color: var(--c-text-2); border-bottom: 1px solid var(--c-border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  td strong { color: #fff; }
+  .yes { color: var(--c-good); font-weight: 650; }
+  .no { color: var(--c-bad); font-weight: 650; }
+  .partial { color: var(--c-warn); font-weight: 650; }
+
+  /* DIAGRAM shared */
+  .diagram { margin: 22px 0; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .dg-cap { font-family: var(--mono); font-size: 12px; color: var(--c-text-3); text-align: center; margin-top: 10px; }
+
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; margin-top: 12px; }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--c-text-2); font-family: var(--mono); }
+  .legend i { width: 22px; height: 4px; border-radius: 2px; display: inline-block; }
+
+  .foot { margin-top: 70px; padding-top: 28px; border-top: 1px solid var(--c-border); color: var(--c-text-3); font-size: 13px; }
+  .foot code { color: var(--c-text-2); }
+
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
+  .pill { font-family: var(--mono); font-size: 12px; padding: 5px 11px; border-radius: 100px; border: 1px solid var(--c-border); color: var(--c-text-2); }
+
+  .anim-in { opacity: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    .anim-in.on { animation: fadeUp .5s ease-out both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  }
+  @media (max-width: 640px) {
+    h1.title { font-size: 32px; }
+    .wrap { padding: 0 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="kicker">流湖一体 · Streaming Lakehouse</span>
+    <h1 class="title">Flink + Fluss + Paimon<br>实时数仓分层架构技术文档</h1>
+    <p class="subtitle">从 ODS→DWD→DWS→ADS 分层实时数仓出发，拆解 Flink 计算、Fluss 流存储、Paimon 湖表格式如何协同，覆盖窗口聚合、主键 upsert、写入路径、Union Read、以及 Doris 与 Fluss+Paimon 的集成实现。</p>
+    <div class="hero-chips">
+      <span class="chip"><span class="dot flink"></span>Apache Flink · 计算</span>
+      <span class="chip"><span class="dot fluss"></span>Apache Fluss · 流存储(热)</span>
+      <span class="chip"><span class="dot paimon"></span>Apache Paimon · 湖表(冷)</span>
+      <span class="chip"><span class="dot doris"></span>Apache Doris · 实时大屏</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <nav class="toc">
+    <a href="#s1"><div class="n">01</div><div class="t">三个组件的角色</div><div class="d">Flink / Fluss / Paimon 各司其职</div></a>
+    <a href="#s2"><div class="n">02</div><div class="t">分层实时数仓架构</div><div class="d">有无 Fluss 的两套设计对比</div></a>
+    <a href="#s3"><div class="n">03</div><div class="t">DWS 主键 Upsert 场景</div><div class="d">按天累计、每 5 分钟刷新</div></a>
+    <a href="#s4"><div class="n">04</div><div class="t">写入路径与 Union Read</div><div class="d">先写谁 / 查询发给谁</div></a>
+    <a href="#s5"><div class="n">05</div><div class="t">多引擎新鲜度矩阵</div><div class="d">谁能读到 Fluss 热层</div></a>
+    <a href="#s6"><div class="n">06</div><div class="t">Doris + Fluss+Paimon 集成</div><div class="d">大屏近实时的实现路径</div></a>
+  </nav>
+
+  <!-- ================= SECTION 1 ================= -->
+  <section id="s1" class="anim-in">
+    <div class="sec-head"><span class="sec-num">01</span><h2>三个组件各自是做什么的</h2></div>
+    <p class="lead">这三者常被混为一谈，但它们处在不同的层次。理解分工是理解整套架构的前提。</p>
+
+    <div class="diagram card">
+      <svg viewBox="0 0 900 300" role="img" aria-label="Flink Fluss Paimon 分层角色图">
+        <defs>
+          <linearGradient id="gFlink" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22c9b8"></stop><stop offset="1" stop-color="#1a9e91"></stop></linearGradient>
+          <linearGradient id="gFluss" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7b47"></stop><stop offset="1" stop-color="#e85f2c"></stop></linearGradient>
+          <linearGradient id="gPaimon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ea8ff"></stop><stop offset="1" stop-color="#2d7fd6"></stop></linearGradient>
+          <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"></feGaussianBlur></filter>
+        </defs>
+
+        <!-- Flink -->
+        <g>
+          <ellipse cx="150" cy="255" rx="90" ry="14" fill="#22c9b8" opacity="0.12" filter="url(#soft)"></ellipse>
+          <rect x="60" y="70" width="180" height="150" rx="16" fill="url(#gFlink)" opacity="0.16" stroke="#22c9b8" stroke-width="1.5"></rect>
+          <text x="150" y="58" text-anchor="middle" fill="#22c9b8" font-family="monospace" font-size="13" font-weight="700">计算层 · COMPUTE</text>
+          <text x="150" y="120" text-anchor="middle" fill="#fff" font-size="22" font-weight="800">Flink</text>
+          <text x="150" y="150" text-anchor="middle" fill="#cfeee9" font-size="12">流/批计算引擎</text>
+          <text x="150" y="172" text-anchor="middle" fill="#9fb0c3" font-size="11">清洗 · 打宽 · 窗口聚合</text>
+          <text x="150" y="190" text-anchor="middle" fill="#9fb0c3" font-size="11">CDC 摄入 · upsert 加工</text>
+        </g>
+
+        <!-- arrow -->
+        <path d="M245 145 L305 145" stroke="#6b7a8d" stroke-width="2" marker-end="url(#ar)"></path>
+        <!-- Fluss -->
+        <g>
+          <ellipse cx="450" cy="255" rx="95" ry="14" fill="#ff7b47" opacity="0.14" filter="url(#soft)"></ellipse>
+          <rect x="355" y="70" width="190" height="150" rx="16" fill="url(#gFluss)" opacity="0.18" stroke="#ff7b47" stroke-width="1.5"></rect>
+          <text x="450" y="58" text-anchor="middle" fill="#ff7b47" font-family="monospace" font-size="13" font-weight="700">流存储 · HOT</text>
+          <text x="450" y="120" text-anchor="middle" fill="#fff" font-size="22" font-weight="800">Fluss</text>
+          <text x="450" y="150" text-anchor="middle" fill="#ffd9c7" font-size="12">实时热数据层</text>
+          <text x="450" y="172" text-anchor="middle" fill="#9fb0c3" font-size="11">秒级新鲜度 · 可查询</text>
+          <text x="450" y="190" text-anchor="middle" fill="#9fb0c3" font-size="11">替代 Kafka 中间层</text>
+        </g>
+
+        <path d="M550 145 L610 145" stroke="#6b7a8d" stroke-width="2" marker-end="url(#ar)"></path>
+        <text x="580" y="135" text-anchor="middle" fill="#6b7a8d" font-family="monospace" font-size="10">自动分层</text>
+        <!-- Paimon -->
+        <g>
+          <ellipse cx="750" cy="255" rx="90" ry="14" fill="#4ea8ff" opacity="0.14" filter="url(#soft)"></ellipse>
+          <rect x="660" y="70" width="180" height="150" rx="16" fill="url(#gPaimon)" opacity="0.18" stroke="#4ea8ff" stroke-width="1.5"></rect>
+          <text x="750" y="58" text-anchor="middle" fill="#4ea8ff" font-family="monospace" font-size="13" font-weight="700">湖表 · COLD</text>
+          <text x="750" y="120" text-anchor="middle" fill="#fff" font-size="22" font-weight="800">Paimon</text>
+          <text x="750" y="150" text-anchor="middle" fill="#cfe4ff" font-size="12">湖表格式(历史)</text>
+          <text x="750" y="172" text-anchor="middle" fill="#9fb0c3" font-size="11">LSM · 主键 upsert</text>
+          <text x="750" y="190" text-anchor="middle" fill="#9fb0c3" font-size="11">多模态 · 治理/回滚</text>
+        </g>
+        <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#6b7a8d"></path></marker>
+      </svg>
+      <div class="dg-cap">图 1 · 计算(Flink)→ 热存储(Fluss)→ 冷存储(Paimon)的分层关系</div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>组件</th><th>层次</th><th>负责什么</th><th>类比</th></tr></thead>
+        <tbody>
+          <tr><td><span class="flink-t">Flink</span></td><td>计算引擎</td><td>数据清洗、关联打宽、窗口聚合、CDC 摄入、upsert 加工逻辑</td><td>"厨师" — 负责加工</td></tr>
+          <tr><td><span class="fluss-t">Fluss</span></td><td>流存储(热)</td><td>存最近一小段时间的实时热数据，秒级可见、可像表一样查询；替代传统 Kafka 中间层</td><td>"备菜台" — 现用现取</td></tr>
+          <tr><td><span class="paimon-t">Paimon</span></td><td>湖表格式(冷)</td><td>存历史/定型数据，主键表 LSM 支持高频 upsert，提供治理、回滚、多模态</td><td>"冷库" — 长期保存</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout info">
+      <span class="lbl">关键区分</span>
+      <strong>Fluss 不是湖表格式</strong>。Paimon / Iceberg 是<strong>湖表格式</strong>(定义数据如何在湖上组织)；Fluss 是<strong>流存储层</strong>，负责那段"实时热数据"，并把冷数据自动分层(tiering)到 Paimon。三者的黄金组合是 <span class="fluss-t">Fluss(热/实时)</span> + <span class="paimon-t">Paimon(冷/历史)</span> + <strong>DLF(统一元数据/治理)</strong>。
+    </div>
+  </section>
+
+  <!-- ================= SECTION 2 ================= -->
+  <section id="s2" class="anim-in">
+    <div class="sec-head"><span class="sec-num">02</span><h2>分层实时数仓：有无 Fluss 的两套架构</h2></div>
+    <p class="lead">场景：ODS→DWD→DWS→ADS 四层，每层有 Flink 加工逻辑，ADS 产出 <strong>5 分钟粒度</strong>统计。层与层之间既要能"流转"驱动下一层，又要能"查询/回溯"。</p>
+
+    <h3>方案 A · 没有 Fluss（Kafka + 湖/OLAP 双写）</h3>
+    <div class="diagram card">
+      <svg viewBox="0 0 900 340" role="img" aria-label="没有 Fluss 的分层架构">
+        <defs>
+          <linearGradient id="gKafka" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4150"></stop><stop offset="1" stop-color="#252b36"></stop></linearGradient>
+          <marker id="ar2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8a97a8"></path></marker>
+          <marker id="ar2b" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#4ea8ff"></path></marker>
+        </defs>
+        <text x="60" y="30" fill="#9fb0c3" font-family="monospace" font-size="11">上层：Kafka 逐层流转（不可查）</text>
+        <text x="60" y="215" fill="#4ea8ff" font-family="monospace" font-size="11">下层：为"可查/回溯"额外落湖一份（双写冗余）</text>
+
+        <!-- kafka row -->
+        <g font-family="monospace">
+          <!-- nodes -->
+          <g>
+            <rect x="55" y="45" width="150" height="52" rx="10" fill="url(#gKafka)" stroke="#3a4150"></rect><text x="130" y="68" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">ODS</text><text x="130" y="86" text-anchor="middle" fill="#8a97a8" font-size="10">Kafka topic</text>
+          </g>
+          <g>
+            <rect x="255" y="45" width="150" height="52" rx="10" fill="url(#gKafka)" stroke="#3a4150"></rect><text x="330" y="68" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">DWD</text><text x="330" y="86" text-anchor="middle" fill="#8a97a8" font-size="10">Kafka topic</text>
+          </g>
+          <g>
+            <rect x="455" y="45" width="150" height="52" rx="10" fill="url(#gKafka)" stroke="#3a4150"></rect><text x="530" y="68" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">DWS</text><text x="530" y="86" text-anchor="middle" fill="#8a97a8" font-size="10">Kafka topic</text>
+          </g>
+          <g>
+            <rect x="655" y="45" width="150" height="52" rx="10" fill="url(#gKafka)" stroke="#3a4150"></rect><text x="730" y="68" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">ADS</text><text x="730" y="86" text-anchor="middle" fill="#8a97a8" font-size="10">→ OLAP 大屏</text>
+          </g>
+          <path d="M205 71 L253 71" stroke="#8a97a8" stroke-width="1.8" marker-end="url(#ar2)"></path>
+          <path d="M405 71 L453 71" stroke="#8a97a8" stroke-width="1.8" marker-end="url(#ar2)"></path>
+          <path d="M605 71 L653 71" stroke="#8a97a8" stroke-width="1.8" marker-end="url(#ar2)"></path>
+          <text x="230" y="63" text-anchor="middle" fill="#556" font-size="9">Flink</text>
+          <text x="430" y="63" text-anchor="middle" fill="#556" font-size="9">Flink</text>
+          <text x="630" y="63" text-anchor="middle" fill="#556" font-size="9">5min聚合</text>
+        </g>
+
+        <!-- lake row (dashed dup) -->
+        <g font-family="monospace">
+          <rect x="55" y="235" width="150" height="46" rx="10" fill="none" stroke="#4ea8ff" stroke-width="1.3" stroke-dasharray="5 4"></rect><text x="130" y="263" text-anchor="middle" fill="#4ea8ff" font-size="11">Iceberg 副本</text>
+          <rect x="255" y="235" width="150" height="46" rx="10" fill="none" stroke="#4ea8ff" stroke-width="1.3" stroke-dasharray="5 4"></rect><text x="330" y="263" text-anchor="middle" fill="#4ea8ff" font-size="11">Iceberg 副本</text>
+          <rect x="455" y="235" width="150" height="46" rx="10" fill="none" stroke="#4ea8ff" stroke-width="1.3" stroke-dasharray="5 4"></rect><text x="530" y="263" text-anchor="middle" fill="#4ea8ff" font-size="11">Iceberg 副本</text>
+          <rect x="655" y="235" width="150" height="46" rx="10" fill="none" stroke="#4ea8ff" stroke-width="1.3" stroke-dasharray="5 4"></rect><text x="730" y="263" text-anchor="middle" fill="#4ea8ff" font-size="11">Iceberg 副本</text>
+          <path d="M130 97 L130 233" stroke="#4ea8ff" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#ar2b)" opacity="0.7"></path>
+          <path d="M330 97 L330 233" stroke="#4ea8ff" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#ar2b)" opacity="0.7"></path>
+          <path d="M530 97 L530 233" stroke="#4ea8ff" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#ar2b)" opacity="0.7"></path>
+          <path d="M730 97 L730 233" stroke="#4ea8ff" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#ar2b)" opacity="0.7"></path>
+        </g>
+        <text x="450" y="315" text-anchor="middle" fill="#ff6b6b" font-size="12" font-family="monospace">⚠ 每层存两份：Kafka（能流不能查）+ 湖（能查不实时）</text>
+      </svg>
+      <div class="dg-cap">图 2 · 传统架构：Kafka 逐层流转 + 为可查性额外落湖，双写冗余</div>
+    </div>
+
+    <div class="callout warn">
+      <span class="lbl">这套架构的问题</span>
+      <ul style="margin-bottom:0">
+        <li><strong>存储双写、严重冗余</strong>：每层 Kafka 一份 + 落湖一份，四层下来重复存多遍，运维两套系统。</li>
+        <li><strong>Kafka 不能直接查询/裁剪</strong>：中间层排查问题只能另起消费作业，或看有延迟的落湖数据。</li>
+        <li><strong>中间层不可回溯</strong>：Kafka 默认只留几天，改逻辑重跑历史、或作业恢复都很难。</li>
+        <li><strong>实时与历史割裂</strong>：热数据在 Kafka/OLAP、历史在湖，做"最新+历史"完整口径要应用层自己拼。</li>
+        <li><strong>链路长、组件多</strong>：每层维护 topic、schema、consumer group、compaction + 落湖作业。</li>
+      </ul>
+    </div>
+
+    <h3>方案 B · 有 Fluss（流湖一体，每层一张"流湖一体表"）</h3>
+    <div class="diagram card">
+      <svg viewBox="0 0 900 320" role="img" aria-label="有 Fluss 的流湖一体分层架构">
+        <defs>
+          <linearGradient id="gHot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7b47"></stop><stop offset="1" stop-color="#c94e22"></stop></linearGradient>
+          <linearGradient id="gCold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ea8ff"></stop><stop offset="1" stop-color="#2d6db3"></stop></linearGradient>
+          <marker id="ar3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#ff7b47"></path></marker>
+          <marker id="ar3c" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#4ea8ff"></path></marker>
+        </defs>
+        <text x="55" y="28" fill="#ff7b47" font-family="monospace" font-size="11">每层 = 一张 Fluss 表（热层，可流转 + 可直接查）</text>
+        <g font-family="monospace">
+          <g><rect x="55" y="42" width="150" height="56" rx="12" fill="url(#gHot)" opacity="0.9"></rect><text x="130" y="66" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">ODS</text><text x="130" y="86" text-anchor="middle" fill="#ffe4d6" font-size="10">Fluss 表</text></g>
+          <g><rect x="255" y="42" width="150" height="56" rx="12" fill="url(#gHot)" opacity="0.9"></rect><text x="330" y="66" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">DWD</text><text x="330" y="86" text-anchor="middle" fill="#ffe4d6" font-size="10">Fluss 表</text></g>
+          <g><rect x="455" y="42" width="150" height="56" rx="12" fill="url(#gHot)" opacity="0.9"></rect><text x="530" y="66" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">DWS</text><text x="530" y="86" text-anchor="middle" fill="#ffe4d6" font-size="10">Fluss 表 · 5min聚合</text></g>
+          <g><rect x="655" y="42" width="150" height="56" rx="12" fill="url(#gHot)" opacity="0.9"></rect><text x="730" y="66" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">ADS</text><text x="730" y="86" text-anchor="middle" fill="#ffe4d6" font-size="10">Fluss 表</text></g>
+          <path d="M205 70 L253 70" stroke="#ff7b47" stroke-width="2" marker-end="url(#ar3)"></path>
+          <path d="M405 70 L453 70" stroke="#ff7b47" stroke-width="2" marker-end="url(#ar3)"></path>
+          <path d="M605 70 L653 70" stroke="#ff7b47" stroke-width="2" marker-end="url(#ar3)"></path>
+          <text x="230" y="36" text-anchor="middle" fill="#c98" font-size="9">Flink 读增量</text>
+        </g>
+        <!-- tiering to single paimon -->
+        <g font-family="monospace">
+          <path d="M130 98 L400 175" stroke="#4ea8ff" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.6"></path>
+          <path d="M330 98 L410 175" stroke="#4ea8ff" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.6"></path>
+          <path d="M530 98 L450 175" stroke="#4ea8ff" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.6"></path>
+          <path d="M730 98 L470 175" stroke="#4ea8ff" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#ar3c)" opacity="0.6"></path>
+          <rect x="290" y="178" width="320" height="52" rx="12" fill="url(#gCold)" opacity="0.85"></rect>
+          <text x="450" y="200" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">Paimon（冷 / 历史）</text>
+          <text x="450" y="220" text-anchor="middle" fill="#d6e9ff" font-size="10">自动分层 tiering · 主键表 · 一份存储</text>
+        </g>
+        <!-- union read down to query -->
+        <g font-family="monospace">
+          <path d="M450 230 L450 262" stroke="#37d99e" stroke-width="2" marker-end="url(#ar3g)"></path>
+          <marker id="ar3g" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#37d99e"></path></marker>
+          <rect x="285" y="266" width="330" height="42" rx="10" fill="none" stroke="#37d99e" stroke-width="1.4"></rect>
+          <text x="450" y="292" text-anchor="middle" fill="#37d99e" font-size="12" font-weight="700">Union Read：一条 SQL = 热(Fluss) + 冷(Paimon)</text>
+        </g>
+      </svg>
+      <div class="dg-cap">图 3 · 流湖一体：每层是 Fluss 表，冷数据自动分层到 Paimon，Union Read 合并读</div>
+    </div>
+
+    <div class="callout good">
+      <span class="lbl">带来的好处</span>
+      <ul style="margin-bottom:0">
+        <li><strong>一份存储，消除冗余</strong>：热在 Fluss、冷在 Paimon，整体一份，没有 Kafka+湖双写。</li>
+        <li><strong>每层可直接查询/裁剪</strong>：中间层是表，排查直接 <code>SELECT</code>，开发体验同离线数仓。</li>
+        <li><strong>每层可回溯/重算</strong>：历史在 Paimon 完整保留，改逻辑重跑不受 Kafka 保留期限制。</li>
+        <li><strong>实时+历史统一</strong>：Union Read 自动合并，一条 SQL 拿"历史到秒级最新"，一套口径。</li>
+        <li><strong>链路短、schema/SQL 不变</strong>：兼容 Kafka 协议，DLF 上"湖流一体"开关即用。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3 ================= -->
+  <section id="s3" class="anim-in">
+    <div class="sec-head"><span class="sec-num">03</span><h2>DWS 主键 Upsert：按天累计、每 5 分钟刷新</h2></div>
+    <p class="lead">场景升级：DWS 产出<strong>按天粒度</strong>汇总（<code>dt</code> 为主键的订单数/GMV/UV），但要求<strong>每 5 分钟刷新</strong>当天累计值 —— 同一个 <code>dt</code> 当天会被 upsert 覆盖近 288 次。这是典型的<strong>主键 upsert / 可变流</strong>，不是 append-only。</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>难点</th><th>没有 Fluss</th><th>有 Fluss + Paimon 主键表</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Upsert 载体</strong></td><td class="no">Kafka 不支持 upsert → 靠 OLAP 主键表兜底；落 Iceberg 则高频行级更新读放大严重</td><td class="yes">Paimon 主键表原生 upsert（LSM 为高频更新而生）</td></tr>
+          <tr><td><strong>当天最新值新鲜度</strong></td><td class="partial">OLAP 里秒级，但与湖历史割裂</td><td class="yes">Fluss 热层秒级 + Union Read 合并历史，一份数据</td></tr>
+          <tr><td><strong>Flink 状态压力</strong></td><td class="no">全压 Flink（UV 去重状态大），checkpoint 重</td><td class="yes">累加类可下推 Paimon 聚合引擎，Flink 状态大幅减轻</td></tr>
+          <tr><td><strong>中间层可查/回溯</strong></td><td class="no">Kafka 不可直查；重算要重放+重建状态</td><td class="yes">Paimon 直接 SELECT；按 dt 读历史重算；支持 branch/快照</td></tr>
+          <tr><td><strong>实时值 vs 历史值</strong></td><td class="no">两套存储、两套口径</td><td class="yes">同一张表、同一口径</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <span class="lbl">为什么这里 Iceberg 不合适</span>
+      Iceberg 对<strong>高频 upsert 不友好</strong>：同一主键一天更新几百次会产生大量 delete file / 小文件，读放大严重、compaction 压力大。这正是"Iceberg 更 focus 在批分析、实时可变能力弱"的地方 —— 高频 upsert 实时流不是 Iceberg 的强项，而是 <span class="paimon-t">Paimon</span> 的主场。
+    </div>
+
+    <h3>UV 精确去重的两种实现</h3>
+    <div class="pill-row">
+      <span class="pill" style="border-color:var(--c-paimon)">累加类(count/sum) → Paimon 聚合/部分更新引擎，Flink 几乎无状态</span>
+      <span class="pill" style="border-color:var(--c-fluss)">精确去重(UV) → Flink 有状态 或 Paimon 侧配合，历史从 Paimon 回补</span>
+    </div>
+    <p>对 <code>count</code>/<code>sum</code> 这类可累加指标，可用 Paimon 主键表的 <strong>aggregation / partial-update</strong> 引擎，增量直接进表按主键聚合，Flink 侧几乎不用维护大状态，重启也不怕丢。对 UV 这类需要精确去重的，仍建议 Flink 有状态聚合，但历史回补时从 Paimon 读，不必全靠 Kafka 重放。</p>
+  </section>
+
+  <!-- ================= SECTION 4 ================= -->
+  <section id="s4" class="anim-in">
+    <div class="sec-head"><span class="sec-num">04</span><h2>写入路径与 Union Read：先写谁、查询发给谁</h2></div>
+    <p class="lead">这是最容易误解的地方。核心结论：<strong>你只写一个入口（Fluss），Paimon 那份是系统自动分层出来的，不是你再 upsert 一次。</strong></p>
+
+    <div class="diagram card">
+      <svg viewBox="0 0 900 380" role="img" aria-label="写入路径与 Union Read 数据流">
+        <defs>
+          <linearGradient id="wHot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a5c"></stop><stop offset="1" stop-color="#e0602f"></stop></linearGradient>
+          <linearGradient id="wCold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5cb0ff"></stop><stop offset="1" stop-color="#2d78c9"></stop></linearGradient>
+          <marker id="aw" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L8,3.2 L0,6.4 Z" fill="#ff7b47"></path></marker>
+          <marker id="awb" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L8,3.2 L0,6.4 Z" fill="#4ea8ff"></path></marker>
+          <marker id="awg" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L8,3.2 L0,6.4 Z" fill="#37d99e"></path></marker>
+        </defs>
+
+        <!-- incoming -->
+        <g font-family="monospace">
+          <rect x="40" y="30" width="180" height="50" rx="10" fill="#1c232d" stroke="#2a3441"></rect>
+          <text x="130" y="52" text-anchor="middle" fill="#22c9b8" font-size="12" font-weight="700">Flink upsert</text>
+          <text x="130" y="70" text-anchor="middle" fill="#8a97a8" font-size="10">dt 主键 · 每5min一次</text>
+        </g>
+        <!-- ① write to Fluss -->
+        <path d="M220 55 L300 55" stroke="#ff7b47" stroke-width="2.4" marker-end="url(#aw)"></path>
+        <text x="260" y="45" text-anchor="middle" fill="#ff7b47" font-size="11" font-family="monospace" font-weight="700">① 只写这里</text>
+        <g font-family="monospace">
+          <rect x="305" y="20" width="270" height="120" rx="14" fill="url(#wHot)" opacity="0.16" stroke="#ff7b47" stroke-width="1.6"></rect>
+          <text x="440" y="46" text-anchor="middle" fill="#ff7b47" font-size="13" font-weight="800">Fluss 热层</text>
+          <text x="440" y="70" text-anchor="middle" fill="#fff" font-size="11">主键 upsert · 秒级可见</text>
+          <text x="440" y="90" text-anchor="middle" fill="#ffd9c7" font-size="10">存最近一小段时间热数据</text>
+          <text x="440" y="112" text-anchor="middle" fill="#9fb0c3" font-size="10">当天 dt 最新累计值在此</text>
+        </g>
+        <!-- ② auto tiering -->
+        <path d="M440 140 L440 205" stroke="#4ea8ff" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#awb)"></path>
+        <text x="530" y="176" text-anchor="middle" fill="#4ea8ff" font-size="11" font-family="monospace" font-weight="700">② 自动分层</text>
+        <text x="530" y="192" text-anchor="middle" fill="#6b7a8d" font-size="9" font-family="monospace">tiering service（非你写）</text>
+        <g font-family="monospace">
+          <rect x="305" y="208" width="270" height="100" rx="14" fill="url(#wCold)" opacity="0.16" stroke="#4ea8ff" stroke-width="1.6"></rect>
+          <text x="440" y="234" text-anchor="middle" fill="#4ea8ff" font-size="13" font-weight="800">Paimon 冷层</text>
+          <text x="440" y="258" text-anchor="middle" fill="#fff" font-size="11">历史/较早版本沉淀</text>
+          <text x="440" y="280" text-anchor="middle" fill="#d6e9ff" font-size="10">主键表 · LSM 合并</text>
+        </g>
+
+        <!-- ③ union read -->
+        <g font-family="monospace">
+          <path d="M575 80 C 700 80, 720 200, 640 250" stroke="#37d99e" stroke-width="2" fill="none" marker-end="url(#awg)" opacity="0.9"></path>
+          <path d="M575 258 L640 258" stroke="#37d99e" stroke-width="2" marker-end="url(#awg)" opacity="0.9"></path>
+          <rect x="645" y="150" width="210" height="120" rx="14" fill="#12201a" stroke="#37d99e" stroke-width="1.6"></rect>
+          <text x="750" y="180" text-anchor="middle" fill="#37d99e" font-size="13" font-weight="800">Union Read</text>
+          <text x="750" y="204" text-anchor="middle" fill="#cff5e6" font-size="10">按主键(dt)合并</text>
+          <text x="750" y="222" text-anchor="middle" fill="#cff5e6" font-size="10">Fluss 最新版覆盖 Paimon 旧版</text>
+          <text x="750" y="248" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">= 历史 + 秒级最新</text>
+        </g>
+        <text x="750" y="300" text-anchor="middle" fill="#9fb0c3" font-size="11" font-family="monospace">③ 查询读"逻辑表"，引擎去两边取</text>
+      </svg>
+      <div class="dg-cap">图 4 · 写入只入 Fluss ① → 自动分层到 Paimon ② → 查询由 Union Read 合并 ③</div>
+    </div>
+
+    <h3>三个高频疑问的直接回答</h3>
+    <div class="card">
+      <h4 style="color:var(--c-fluss)">Q1 · 是"先 upsert Fluss 再 upsert Paimon"吗？</h4>
+      <p style="margin-top:4px">不是。<strong>你只 upsert Fluss（热层入口）</strong>；Paimon 那份由后台分层服务（<code>table.datalake.enabled='true'</code>）自动搬下去，<strong>你不用写第二条链路</strong>。</p>
+      <h4 style="color:var(--c-paimon)">Q2 · 这一刻查询，SQL 发给 Fluss 还是 Paimon？</h4>
+      <p style="margin-top:4px">你查的是<strong>逻辑表</strong>，不用自己指定。实际读谁取决于引擎与表名后缀（见下表）。</p>
+      <h4 style="color:var(--c-good)">Q3 · "秒级可见 + 一套口径"怎么来的？</h4>
+      <p style="margin-top:4px">最新更新在 Fluss 秒级可见；Union Read 按主键把 <strong>Fluss 最新版覆盖合并 Paimon 历史版</strong>，返回一张表 —— 同主键、同语义，所以是一套口径，不存在"实时库一个口径、离线库另一个"的割裂。</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>查询写法</th><th>实际读取</th><th>结果</th></tr></thead>
+        <tbody>
+          <tr><td><code>SELECT … FROM t</code>（无后缀 · Flink）</td><td class="yes">Fluss 热 + Paimon 冷（Union Read）</td><td>历史 → 秒级最新，<strong>完整</strong></td></tr>
+          <tr><td><code>SELECT … FROM t$lake</code></td><td class="partial">只读 Paimon</td><td>只到上次分层的历史（<strong>不含最新热数据</strong>）</td></tr>
+          <tr><td>StarRocks / Trino</td><td class="partial">默认湖侧读（Paimon）</td><td>取决于引擎对实时层的支持</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5 ================= -->
+  <section id="s5" class="anim-in">
+    <div class="sec-head"><span class="sec-num">05</span><h2>多引擎新鲜度矩阵：谁能读到 Fluss 热层</h2></div>
+    <p class="lead">这是选型的<strong>硬约束</strong>：并非所有引擎都能读到 Fluss 热层。<span class="fluss-t">"秒级 Union Read" 只在部分引擎上完整成立。</span></p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>引擎</th><th>对 Fluss 的读取能力</th><th>读到热层最新 upsert？</th><th>典型定位</th></tr></thead>
+        <tbody>
+          <tr><td><span class="flink-t">Flink</span></td><td>完整 Union Read</td><td class="yes">✅ 能（秒级）</td><td>数据加工 / 实时读</td></tr>
+          <tr><td>Spark</td><td>批量 Union Read + 增量（Fluss 1.0 起）</td><td class="yes">✅ 能</td><td>批处理 / 回补</td></tr>
+          <tr><td><span class="doris-t">Doris</span></td><td>通过 Fluss Catalog 做 Union Read</td><td class="yes">✅ 能</td><td><strong>实时大屏（本文推荐）</strong></td></tr>
+          <tr><td>StarRocks</td><td>湖侧读（lake-only）</td><td class="no">❌ 只到 Paimon</td><td>湖分析（非实时热）</td></tr>
+          <tr><td>Trino</td><td>湖侧读（lake-only）</td><td class="no">❌ 只到 Paimon</td><td>湖分析 / 联邦查询</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <span class="lbl">对"大屏用 Trino/StarRocks 承载"的直接影响</span>
+      如果大屏是 <strong>Trino / StarRocks</strong>，它查询时走的是 <span class="paimon-t">Paimon（湖侧读）</span>，<strong>读不到 Fluss 热层的当天最新 upsert</strong>。此时大屏新鲜度 = <strong>Fluss→Paimon 分层间隔</strong>（通常分钟级），不是秒级。<br><br>
+      好在你的需求是 <strong>5 分钟粒度</strong> —— 只要把分层间隔配到 <code>≤ 5min</code>，湖侧读<strong>够用</strong>；接受"大屏新鲜度 = 分层间隔"即可。若确需接近实时，则换 Doris（见下一节）。
+    </div>
+  </section>
+
+  <!-- ================= SECTION 6 ================= -->
+  <section id="s6" class="anim-in">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Doris + Fluss+Paimon 集成：大屏近实时的实现</h2></div>
+    <p class="lead">当大屏需要"当天累计值接近实时可见"时，<span class="doris-t">Doris</span> 是 Trino/StarRocks 之外少数能对 Fluss 直接做 Union Read 的引擎。</p>
+
+    <h3>Doris 凭什么能读到热层（而 StarRocks/Trino 不能）</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>维度</th><th>StarRocks / Trino（湖侧读）</th><th>Doris（Fluss Catalog + Union Read）</th></tr></thead>
+        <tbody>
+          <tr><td>集成方式</td><td>Paimon 湖连接器 —— "从湖的角度看表"</td><td>Fluss Catalog 直连 —— "从 Fluss 的角度看表"</td></tr>
+          <tr><td>读取路径</td><td class="partial">只读 Paimon</td><td class="yes">Fluss 热层 + Paimon 冷层合并</td></tr>
+          <tr><td>当天最新 upsert</td><td class="no">读不到（要等分层）</td><td class="yes">✅ 读得到（秒级）</td></tr>
+          <tr><td>大屏新鲜度</td><td class="partial">= 分层间隔（分钟级）</td><td class="yes">秒级 / 近实时</td></tr>
+          <tr><td>主键合并口径</td><td>只有 Paimon 里的版本</td><td class="yes">Fluss 最新版覆盖 Paimon 旧版，一套口径</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="diagram card">
+      <svg viewBox="0 0 900 300" role="img" aria-label="Doris 集成架构">
+        <defs>
+          <linearGradient id="dHot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a5c"></stop><stop offset="1" stop-color="#d9541f"></stop></linearGradient>
+          <linearGradient id="dCold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5cb0ff"></stop><stop offset="1" stop-color="#2b73c4"></stop></linearGradient>
+          <linearGradient id="dDoris" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c78bff"></stop><stop offset="1" stop-color="#8b4fd6"></stop></linearGradient>
+          <marker id="ad" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L8,3.2 L0,6.4 Z" fill="#b57bff"></path></marker>
+          <marker id="adf" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#ff7b47"></path></marker>
+          <marker id="adc" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#4ea8ff"></path></marker>
+        </defs>
+        <g font-family="monospace">
+          <rect x="40" y="40" width="150" height="52" rx="10" fill="#12201a" stroke="#22c9b8"></rect><text x="115" y="63" text-anchor="middle" fill="#22c9b8" font-size="12" font-weight="700">Flink</text><text x="115" y="81" text-anchor="middle" fill="#8a97a8" font-size="10">按 dt upsert</text>
+          <path d="M190 66 L245 66" stroke="#ff7b47" stroke-width="2" marker-end="url(#adf)"></path>
+          <rect x="250" y="35" width="180" height="62" rx="12" fill="url(#dHot)" opacity="0.9"></rect><text x="340" y="60" text-anchor="middle" fill="#fff" font-size="12" font-weight="800">Fluss 热层</text><text x="340" y="80" text-anchor="middle" fill="#ffe4d6" font-size="10">当天最新累计 · 秒级</text>
+          <path d="M340 97 L340 150" stroke="#4ea8ff" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#adc)"></path><text x="410" y="128" text-anchor="middle" fill="#4ea8ff" font-size="9">自动分层</text>
+          <rect x="250" y="153" width="180" height="56" rx="12" fill="url(#dCold)" opacity="0.9"></rect><text x="340" y="177" text-anchor="middle" fill="#fff" font-size="12" font-weight="800">Paimon 冷层</text><text x="340" y="196" text-anchor="middle" fill="#d6e9ff" font-size="10">历史定型</text>
+          <!-- doris -->
+          <path d="M430 66 C 520 66, 560 110, 590 120" stroke="#b57bff" stroke-width="2" fill="none" marker-end="url(#ad)"></path>
+          <path d="M430 181 C 520 181, 560 135, 590 128" stroke="#b57bff" stroke-width="2" fill="none" marker-end="url(#ad)"></path>
+          <rect x="595" y="95" width="230" height="70" rx="14" fill="url(#dDoris)" opacity="0.22" stroke="#b57bff" stroke-width="1.6"></rect>
+          <text x="710" y="122" text-anchor="middle" fill="#c78bff" font-size="13" font-weight="800">Doris · Fluss Catalog</text>
+          <text x="710" y="144" text-anchor="middle" fill="#e6d6ff" font-size="10">Union Read（热+冷按主键合并）</text>
+          <path d="M710 165 L710 210" stroke="#b57bff" stroke-width="2" marker-end="url(#ad)"></path>
+          <rect x="600" y="214" width="220" height="46" rx="10" fill="#1a1424" stroke="#b57bff" stroke-width="1.3"></rect>
+          <text x="710" y="242" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">📊 实时大屏（近实时）</text>
+        </g>
+      </svg>
+      <div class="dg-cap">图 5 · Doris 通过 Fluss Catalog 直读热+冷，大屏拿到当天秒级累计值</div>
+    </div>
+
+    <div class="callout warn">
+      <span class="lbl">落地要注意的坑</span>
+      <ul style="margin-bottom:0">
+        <li><strong>版本与集成成熟度</strong>：Doris 对 Fluss 的 Union Read 是较新能力，上线前用<strong>实际版本压测</strong> upsert 合并语义（同 dt 取最新）与热层读稳定性。Fluss 1.0 于 2026-09 才发布，配套生态仍在快速演进。</li>
+        <li><strong>热层查询的并发/性能</strong>：大屏高并发高频刷新，读热层比纯读 Paimon 压力大。建议对"当天"这一行做<strong>结果缓存/限流</strong>（5min 粒度本就不必每秒打），并评估读放大。</li>
+        <li><strong>"秒级"是否真需要</strong>：你的原始需求是 5min 粒度。若分钟级够，<strong>StarRocks 湖侧读 + 分层间隔 ≤5min</strong> 更省事、并发压力更小。换 Doris 的价值在于"当天值要接近实时"。</li>
+        <li><strong>引擎统一性</strong>：若现有大屏已是 StarRocks，为一个场景引入 Doris 会多一套运维。权衡：Doris 只承载少数"要秒级"的实时大屏，其余仍走 StarRocks。</li>
+      </ul>
+    </div>
+
+    <div class="callout good">
+      <span class="lbl">决策一句话</span>
+      <strong>当天值必须接近实时 → 换 Doris 值得</strong>（能力上支持 Fluss Catalog Union Read，直读热层）；<strong>分钟级够 → StarRocks/Trino 湖侧读 + 压缩分层间隔更省事</strong>。真正的"秒级 Union Read"目前在 Flink / Doris / Spark 上成立，StarRocks/Trino 不在其中。
+    </div>
+  </section>
+
+  <div class="foot">
+    <p><strong>文档说明</strong> · 本文基于我们此前的技术讨论整理，聚焦 Flink + Fluss + Paimon 的实时数仓分层架构与场景实现，以及 Doris 与 Fluss+Paimon 的集成。技术定位说明：Fluss 由阿里 Flink 团队于 2023-07 发起，2026-08 从 Apache 孵化器毕业为顶级项目（TLP），Fluss 1.0 于 2026-09 发布；Union Read 为 Fluss 开源核心能力，非单一厂商私有。</p>
+    <p style="margin-top:10px">各引擎对 Fluss 的支持程度、分层间隔配置、以及 Doris×Fluss 的具体版本兼容性，请以你目标环境的实际版本压测结果为准。</p>
+  </div>
+
+</div>
+
+<script>
+  // trigger entrance animations once, after DOM is built
+  (function(){
+    var els = document.querySelectorAll('.anim-in');
+    els.forEach(function(el, i){
+      setTimeout(function(){ el.classList.add('on'); }, 60 + i*50);
+    });
+  })();
+</script>
+
+</body></html>
