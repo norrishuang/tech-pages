@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><style id="qw-theme">:root {
+  --color-bg: #faf9fc !important;
+  --color-text: #131920 !important;
+  --react-pdf-text-layer: 1 !important;
+  --highlight-bg-color: #b400aa !important;
+  --highlight-selected-bg-color: #006400 !important;
+  --react-pdf-annotation-layer: 1 !important;
+  --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>") !important;
+  --input-focus-border-color: Highlight !important;
+  --input-focus-outline: 1px solid Canvas !important;
+  --input-unfocused-border-color: transparent !important;
+  --input-disabled-border-color: transparent !important;
+  --input-hover-border-color: black !important;
+  --link-outline: none !important;
+  --flow-size-overview-canvas-min-height: 480px !important;
+  --chat-column-max: 720px !important;
+  --color-navbar-bg: #f9f9fb !important;
+  --color-navbar-fg: #131920 !important;
+  --color-navbar-fg-muted: color-mix(in srgb, #131920 65%, #f9f9fb) !important;
+  --color-navbar-divider: #0000001f !important;
+  --color-leftnav-bg: #f9f9fb !important;
+  --color-bg-chat-view: #f9f9fb !important;
+  --color-bg-secondary: #fff !important;
+  --color-bg-tertiary: #f9fafb !important;
+  --color-bg-hover: #f3f4f6 !important;
+  --color-surface: #f9fafb !important;
+  --color-surface-hover: #f3f4f6 !important;
+  --color-surface-active: #e5e7eb !important;
+  --color-border: #0000001f !important;
+  --color-border-light: #0000000f !important;
+  --color-border-strong: #d1d5db !important;
+  --background-toggle-off-default: #fff0 !important;
+  --color-primary: #4200db !important;
+  --color-primary-dark: #35009e !important;
+  --color-primary-light: #8575ff !important;
+  --color-primary-bg: #e8e6ff !important;
+  --color-primary-hover-border: #35009e !important;
+  --color-nav-icon-active: #4200db !important;
+  --color-nav-hover-border: #4200db !important;
+  --color-primary-alpha-3: color-mix(in srgb, #4200db 3%, transparent) !important;
+  --color-primary-alpha-5: color-mix(in srgb, #4200db 5%, transparent) !important;
+  --color-primary-alpha-8: color-mix(in srgb, #4200db 8%, transparent) !important;
+  --color-primary-alpha-12: color-mix(in srgb, #4200db 12%, transparent) !important;
+  --color-primary-alpha-15: color-mix(in srgb, #4200db 15%, transparent) !important;
+  --color-primary-alpha-20: color-mix(in srgb, #4200db 20%, transparent) !important;
+  --color-primary-alpha-25: color-mix(in srgb, #4200db 25%, transparent) !important;
+  --color-primary-alpha-30: color-mix(in srgb, #4200db 30%, transparent) !important;
+  --color-primary-alpha-40: color-mix(in srgb, #4200db 40%, transparent) !important;
+  --color-primary-alpha-50: color-mix(in srgb, #4200db 50%, transparent) !important;
+  --color-primary-alpha-60: color-mix(in srgb, #4200db 60%, transparent) !important;
+  --color-primary-subtle: color-mix(in srgb, #4200db 12%, transparent) !important;
+  --color-primary-border: color-mix(in srgb, #4200db 30%, transparent) !important;
+  --color-focus-ring: #4200db !important;
+  --color-sidebar-hover: color-mix(in srgb, #4200db 12%, transparent) !important;
+  --color-sidebar-hover-solid: color-mix(in srgb, #4200db 12%, #faf9fc) !important;
+  --block-hover-outline: 1px dashed color-mix(in srgb, #4200db 50%, transparent) !important;
+  --block-selected-outline: 1px solid #8575ff !important;
+  --block-selection-outline-offset: 2px !important;
+  --block-selected-halo: 0 0 8px color-mix(in srgb, #4200db 40%, transparent) !important;
+  --color-accent: #4200db !important;
+  --color-accent-foreground: #4200db !important;
+  --color-accent-dark: #35009e !important;
+  --color-accent-light: #e8e6ff !important;
+  --color-accent-inverse: #fff !important;
+  --color-link: #4200db !important;
+  --color-brand-ai-gradient-start: #6842ff !important;
+  --color-brand-ai-gradient-mid: #d600ba !important;
+  --color-brand-ai-gradient-end: #ff4b14 !important;
+  --color-brand-kiro: #9147ff !important;
+  --color-primary-gradient-end: #e8e6ff !important;
+  --color-primary-bg-solid: #e8e6ff !important;
+  --color-user-bubble: #f3f3f7 !important;
+  --color-user-bubble-text: #131920 !important;
+  --color-text-secondary: #5e5e5e !important;
+  --color-text-tertiary: #656871 !important;
+  --color-text-muted: #656871 !important;
+  --color-text-on-primary: #fff !important;
+  --color-success: #00802f !important;
+  --color-success-dark: #00471e !important;
+  --color-success-light: #d9ffd6 !important;
+  --color-success-hover: #005c26 !important;
+  --color-success-bg: #e6f5eb !important;
+  --color-success-border: #b3d9bf !important;
+  --color-success-foreground: #00802f !important;
+  --color-success-dark-foreground: #00471e !important;
+  --color-success-text: #00471e !important;
+  --color-error: #db0000 !important;
+  --color-error-dark: #700000 !important;
+  --color-error-light: #ffe0e0 !important;
+  --color-error-hover: #ffe0e0 !important;
+  --color-error-bg: #fceaea !important;
+  --color-error-border: #f2cccc !important;
+  --color-error-active-border: #db0000 !important;
+  --color-error-foreground: #db0000 !important;
+  --color-error-dark-foreground: #700000 !important;
+  --color-error-inverse: #fff !important;
+  --color-error-text: #700000 !important;
+  --color-warning: #f2b100 !important;
+  --color-warning-dark: #573a00 !important;
+  --color-warning-light: #fffbbd !important;
+  --color-warning-hover: #db9200 !important;
+  --color-warning-bg: #fef7e6 !important;
+  --color-warning-border: #f9dfa3 !important;
+  --color-warning-foreground: #f2b100 !important;
+  --color-warning-dark-foreground: #573a00 !important;
+  --color-warning-inverse: #573a00 !important;
+  --color-surface-warning: #fffbbd !important;
+  --color-text-warning: #573a00 !important;
+  --color-info: #006ce0 !important;
+  --color-info-dark: #002a66 !important;
+  --color-info-light: #d1f1ff !important;
+  --color-info-hover: #003b8f !important;
+  --color-info-bg: #ebf3fc !important;
+  --color-info-border: #b3d1f0 !important;
+  --color-info-foreground: #006ce0 !important;
+  --color-info-dark-foreground: #002a66 !important;
+  --color-info-inverse: #fff !important;
+  --color-overlay: #00000080 !important;
+  --color-shadow: #00000014 !important;
+  --color-hover: #0000000d !important;
+  --color-tooltip-bg: #000000d9 !important;
+  --color-tooltip-text: #fff !important;
+  --color-voice-purple: #8575ff !important;
+  --color-voice-purple-dark: #4200db !important;
+  --color-voice-purple-light: #8575ff !important;
+  --color-voice-red: #db0000 !important;
+  --color-voice-red-dark: #700000 !important;
+  --color-voice-amber: #f2b100 !important;
+  --color-voice-purple-glow: #4200db66 !important;
+  --color-voice-red-glow: #db000066 !important;
+  --font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  --font-mono: "SF Mono", "Monaco", "Menlo", "Consolas", monospace !important;
+  --text-2xs: .5625rem !important;
+  --text-xs: .625rem !important;
+  --text-sm: .6875rem !important;
+  --text-base: .75rem !important;
+  --text-md: .8125rem !important;
+  --text-lg: .875rem !important;
+  --text-xl: 1rem !important;
+  --text-2xl: 1.125rem !important;
+  --text-3xl: 1.25rem !important;
+  --text-4xl: 1.5rem !important;
+  --text-5xl: 2rem !important;
+  --spacing-1: calc(.25rem * 1) !important;
+  --spacing-1-5: calc(.25rem * 1.5) !important;
+  --spacing-2: calc(.25rem * 2) !important;
+  --spacing-3: calc(.25rem * 3) !important;
+  --spacing-4: calc(.25rem * 4) !important;
+  --spacing-5: calc(.25rem * 5) !important;
+  --spacing-6: calc(.25rem * 6) !important;
+  --spacing-7: calc(.25rem * 7) !important;
+  --spacing-8: calc(.25rem * 8) !important;
+  --spacing-9: calc(.25rem * 9) !important;
+  --spacing-10: calc(.25rem * 10) !important;
+  --border-radius-rounded-lg: 8px !important;
+  --radius-sm: 6px !important;
+  --radius-md: 10px !important;
+  --radius-card: 12px !important;
+  --radius-lg: 16px !important;
+  --radius-pill: 8px !important;
+  --shadow-sm: 0 1px 2px #0000000d !important;
+  --shadow-md: 0 4px 12px #00000014 !important;
+  --shadow-lg: 0 4px 16px 4px #00000029, 0 2px 6px 1px #00000029 !important;
+  --color-success-bg-solid: #d9ffd6 !important;
+  --color-error-bg-solid: #ffe0e0 !important;
+  --color-error-border-solid: #ffe0e0 !important;
+  --color-warning-bg-solid: #fffbbd !important;
+  --color-warning-text: #573a00 !important;
+  --color-info-bg-solid: #d1f1ff !important;
+  --color-info-bg-solid-alt: #d1f1ff !important;
+  --color-info-text: #002a66 !important;
+  --color-info-text-alt: #002a66 !important;
+  --color-emerald: #10b981 !important;
+  --color-teal: #4ecdc4 !important;
+  --color-code-bg: #f3f3f7 !important;
+  --color-code-header-bg: #f1f3f5 !important;
+  --color-code-text: #24292e !important;
+  --color-code-border: #e1e4e8 !important;
+  --color-code-muted: #6a737d !important;
+  --color-inline-code-bg: #f3f3f7 !important;
+  --color-inline-code-text: #24292e !important;
+  --color-inline-code-border: #e1e4e8 !important;
+  --color-scrollbar-thumb: #d1d5db !important;
+  --color-scrollbar-track: transparent !important;
+  --color-graph-node-text: #333 !important;
+  --color-graph-node-text-dim: #7f8c8d !important;
+  --color-graph-edge-default: #95a5a6 !important;
+  --color-graph-edge-cross: #e67e22 !important;
+  --color-graph-edge-text: #666 !important;
+  --color-graph-edge-stroke: #fff !important;
+  --color-graph-highlight-bg: #ff6b6b !important;
+  --color-graph-highlight-border: #e74c3c !important;
+  --color-graph-search-bg: gold !important;
+  --color-graph-search-border: orange !important;
+  --color-graph-focus-border: #c0392b !important;
+  --color-graph-external-border: #95a5a6 !important;
+  --color-graph-selected-border: #4200db !important;
+  --qs-data-cat-01: #4338ca !important;
+  --qs-data-cat-02: #d97706 !important;
+  --qs-data-cat-03: #0891b2 !important;
+  --qs-data-cat-04: #8b5cf6 !important;
+  --qs-data-cat-05: #15803d !important;
+  --qs-data-cat-06: #0c4a6e !important;
+  --qs-data-cat-07: #d946ef !important;
+  --qs-data-cat-08: #65a30d !important;
+  --qs-data-cat-09: #1d4ed8 !important;
+  --qs-data-cat-10: #831843 !important;
+  --qs-data-cat-11: #c2410c !important;
+  --qs-data-cat-12: #115e59 !important;
+  --qs-data-cat-other: #737373 !important;
+  --color-graph-cat-person: #4338ca !important;
+  --color-graph-cat-module: #4338ca !important;
+  --color-graph-cat-organization: #d97706 !important;
+  --color-graph-cat-org: #d97706 !important;
+  --color-graph-cat-variable: #d97706 !important;
+  --color-graph-cat-column: #d97706 !important;
+  --color-graph-cat-project: #0891b2 !important;
+  --color-graph-cat-sheet: #0891b2 !important;
+  --color-graph-cat-url: #0891b2 !important;
+  --color-graph-cat-product: #8b5cf6 !important;
+  --color-graph-cat-class: #8b5cf6 !important;
+  --color-graph-cat-dashboard: #8b5cf6 !important;
+  --color-graph-cat-place: #15803d !important;
+  --color-graph-cat-location: #15803d !important;
+  --color-graph-cat-function: #15803d !important;
+  --color-graph-cat-event: #0c4a6e !important;
+  --color-graph-cat-date: #0c4a6e !important;
+  --color-graph-cat-service: #0c4a6e !important;
+  --color-graph-cat-creativework: #d946ef !important;
+  --color-graph-cat-doc: #d946ef !important;
+  --color-graph-cat-message: #65a30d !important;
+  --color-graph-cat-channel: #65a30d !important;
+  --color-graph-cat-email: #65a30d !important;
+  --color-graph-cat-visual: #65a30d !important;
+  --color-graph-cat-file: #1d4ed8 !important;
+  --color-graph-cat-file-aggregate: #1d4ed8 !important;
+  --color-graph-cat-code: #1d4ed8 !important;
+  --color-graph-cat-decision: #831843 !important;
+  --color-graph-cat-action: #831843 !important;
+  --color-graph-cat-observation: #831843 !important;
+  --color-graph-cat-metric: #831843 !important;
+  --color-graph-cat-topic: #c2410c !important;
+  --color-graph-cat-concept: #c2410c !important;
+  --color-graph-cat-definedterm: #c2410c !important;
+  --color-graph-cat-instruction: #c2410c !important;
+  --color-graph-cat-import: #c2410c !important;
+  --color-graph-cat-dataset: #115e59 !important;
+  --color-graph-cat-occupation: #115e59 !important;
+  --color-graph-cat-method: #115e59 !important;
+  --color-graph-cat-folder: #737373 !important;
+  --color-graph-cat-unknown: #737373 !important;
+  --color-graph-rel-contains: #bdc3c7 !important;
+  --color-graph-rel-extends: #9b59b6 !important;
+  --color-graph-rel-implements: #3498db !important;
+  --color-graph-rel-imports: #e67e22 !important;
+  --color-graph-rel-uses: #2ecc71 !important;
+  --color-graph-rel-calls: #27ae60 !important;
+  --color-graph-rel-references: #f39c12 !important;
+  --color-graph-rel-related-to: #95a5a6 !important;
+  --color-graph-rel-works-on: #e74c3c !important;
+  --color-graph-rel-owns: #1abc9c !important;
+  --color-graph-rel-depends-on: #e67e22 !important;
+  --color-graph-rel-parent-of: #bdc3c7 !important;
+  --qs-content: #fff !important;
+  --qs-main: #fff !important;
+  --qs-primary-foreground: #131920 !important;
+  --qs-secondary-foreground: #656871 !important;
+  --qs-tertiary-foreground: #656871 !important;
+  --qs-placeholder-foreground: #656871 !important;
+  --qs-divider: #dedee3 !important;
+  --qs-default-border: #8c8c94 !important;
+  --qs-neutral-soft: #b4b4bb !important;
+  --qs-neutral-gray-50: #f9fafb !important;
+  --qs-tertiary-background: #f9fafb !important;
+  --qs-action-hover: #f3f3f7 !important;
+  --qs-primary-default: #4200db !important;
+  --qs-primary-dark: #35009e !important;
+  --qs-primary-light: #e8e6ff !important;
+  --qs-primary-inverse: #fff !important;
+  --qs-success-default: #00802f !important;
+  --qs-success-dark: #00471e !important;
+  --qs-error-default: #db0000 !important;
+  --qs-warning-default: #f2b100 !important;
+  --qs-font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif !important;
+  --safe-top: 0px !important;
+  --safe-bottom: 0px !important;
+  --safe-left: 0px !important;
+  --safe-right: 0px !important;
+  --qs-action-active: #e8e6ff !important;
+  --qs-action-disabled: #f3f3f7 !important;
+  --qs-active-border: #4200db !important;
+  --qs-application-navbar: #4200db !important;
+  --qs-application-navbar-dark: #35009e !important;
+  --qs-application-navbar-foreground: #fff !important;
+  --qs-application-navbar-light: #e8e6ff !important;
+  --qs-automation-dark: #660052 !important;
+  --qs-automation-default: #d600ba !important;
+  --qs-automation-light: #ffe0fb !important;
+  --qs-automation-medium: #b3008f !important;
+  --qs-automation-soft: #ff94f1 !important;
+  --qs-avatar-blue-bg: #d1f1ff !important;
+  --qs-avatar-blue-fg: #002a66 !important;
+  --qs-avatar-fuchsia-bg: #fce6ff !important;
+  --qs-avatar-fuchsia-fg: #590066 !important;
+  --qs-avatar-green-bg: #d9ffd6 !important;
+  --qs-avatar-green-fg: #00471e !important;
+  --qs-avatar-neutral-bg: #dedee3 !important;
+  --qs-avatar-neutral-fg: #131920 !important;
+  --qs-avatar-orange-bg: #ffe0d6 !important;
+  --qs-avatar-orange-fg: #661800 !important;
+  --qs-avatar-pink-bg: #ffe0fb !important;
+  --qs-avatar-pink-fg: #660052 !important;
+  --qs-avatar-primary-bg: #e8e6ff !important;
+  --qs-avatar-primary-fg: #35009e !important;
+  --qs-avatar-red-bg: #ffe0e0 !important;
+  --qs-avatar-red-fg: #700000 !important;
+  --qs-avatar-violet-bg: #f2e5ff !important;
+  --qs-avatar-violet-fg: #45008a !important;
+  --qs-avatar-yellow-bg: #fffbbd !important;
+  --qs-avatar-yellow-fg: #573a00 !important;
+  --qs-brand: #fff !important;
+  --qs-brand-foreground: #131920 !important;
+  --qs-brand-navbar: #131920 !important;
+  --qs-brand-navbar-dark: #000 !important;
+  --qs-brand-navbar-foreground: #fff !important;
+  --qs-brand-navbar-light: #dedee3 !important;
+  --qs-coachmark: #006ce0 !important;
+  --qs-connection-dark: #661800 !important;
+  --qs-connection-default: #db3300 !important;
+  --qs-connection-light: #ffe0d6 !important;
+  --qs-connection-soft: #ff997a !important;
+  --qs-content-inverse: #333843 !important;
+  --qs-content-inverse-active: #131920 !important;
+  --qs-contrast-foreground: #131920 !important;
+  --qs-data-categorical-01: #4338ca !important;
+  --qs-data-categorical-02: #d97706 !important;
+  --qs-data-categorical-03: #0891b2 !important;
+  --qs-data-categorical-04: #8b5cf6 !important;
+  --qs-data-categorical-05: #15803d !important;
+  --qs-data-categorical-06: #0c4a6e !important;
+  --qs-data-categorical-07: #d946ef !important;
+  --qs-data-categorical-08: #65a30d !important;
+  --qs-data-categorical-09: #1d4ed8 !important;
+  --qs-data-categorical-10: #831843 !important;
+  --qs-data-categorical-11: #c2410c !important;
+  --qs-data-categorical-12: #115e59 !important;
+  --qs-data-categorical-other: #737373 !important;
+  --qs-data-divergent-negative: #ea580c !important;
+  --qs-data-divergent-positive: #4f46e5 !important;
+  --qs-data-divergent-red-green-negative: #dc2626 !important;
+  --qs-data-divergent-red-green-positive: #16a34a !important;
+  --qs-data-missing: #d4d4d4 !important;
+  --qs-data-sentiment-neutral: #737373 !important;
+  --qs-data-sentiment-warning: #9e6900 !important;
+  --qs-data-sequential-duochromatic-high: #1e1b4b !important;
+  --qs-data-sequential-duochromatic-low: #8b5cf6 !important;
+  --qs-data-sequential-monochromatic-high: #4f46e5 !important;
+  --qs-default-badge: #b4b4bb !important;
+  --qs-default-badge-dot: #656871 !important;
+  --qs-dimension: #4200db !important;
+  --qs-dimension-experimental: #4200db !important;
+  --qs-dimension-experimental-foreground: #4200db !important;
+  --qs-dimension-foreground: #fff !important;
+  --qs-disabled: #8c8c94 !important;
+  --qs-disabled-border: #dedee3 !important;
+  --qs-disabled-foreground: #b4b4bb !important;
+  --qs-divider-light: #f3f3f7 !important;
+  --qs-error-active-border: #db0000 !important;
+  --qs-error-border: #ffe0e0 !important;
+  --qs-error-dark: #700000 !important;
+  --qs-error-foreground: #db0000 !important;
+  --qs-error-inverse: #fff !important;
+  --qs-error-light: #ffe0e0 !important;
+  --qs-error-medium: #900 !important;
+  --qs-error-soft: #ff9e9e !important;
+  --qs-focus-offset: 1px !important;
+  --qs-font-base-letter-spacing: .15px !important;
+  --qs-font-family: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif !important;
+  --qs-grid-gap: 16px !important;
+  --qs-grid-gap-xl: 24px !important;
+  --qs-hero-banner-button-hover: color-mix(in srgb, #fff, transparent 60%) !important;
+  --qs-hover-border: #333843 !important;
+  --qs-info-dark: #002a66 !important;
+  --qs-info-default: #006ce0 !important;
+  --qs-info-inverse: #fff !important;
+  --qs-info-light: #d1f1ff !important;
+  --qs-info-medium: #003b8f !important;
+  --qs-info-soft: #75cfff !important;
+  --qs-insight-dark: #590066 !important;
+  --qs-insight-default: #a000b8 !important;
+  --qs-insight-light: #fce6ff !important;
+  --qs-insight-soft: #f299ff !important;
+  --qs-main-foreground: #131920 !important;
+  --qs-main-secondary-foreground: #656871 !important;
+  --qs-measure: #00802f !important;
+  --qs-measure-experimental: #f2b100 !important;
+  --qs-measure-experimental-foreground: #f2b100 !important;
+  --qs-measure-foreground: #fff !important;
+  --qs-neutral-black: #000 !important;
+  --qs-neutral-dark: #333843 !important;
+  --qs-neutral-deep: #656871 !important;
+  --qs-neutral-default: #dedee3 !important;
+  --qs-neutral-light: #f3f3f7 !important;
+  --qs-neutral-lightest: #f9f9fb !important;
+  --qs-neutral-medium: #8c8c94 !important;
+  --qs-neutral-strong: #131920 !important;
+  --qs-neutral-white: #fff !important;
+  --qs-overlay: color-mix(in srgb, #131920, transparent 50%) !important;
+  --qs-primary-inverse-foreground: #fff !important;
+  --qs-primary-medium: #8575ff !important;
+  --qs-primary-soft: #b2a8ff !important;
+  --qs-secondary: #dedee3 !important;
+  --qs-secondary-dark: #b4b4bb !important;
+  --qs-secondary-light: #f3f3f7 !important;
+  --qs-spice: #ff9800 !important;
+  --qs-success-inverse: #fff !important;
+  --qs-success-light: #d9ffd6 !important;
+  --qs-success-medium: #005c26 !important;
+  --qs-success-soft: #aeffa8 !important;
+  --qs-tag-default: #dedee3 !important;
+  --qs-tag-soft-border: #b4b4bb !important;
+  --qs-toggle-tile-lg: calc(.25rem * 15) !important;
+  --qs-toggle-tile-md: calc(.25rem * 12) !important;
+  --qs-toggle-tile-sm: calc(.25rem * 8) !important;
+  --qs-transparent: transparent !important;
+  --qs-visualization-dark: #45008a !important;
+  --qs-visualization-default: #7300e5 !important;
+  --qs-visualization-light: #f2e5ff !important;
+  --qs-visualization-soft: #d4a8ff !important;
+  --qs-warning-dark: #573a00 !important;
+  --qs-warning-experimental: #f2b100 !important;
+  --qs-warning-experimental-light: #fffbbd !important;
+  --qs-warning-experimental-light-foreground: #fffbbd !important;
+  --qs-warning-inverse: #573a00 !important;
+  --qs-warning-light: #fffbbd !important;
+  --qs-warning-medium: #db9200 !important;
+  --qs-warning-soft: #ffed4d !important;
+  --qs-width-modal-lg: 1136px !important;
+  --qs-width-modal-md: 600px !important;
+  --qs-width-modal-sm: 384px !important;
+  --qs-duration-reorder: .125s !important;
+  --qs-ease-reorder: ease-in-out !important;
+  --z-subtask-modal: 10000 !important;
+  --z-above-subtask-modal: 10001 !important;
+}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon OpenSearch Service 蓝绿部署技术文档</title>
+<style>
+  :root {
+    --blue: #2563eb;
+    --blue-soft: rgba(37, 99, 235, 0.12);
+    --green: #16a34a;
+    --green-soft: rgba(22, 163, 74, 0.12);
+    --amber: #d97706;
+    --amber-soft: rgba(245, 158, 11, 0.14);
+    --red: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--color-bg);
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    margin: 0;
+    padding: 32px 20px 80px;
+    line-height: 1.65;
+  }
+  .doc { max-width: 980px; margin: 0 auto; }
+
+  /* ---------- Header ---------- */
+  .hero {
+    border-radius: var(--radius-lg);
+    padding: 36px 36px 30px;
+    background: linear-gradient(135deg, var(--blue-soft), var(--green-soft));
+    border: 1px solid var(--color-border-light);
+    margin-bottom: 36px;
+  }
+  .hero .eyebrow {
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--color-text-muted); font-weight: 600; margin-bottom: 10px;
+  }
+  .hero h1 { font-size: 30px; margin: 0 0 12px; font-weight: 700; letter-spacing: -0.01em; }
+  .hero p { margin: 0; color: var(--color-text-secondary); font-size: 15px; max-width: 760px; }
+  .hero .meta { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .chip {
+    font-size: 12px; padding: 5px 12px; border-radius: var(--radius-pill);
+    background: var(--color-bg-secondary); border: 1px solid var(--color-border-light);
+    color: var(--color-text-secondary); font-weight: 500;
+  }
+
+  /* ---------- Section ---------- */
+  section { margin-bottom: 44px; }
+  .sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .sec-num {
+    width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--color-primary); color: #fff; font-weight: 700; font-size: 15px;
+  }
+  h2 { font-size: 22px; margin: 0; font-weight: 700; letter-spacing: -0.01em; }
+  h3 { font-size: 16px; margin: 26px 0 10px; font-weight: 650; }
+  p { font-size: 14.5px; }
+  .lead { color: var(--color-text-secondary); }
+
+  .card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    box-shadow: var(--shadow-sm);
+  }
+  .card + .card { margin-top: 16px; }
+
+  /* ---------- Pipeline (Part 1) ---------- */
+  .pipeline-wrap { position: relative; }
+  .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 18px; flex-wrap: wrap; }
+  .btn {
+    font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+    padding: 7px 16px; border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border); background: var(--color-bg-secondary);
+    color: var(--color-text); transition: all 0.15s ease;
+  }
+  .btn:hover { background: var(--color-surface-hover); }
+  .btn.primary { background: var(--color-primary); color: #fff; border-color: transparent; }
+  .btn.primary:hover { background: var(--color-primary-light); }
+  .stage-caption { font-size: 13px; color: var(--color-text-muted); margin-left: auto; }
+
+  .pipeline {
+    display: grid; grid-template-columns: repeat(9, 1fr); gap: 6px; margin-bottom: 8px;
+  }
+  .stage {
+    position: relative; border-radius: var(--radius-sm); padding: 10px 6px; min-height: 92px;
+    border: 1.5px solid var(--color-border-light); background: var(--color-surface);
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    text-align: center; transition: all 0.4s ease; cursor: pointer;
+  }
+  .stage .sidx { font-size: 11px; font-weight: 700; color: var(--color-text-muted); font-family: var(--font-mono); }
+  .stage .slabel { font-size: 10.5px; line-height: 1.3; margin-top: 6px; color: var(--color-text-secondary); font-weight: 500; }
+  .stage.active {
+    border-color: var(--color-primary); background: var(--color-primary-bg);
+    transform: translateY(-3px); box-shadow: var(--shadow-md);
+  }
+  .stage.active .sidx { color: var(--color-primary); }
+  .stage.active .slabel { color: var(--color-text); font-weight: 600; }
+  .stage.done { border-color: var(--green); background: var(--green-soft); }
+  .stage.switch-point::after {
+    content: "端点切换"; position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+    font-size: 9px; font-weight: 700; color: #fff; background: var(--amber);
+    padding: 2px 7px; border-radius: var(--radius-pill); white-space: nowrap;
+  }
+  .stage.copy-point::after {
+    content: "Shard 迁移"; position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+    font-size: 9px; font-weight: 700; color: #fff; background: var(--blue);
+    padding: 2px 7px; border-radius: var(--radius-pill); white-space: nowrap;
+  }
+
+  .node-viz {
+    margin-top: 22px; padding: 20px; border-radius: var(--radius-md);
+    background: var(--color-surface); border: 1px solid var(--color-border-light);
+  }
+  .node-viz .nv-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .node-viz .nv-title { font-size: 13px; font-weight: 600; color: var(--color-text-secondary); }
+  .node-count { font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+  .nodes-row { display: flex; gap: 6px; flex-wrap: wrap; min-height: 34px; align-items: center; }
+  .node-dot {
+    width: 26px; height: 26px; border-radius: 6px; transition: all 0.5s ease;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #fff; font-family: var(--font-mono);
+  }
+  .node-dot.blue { background: var(--blue); }
+  .node-dot.green { background: var(--green); }
+  .node-dot.ghost { opacity: 0; transform: scale(0.3); width: 0; margin: 0; }
+  .stage-detail {
+    margin-top: 16px; padding: 14px 16px; border-radius: var(--radius-sm);
+    background: var(--color-primary-bg); border: 1px solid var(--color-primary-border);
+    font-size: 13.5px; color: var(--color-text); min-height: 48px;
+  }
+  .stage-detail b { color: var(--color-primary); }
+
+  /* ---------- Flow diagram (Part 2) ---------- */
+  .flow-svg-wrap { background: var(--color-surface); border-radius: var(--radius-md); border: 1px solid var(--color-border-light); padding: 10px; }
+  svg { display: block; width: 100%; height: auto; }
+  .flow-label { font-size: 12.5px; fill: var(--color-text-secondary); font-family: var(--font-sans); }
+  .flow-node-label { font-size: 13px; font-weight: 600; fill: var(--color-text); font-family: var(--font-sans); }
+  .flow-sub { font-size: 10.5px; fill: var(--color-text-muted); font-family: var(--font-mono); }
+  .packet { fill: var(--amber); }
+
+  /* ---------- Phase stepper (Part 3) ---------- */
+  .phase-tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+  .phase-tab {
+    flex: 1; min-width: 180px; cursor: pointer; padding: 14px 16px; border-radius: var(--radius-md);
+    border: 1.5px solid var(--color-border-light); background: var(--color-surface);
+    transition: all 0.2s ease;
+  }
+  .phase-tab:hover { background: var(--color-surface-hover); }
+  .phase-tab.active { border-color: var(--color-primary); background: var(--color-primary-bg); box-shadow: var(--shadow-sm); }
+  .phase-tab .pt-tag { font-size: 11px; font-weight: 700; font-family: var(--font-mono); color: var(--color-primary); }
+  .phase-tab .pt-title { font-size: 14px; font-weight: 650; margin-top: 4px; }
+  .phase-tab .pt-desc { font-size: 11.5px; color: var(--color-text-muted); margin-top: 3px; }
+  .phase-body { display: none; }
+  .phase-body.active { display: block; animation: fadeIn 0.35s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Generic bits ---------- */
+  .callout {
+    border-radius: var(--radius-md); padding: 16px 18px; font-size: 14px; margin: 16px 0;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .callout .ico { font-size: 18px; line-height: 1.4; flex-shrink: 0; }
+  .callout.warn { background: var(--color-warning-bg); border: 1px solid var(--color-warning-border); }
+  .callout.warn .ct { color: var(--color-warning-text); }
+  .callout.ok { background: var(--color-success-bg); border: 1px solid var(--color-success-border); }
+  .callout.info { background: var(--color-info-bg); border: 1px solid var(--color-info-border); }
+  .callout.info .ct { color: var(--color-info-text); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 12px 0; }
+  th { text-align: left; color: var(--color-text-muted); font-weight: 600; padding: 10px 12px; border-bottom: 2px solid var(--color-border); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--color-border-light); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  code {
+    font-family: var(--font-mono); font-size: 12.5px; background: var(--color-code-bg);
+    border: 1px solid var(--color-code-border); border-radius: 4px; padding: 1px 6px; color: var(--color-code-text);
+  }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: var(--radius-pill); font-family: var(--font-mono); }
+  .tag.blue { background: var(--blue-soft); color: var(--blue); }
+  .tag.green { background: var(--green-soft); color: var(--green); }
+  .tag.amber { background: var(--amber-soft); color: var(--amber-dark, #92400e); }
+  ul.clean { padding-left: 0; list-style: none; margin: 10px 0; }
+  ul.clean li { padding: 6px 0 6px 26px; position: relative; font-size: 14px; }
+  ul.clean li::before { content: "▸"; position: absolute; left: 6px; color: var(--color-primary); font-weight: 700; }
+  .toc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
+  .toc a {
+    text-decoration: none; color: var(--color-text); padding: 12px 14px; border-radius: var(--radius-sm);
+    background: var(--color-bg-secondary); border: 1px solid var(--color-border-light); font-size: 13px; transition: all 0.15s ease;
+  }
+  .toc a:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+  .toc a b { display: block; font-size: 11px; color: var(--color-text-muted); font-family: var(--font-mono); margin-bottom: 3px; }
+  .footer-note { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--color-border-light); font-size: 12.5px; color: var(--color-text-muted); }
+  @media (max-width: 720px) {
+    .pipeline { grid-template-columns: repeat(3, 1fr); }
+    .toc { grid-template-columns: 1fr; }
+    .phase-tab { min-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <div class="hero">
+    <div class="eyebrow">AWS 技术文档 · Technical Deep Dive</div>
+    <h1>Amazon OpenSearch Service 蓝绿部署</h1>
+    <p>完整阶段流程、端点切换时机与回滚行为，以及 Shard 迁移期间写入流量的底层处理机制（Peer Recovery 三阶段 + Primary Hand-off）。</p>
+    <div class="meta">
+      <span class="chip">🔵 Blue / 🟢 Green 单集群模型</span>
+      <span class="chip">Peer Recovery</span>
+      <span class="chip">Primary Term + Global Checkpoint</span>
+      <span class="chip">零宕机 · 不丢已确认写入</span>
+    </div>
+    <div class="toc">
+      <a href="#s1"><b>Part 1</b>九阶段部署流程</a>
+      <a href="#s2"><b>Part 2</b>端点切换与写入路由</a>
+      <a href="#s3"><b>Part 3</b>Shard 迁移期写入机制</a>
+    </div>
+  </div>
+
+  <!-- ============ PART 1 ============ -->
+  <section id="s1">
+    <div class="sec-head"><div class="sec-num">1</div><h2>九阶段部署流程</h2></div>
+    <p class="lead">OpenSearch 的配置变更通过蓝绿部署完成，可用 <code>DescribeDomainChangeProgress</code> API 或控制台实时追踪。核心前提：<b>整个过程在同一个 OpenSearch 集群内进行</b>——绿节点加入现有集群，共享同一份 cluster state 与 routing table，集群规模临时翻倍。点击下方 <b>播放</b> 观看阶段推进与节点数变化。</p>
+
+    <div class="card pipeline-wrap">
+      <div class="controls">
+        <button class="btn primary" id="playBtn">▶ 播放</button>
+        <button class="btn" id="stepBtn">单步 →</button>
+        <button class="btn" id="resetBtn">↺ 重置</button>
+        <span class="stage-caption" id="stageCaption">阶段 0 / 9 — 就绪</span>
+      </div>
+
+      <div class="pipeline" id="pipeline"></div>
+
+      <div class="node-viz">
+        <div class="nv-head">
+          <span class="nv-title">集群节点构成（示例：11 节点集群）</span>
+          <span class="node-count" id="nodeCount"><span style="color:var(--blue)">🔵 11 蓝</span> &nbsp; <span style="color:var(--green)">🟢 0 绿</span> &nbsp; = 11</span>
+        </div>
+        <div class="nodes-row" id="nodesRow"></div>
+      </div>
+
+      <div class="stage-detail" id="stageDetail">点击 <b>播放</b> 或 <b>单步</b> 开始。节点数变化将遵循 <b>11 → 22（蓝+绿并存）→ 11（蓝节点删除后）</b> 的轨迹。</div>
+    </div>
+
+    <h3>阶段速查表</h3>
+    <table>
+      <thead><tr><th style="width:36px">#</th><th>阶段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Validation</td><td>验证域是否满足更新条件（index write blocks、磁盘空间、子网 IP 等）</td></tr>
+        <tr><td>2</td><td>Creating a new environment</td><td>创建绿环境的基础设施资源（如 Load Balancer）</td></tr>
+        <tr><td>3</td><td>Provisioning new nodes</td><td>在绿环境创建新节点，集群节点数暂时翻倍（11 → 22）</td></tr>
+        <tr><td>4</td><td><span class="tag amber">端点切换</span> Traffic routing on new nodes</td><td><b>关键阶段</b>：流量路由重定向到绿色新节点</td></tr>
+        <tr><td>5</td><td>Traffic routing on old nodes</td><td>在蓝色旧节点上禁用流量接入</td></tr>
+        <tr><td>6</td><td>Preparing nodes for removal</td><td>（仅缩容时触发）准备移除多余节点</td></tr>
+        <tr><td>7</td><td><span class="tag blue">Shard 迁移</span> Copying shards to new nodes</td><td>Shard 从蓝节点迁移到绿节点（Peer Recovery）</td></tr>
+        <tr><td>8</td><td>Terminating nodes</td><td>Shard 迁移完成后终止并删除旧节点</td></tr>
+        <tr><td>9</td><td>Deleting older resources</td><td>清理蓝环境残留资源（如旧 Load Balancer）</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn">
+      <span class="ico">⚠️</span>
+      <div class="ct"><b>重要次序：端点切换（阶段 4）发生在 Shard 物理迁移（阶段 7）之前。</b> 切换后绿节点虽接收请求，但数据仍在蓝节点上——绿节点作为协调节点（Coordinator）把请求内部转发到当前持有 Shard 的蓝节点，所以数据访问不受影响。</div>
+    </div>
+  </section>
+
+  <!-- ============ PART 2 ============ -->
+  <section id="s2">
+    <div class="sec-head"><div class="sec-num">2</div><h2>端点切换与写入路由</h2></div>
+    <p class="lead">端点切换发生在<b>阶段 4</b>。注意：<b>域端点的 DNS 名称本身不变</b>（形如 <code>xxx.region.es.amazonaws.com</code>），变化的是端点背后 Load Balancer 指向的后端节点。下图动画演示切换前后一条写请求的流向——切换后写入仍落在<b>蓝节点的 primary shard</b> 上。</p>
+
+    <div class="card">
+      <div class="controls">
+        <button class="btn primary" id="flowBtn">▶ 播放写入流</button>
+        <button class="btn" id="flowToggle" data-state="after">当前：切换后（阶段 4）</button>
+        <span class="stage-caption" id="flowCaption">绿节点作为协调节点，转发写请求至蓝节点 primary</span>
+      </div>
+      <div class="flow-svg-wrap">
+        <svg viewBox="0 0 900 340" id="flowSvg" role="img" aria-label="写入流量路由示意图">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-text-muted)"></path>
+            </marker>
+          </defs>
+
+          <!-- Client -->
+          <rect x="30" y="140" width="110" height="60" rx="10" fill="var(--color-bg-secondary)" stroke="var(--color-border)" stroke-width="1.5"></rect>
+          <text x="85" y="166" text-anchor="middle" class="flow-node-label">Client</text>
+          <text x="85" y="184" text-anchor="middle" class="flow-sub">写请求</text>
+
+          <!-- DNS/LB -->
+          <rect x="220" y="130" width="130" height="80" rx="10" fill="var(--color-surface)" stroke="var(--color-border)" stroke-width="1.5"></rect>
+          <text x="285" y="158" text-anchor="middle" class="flow-node-label">域端点 / LB</text>
+          <text x="285" y="176" text-anchor="middle" class="flow-sub">DNS 不变</text>
+          <text x="285" y="192" text-anchor="middle" class="flow-sub" id="lbTarget">→ 指向绿节点</text>
+
+          <!-- Green node (coordinator) -->
+          <rect x="440" y="40" width="150" height="90" rx="10" fill="var(--green-soft)" stroke="var(--green)" stroke-width="2" id="greenBox"></rect>
+          <text x="515" y="68" text-anchor="middle" class="flow-node-label">🟢 Green Node</text>
+          <text x="515" y="86" text-anchor="middle" class="flow-sub">Data + Coordinator</text>
+          <text x="515" y="102" text-anchor="middle" class="flow-sub">查 routing table</text>
+          <text x="515" y="118" text-anchor="middle" class="flow-sub">本阶段 = 协调角色</text>
+
+          <!-- Blue primary -->
+          <rect x="690" y="40" width="175" height="90" rx="10" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"></rect>
+          <text x="777" y="66" text-anchor="middle" class="flow-node-label">🔵 Blue Node A</text>
+          <text x="777" y="84" text-anchor="middle" class="flow-sub">primary shard（数据在此）</text>
+          <text x="777" y="100" text-anchor="middle" class="flow-sub">实际写入落点</text>
+
+          <!-- Blue replica -->
+          <rect x="690" y="210" width="175" height="80" rx="10" fill="var(--color-surface)" stroke="var(--blue)" stroke-width="1.5" stroke-dasharray="4 3"></rect>
+          <text x="777" y="238" text-anchor="middle" class="flow-node-label">🔵 Blue Node B</text>
+          <text x="777" y="256" text-anchor="middle" class="flow-sub">replica shard</text>
+          <text x="777" y="272" text-anchor="middle" class="flow-sub">复制 + ACK</text>
+
+          <!-- Paths -->
+          <path id="p1" d="M 140 170 L 220 170" stroke="var(--color-text-muted)" stroke-width="2" fill="none" marker-end="url(#arrow)"></path>
+          <path id="p2" d="M 350 160 C 400 130, 410 110, 440 95" stroke="var(--color-text-muted)" stroke-width="2" fill="none" marker-end="url(#arrow)"></path>
+          <path id="p3" d="M 590 85 L 690 85" stroke="var(--color-text-muted)" stroke-width="2" fill="none" marker-end="url(#arrow)"></path>
+          <path id="p4" d="M 777 130 L 777 210" stroke="var(--blue)" stroke-width="1.6" fill="none" marker-end="url(#arrow)" opacity="0.6"></path>
+          <text x="500" y="150" class="flow-label" id="forwardLabel">内部转发写入</text>
+          <text x="795" y="175" class="flow-label" style="font-size:11px">复制</text>
+
+          <!-- moving packet -->
+          <circle id="packet" class="packet" r="7" cx="85" cy="170" opacity="0"></circle>
+        </svg>
+      </div>
+      <div class="stage-detail" id="flowDetail">
+        <b>切换后、Shard 迁移前：</b>写入数据实际落在蓝节点的 primary shard 上，绿节点只是流量入口（协调节点）。<b>无数据丢失，无写入歧义</b>——去中心化架构下任意节点都能协调。
+      </div>
+    </div>
+
+    <h3>回滚行为：不会自动回滚</h3>
+    <p>这是与 SageMaker、ECS 等其他蓝绿部署的关键区别。官方文档的表述 <i>“maintains the original environment in the event that deployment is unsuccessful”</i> 描述的是<b>蓝环境在过程中被保留</b>，而非“切换后异常会自动切回”。</p>
+    <table>
+      <thead><tr><th>阶段</th><th>是否可回滚</th><th>机制 / 影响</th></tr></thead>
+      <tbody>
+        <tr><td>阶段 1–3（切换前失败）</td><td><span class="tag green">✅ 可回滚</span></td><td>绿环境未接受流量，直接丢弃绿环境，蓝环境继续服务</td></tr>
+        <tr><td>阶段 4–6（切换后、迁移前）</td><td><span class="tag amber">⚠️ 无自动回滚</span></td><td>需人工干预；此时写入绿入口的数据若回滚有一致性风险</td></tr>
+        <tr><td>阶段 7–9（迁移中 / 后）</td><td><span class="tag" style="background:var(--color-error-bg);color:var(--color-error-dark)">❌ 无回滚路径</span></td><td>蓝节点数据逐渐被清空后终止</td></tr>
+      </tbody>
+    </table>
+    <div class="callout info">
+      <span class="ico">ℹ️</span>
+      <div class="ct"><b>版本升级的特殊保护：</b>升级操作会在 pre-upgrade 检查后<b>先做一次自动 Snapshot</b>（托管 S3）。若升级在 pre-upgrade 阶段失败，服务从该 Snapshot 恢复。但这仅覆盖升级早期失败，<b>不等于端点切换后的自动回滚</b>。切换后写入绿集群的数据<b>没有自动机制同步回蓝</b>——零容忍场景应配合应用层双写或 Cross-Cluster Replication。</div>
+    </div>
+  </section>
+
+  <!-- ============ PART 3 ============ -->
+  <section id="s3">
+    <div class="sec-head"><div class="sec-num">3</div><h2>Shard 迁移期间的写入处理机制</h2></div>
+    <p class="lead">Shard 从蓝节点迁移到绿节点使用 <b>Peer Recovery</b> 机制，分三个阶段。关键前提：<b>整个迁移期间写入不被阻塞，shard 始终可写</b>。点击标签逐阶段查看；动画演示数据流向。</p>
+
+    <div class="card">
+      <div class="phase-tabs">
+        <div class="phase-tab active" data-phase="1">
+          <div class="pt-tag">PHASE 1</div>
+          <div class="pt-title">Segment 文件复制</div>
+          <div class="pt-desc">大块数据传输，写入照常走蓝</div>
+        </div>
+        <div class="phase-tab" data-phase="2">
+          <div class="pt-tag">PHASE 2</div>
+          <div class="pt-title">Translog 追赶 + 实时复制</div>
+          <div class="pt-desc">双轨并行，写入不阻塞但延迟上升</div>
+        </div>
+        <div class="phase-tab" data-phase="3">
+          <div class="pt-tag">PHASE 3</div>
+          <div class="pt-title">Primary Hand-off</div>
+          <div class="pt-desc">cutover 瞬间，fencing 保证不丢写</div>
+        </div>
+      </div>
+
+      <div class="flow-svg-wrap">
+        <svg viewBox="0 0 900 260" id="phaseSvg" role="img" aria-label="Peer Recovery 阶段动画">
+          <defs>
+            <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-text-muted)"></path>
+            </marker>
+          </defs>
+          <!-- Blue source -->
+          <rect x="60" y="90" width="210" height="90" rx="12" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"></rect>
+          <text x="165" y="120" text-anchor="middle" class="flow-node-label">🔵 Blue Node（源 primary）</text>
+          <text x="165" y="140" text-anchor="middle" class="flow-sub" id="blueRole">持有 primary shard</text>
+          <text x="165" y="158" text-anchor="middle" class="flow-sub" id="blueCp">translog checkpoint: T0</text>
+
+          <!-- Green target -->
+          <rect x="630" y="90" width="210" height="90" rx="12" fill="var(--green-soft)" stroke="var(--green)" stroke-width="2"></rect>
+          <text x="735" y="120" text-anchor="middle" class="flow-node-label">🟢 Green Node（目标）</text>
+          <text x="735" y="140" text-anchor="middle" class="flow-sub" id="greenRole">接收 segment 文件</text>
+          <text x="735" y="158" text-anchor="middle" class="flow-sub" id="greenCp">shard: recovering</text>
+
+          <!-- transfer paths -->
+          <path id="ph-main" d="M 270 125 L 630 125" stroke="var(--blue)" stroke-width="2.5" fill="none" marker-end="url(#arrow2)"></path>
+          <path id="ph-second" d="M 270 155 L 630 155" stroke="var(--amber)" stroke-width="2.5" fill="none" marker-end="url(#arrow2)" opacity="0"></path>
+          <text x="450" y="112" text-anchor="middle" class="flow-label" id="phMainLabel">Lucene segments（全量）</text>
+          <text x="450" y="178" text-anchor="middle" class="flow-label" id="phSecondLabel" style="opacity:0">translog replay (T0→T1)</text>
+
+          <!-- Client write indicator -->
+          <rect x="60" y="20" width="160" height="42" rx="8" fill="var(--color-bg-secondary)" stroke="var(--color-border)" stroke-width="1.3"></rect>
+          <text x="140" y="46" text-anchor="middle" class="flow-sub" id="writeState">✍️ 写入 → 蓝 primary</text>
+          <path d="M 140 62 L 150 88" stroke="var(--color-text-muted)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)" stroke-dasharray="3 3"></path>
+
+          <!-- moving packets -->
+          <circle id="ph-pkt1" r="6" cx="270" cy="125" fill="var(--blue)" opacity="0"></circle>
+          <circle id="ph-pkt2" r="6" cx="270" cy="155" fill="var(--amber)" opacity="0"></circle>
+        </svg>
+      </div>
+
+      <!-- Phase bodies -->
+      <div class="phase-body active" data-phase="1">
+        <h3 style="margin-top:18px">Phase 1 — Lucene Segment 文件复制</h3>
+        <ul class="clean">
+          <li>源 primary 记录当前 translog 位置 <code>T0</code>（checkpoint），执行 Lucene flush/sync，<b>全量传输 segment 文件</b>到目标绿节点。</li>
+          <li>此阶段 <b>所有写入照常走蓝节点的 primary shard</b>，完全不受影响。</li>
+          <li>Phase 1 可能很耗时（大索引），期间新写入持续累积到 <code>T0</code> 之后的 translog。</li>
+          <li>结束时：绿节点 shard engine <b>启动</b>，目标 shard <b>加入 in-sync replication group</b>，开始作为 replica 接收复制写。</li>
+        </ul>
+      </div>
+      <div class="phase-body" data-phase="2">
+        <h3 style="margin-top:18px">Phase 2 — Translog 追赶 + 实时复制并行（双轨）</h3>
+        <ul class="clean">
+          <li>源节点对 <code>T0→T1</code> 的 translog 取快照并批量发送给目标，目标 <b>replay</b> 追赶 Phase 1 期间的写入。</li>
+          <li>同时，<code>T1</code> 之后的新写入通过正常 replica 复制实时到达目标节点。</li>
+          <li>目标绿节点此刻 <b>同时接收两路写入</b>（批量 replay + 实时复制），都要同步写目标 translog。</li>
+        </ul>
+        <div class="callout warn" style="margin-top:4px">
+          <span class="ico">⚠️</span>
+          <div class="ct"><b>迁移期间唯一的性能影响：</b>双轨写入竞争 translog 锁，导致 Phase 2 期间 <b>写入延迟上升</b>（OpenSearch issue #2729 记录的已知现象）。但写入 <b>不会被阻塞或中断</b>。</div>
+        </div>
+      </div>
+      <div class="phase-body" data-phase="3">
+        <h3 style="margin-top:18px">Phase 3 — Primary Hand-off（迁移 primary 时）</h3>
+        <p style="font-size:14px">若迁移的是 <b>replica</b>：primary 留在蓝节点不变，旧 replica 移除、绿节点作为新 replica 加入——<b>无 hand-off、无中断</b>。若迁移的是 <b>primary</b>，则触发 hand-off，由三重 fencing 机制保证安全：</p>
+        <table>
+          <thead><tr><th>机制</th><th>作用</th></tr></thead>
+          <tbody>
+            <tr><td><b>Primary Term</b>（主任期）</td><td>单调递增整数，primary 每次变更 +1。replica 拒绝 term 低于当前的写——防止旧 primary 切换后继续写（防脑裂）</td></tr>
+            <tr><td><b>Sequence Number</b> <code>_seq_no</code></td><td>每个写操作的全局唯一序号，追踪复制组中各 shard 进度</td></tr>
+            <tr><td><b>Global Checkpoint</b></td><td>所有 in-sync replica 都已确认的最大 seq_no。≤ 该值的操作保证不丢、不需重放</td></tr>
+          </tbody>
+        </table>
+        <div class="callout ok" style="margin-top:4px">
+          <span class="ico">✅</span>
+          <div class="ct"><b>hand-off 瞬间不会丢写。</b> 已 ACK 写入由 global checkpoint 保证安全；primary term fencing 防止旧 primary 继续写。极小概率的 in-flight 写入会收到可重试错误（如 503），<b>客户端重试即可</b>（幂等失败，非数据丢失）。</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>一句话总结</h3>
+    <div class="callout info">
+      <span class="ico">🧭</span>
+      <div class="ct">同一集群翻倍 → LB 切端点到绿节点（绿节点兼任 Data + Coordinator）→ 切换后写入经绿节点协调转发到<b>仍在蓝节点</b>的 primary → Shard 迁移走 Peer Recovery 三阶段：<b>Phase 1</b> 全量 segment 复制（写入照常走蓝）、<b>Phase 2</b> translog 追赶 + 实时复制双轨（写入不阻塞但延迟上升）、<b>Phase 3</b> primary hand-off（靠 primary term + global checkpoint 保证不丢写，极小窗口可能触发客户端重试）。<b>全程写入不中断、已确认数据不丢失。</b></div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    本文档整理自与 AWS Specialist Agent 的技术咨询，聚焦 Full Swap（默认）蓝绿部署模式，不含 Capacity Optimized。数据复制机制为原生 OpenSearch Shard Reallocation（Peer Recovery），不经过 S3 snapshot/restore。相关机制参考 OpenSearch/Elasticsearch 核心设计（Peer Recovery、Sequence IDs、Primary Term fencing）。生成于 2026-10-21。
+  </div>
+</div>
+
+<script>
+// ========== PART 1: Pipeline animation ==========
+(function(){
+  const stages = [
+    {n:1, label:"Validation"},
+    {n:2, label:"Create env"},
+    {n:3, label:"Provision nodes"},
+    {n:4, label:"Traffic → new", cls:"switch-point"},
+    {n:5, label:"Traffic off old"},
+    {n:6, label:"Prepare removal"},
+    {n:7, label:"Copy shards", cls:"copy-point"},
+    {n:8, label:"Terminate nodes"},
+    {n:9, label:"Delete resources"}
+  ];
+  const details = [
+    "验证域是否满足更新条件：index write blocks、磁盘空间、子网 IP 等。集群仍为 <b>11 蓝节点</b>。",
+    "创建绿环境基础设施（新的 Load Balancer 等）。尚未创建数据节点。",
+    "在绿环境 <b>Provision 11 个新节点</b>，加入同一集群 → 节点数翻倍至 <b>22</b>。绿节点此时不接流量。",
+    "<b>端点切换</b>：Load Balancer 改指向绿节点。客户端请求打到绿节点，但 primary shard 仍在蓝节点——绿节点作为 <b>协调节点</b> 转发请求至蓝节点。",
+    "在蓝色旧节点上 <b>禁用流量接入</b>。所有入口流量现已由绿节点承担（仍转发到蓝 shard）。",
+    "（仅缩容场景触发）准备移除多余节点。等容量部署无此步。",
+    "<b>Shard 迁移（Peer Recovery）</b>：shard 从蓝节点逐个迁往绿节点。迁移完成并 STARTED 后，蓝节点对应副本才删除。",
+    "所有 shard 迁移完毕，蓝节点变为空节点（0 shards），<b>逐个终止</b> → 节点数回落至 <b>11</b>。",
+    "清理蓝环境残留资源（旧 Load Balancer 等）。部署完成，全部为绿节点。"
+  ];
+  const TOTAL = 11;
+  const pipelineEl = document.getElementById('pipeline');
+  const nodesRow = document.getElementById('nodesRow');
+  const nodeCount = document.getElementById('nodeCount');
+  const stageDetail = document.getElementById('stageDetail');
+  const stageCaption = document.getElementById('stageCaption');
+
+  stages.forEach((s,i)=>{
+    const d = document.createElement('div');
+    d.className = 'stage' + (s.cls ? ' '+s.cls : '');
+    d.dataset.idx = i;
+    d.innerHTML = '<span class="sidx">'+s.n+'</span><span class="slabel">'+s.label+'</span>';
+    d.addEventListener('click', ()=>{ stopPlay(); goTo(i+1); });
+    pipelineEl.appendChild(d);
+  });
+
+  // build node dots
+  let dots = [];
+  function buildNodes(){
+    nodesRow.innerHTML = '';
+    dots = [];
+    for(let i=0;i<TOTAL;i++){ const el=document.createElement('div'); el.className='node-dot blue'; el.textContent='B'; nodesRow.appendChild(el); dots.push(el); }
+    for(let i=0;i<TOTAL;i++){ const el=document.createElement('div'); el.className='node-dot green ghost'; el.textContent='G'; nodesRow.appendChild(el); dots.push(el); }
+  }
+  buildNodes();
+
+  // state at each stage: blue count, green count
+  function nodeStateFor(stage){
+    // stage 0..9
+    if(stage<=2) return {blue:TOTAL, green:0};
+    if(stage===3) return {blue:TOTAL, green:TOTAL};   // provisioned
+    if(stage>=4 && stage<=6) return {blue:TOTAL, green:TOTAL};
+    if(stage===7) return {blue:Math.ceil(TOTAL/2), green:TOTAL}; // migrating, blue shards emptying
+    if(stage===8) return {blue:0, green:TOTAL};
+    if(stage>=9) return {blue:0, green:TOTAL};
+    return {blue:TOTAL, green:0};
+  }
+
+  let current = 0;
+  function render(){
+    document.querySelectorAll('.stage').forEach((el,i)=>{
+      el.classList.remove('active','done');
+      if(i < current-1) el.classList.add('done');
+      if(i === current-1) el.classList.add('active');
+    });
+    const st = nodeStateFor(current);
+    dots.forEach((el,i)=>{
+      const isBlue = i < TOTAL;
+      const localIdx = isBlue ? i : i - TOTAL;
+      const shouldShow = isBlue ? (localIdx < st.blue) : (localIdx < st.green);
+      el.classList.toggle('ghost', !shouldShow);
+    });
+    const total = st.blue + st.green;
+    nodeCount.innerHTML = '<span style="color:var(--blue)">🔵 '+st.blue+' 蓝</span> &nbsp; <span style="color:var(--green)">🟢 '+st.green+' 绿</span> &nbsp; = '+total + (total===22?'  <b style="color:var(--amber)">(翻倍)</b>':'');
+    if(current===0){
+      stageCaption.textContent = '阶段 0 / 9 — 就绪';
+      stageDetail.innerHTML = '点击 <b>播放</b> 或 <b>单步</b> 开始。节点数变化将遵循 <b>11 → 22 → 11</b> 的轨迹。';
+    } else {
+      stageCaption.textContent = '阶段 '+current+' / 9 — '+stages[current-1].label;
+      stageDetail.innerHTML = details[current-1];
+    }
+  }
+  function goTo(n){ current = Math.max(0, Math.min(9, n)); render(); }
+
+  let timer=null;
+  function play(){
+    stopPlay();
+    if(current>=9) current=0;
+    document.getElementById('playBtn').textContent='⏸ 暂停';
+    timer = setInterval(()=>{ if(current>=9){ stopPlay(); return; } goTo(current+1); }, 1400);
+  }
+  function stopPlay(){ if(timer){ clearInterval(timer); timer=null; } document.getElementById('playBtn').textContent='▶ 播放'; }
+
+  document.getElementById('playBtn').addEventListener('click', ()=>{ if(timer) stopPlay(); else play(); });
+  document.getElementById('stepBtn').addEventListener('click', ()=>{ stopPlay(); goTo(current>=9?9:current+1); });
+  document.getElementById('resetBtn').addEventListener('click', ()=>{ stopPlay(); goTo(0); });
+  render();
+})();
+
+// ========== PART 2: Write flow animation ==========
+(function(){
+  const packet = document.getElementById('packet');
+  const flowBtn = document.getElementById('flowBtn');
+  const flowToggle = document.getElementById('flowToggle');
+  const lbTarget = document.getElementById('lbTarget');
+  const greenBox = document.getElementById('greenBox');
+  const forwardLabel = document.getElementById('forwardLabel');
+  const flowCaption = document.getElementById('flowCaption');
+  const flowDetail = document.getElementById('flowDetail');
+
+  let mode = 'after'; // 'before' or 'after'
+
+  function setMode(m){
+    mode = m;
+    if(m==='before'){
+      flowToggle.textContent = '当前：切换前（阶段 1–3）';
+      lbTarget.textContent = '→ 指向蓝节点';
+      greenBox.setAttribute('opacity','0.25');
+      forwardLabel.style.opacity = '0.2';
+      flowCaption.textContent = 'LB 仍指向蓝节点，写请求直达蓝 primary';
+      flowDetail.innerHTML = '<b>切换前：</b>绿节点尚未接流量，Load Balancer 指向蓝节点，写请求直接由蓝 primary 处理并复制到蓝 replica。';
+    } else {
+      flowToggle.textContent = '当前：切换后（阶段 4）';
+      lbTarget.textContent = '→ 指向绿节点';
+      greenBox.setAttribute('opacity','1');
+      forwardLabel.style.opacity = '1';
+      flowCaption.textContent = '绿节点作为协调节点，转发写请求至蓝节点 primary';
+      flowDetail.innerHTML = '<b>切换后、Shard 迁移前：</b>写入数据实际落在蓝节点的 primary shard 上，绿节点只是流量入口（协调节点）。<b>无数据丢失，无写入歧义</b>。';
+    }
+  }
+
+  // Animate packet along a sequence of SVG paths
+  function animateAlong(pathIds, done){
+    let pi = 0;
+    packet.setAttribute('opacity','1');
+    function runSeg(){
+      if(pi >= pathIds.length){ packet.setAttribute('opacity','0'); if(done) done(); return; }
+      const path = document.getElementById(pathIds[pi]);
+      const len = path.getTotalLength();
+      const dur = 650;
+      let start = null;
+      function frame(ts){
+        if(!start) start = ts;
+        const t = Math.min(1, (ts-start)/dur);
+        const pt = path.getPointAtLength(t*len);
+        packet.setAttribute('cx', pt.x);
+        packet.setAttribute('cy', pt.y);
+        if(t<1) requestAnimationFrame(frame);
+        else { pi++; runSeg(); }
+      }
+      requestAnimationFrame(frame);
+    }
+    runSeg();
+  }
+
+  function playFlow(){
+    const seq = mode==='after' ? ['p1','p2','p3','p4'] : ['p1','p2b','p3b','p4'];
+    // For 'before' we approximate: client->lb->blue primary directly. Reuse p1 then a synthetic route.
+    if(mode==='before'){
+      animateAlong(['p1'], ()=> animateAlong(['p2','p3','p4'], null));
+    } else {
+      animateAlong(['p1','p2','p3','p4'], null);
+    }
+  }
+
+  flowBtn.addEventListener('click', playFlow);
+  flowToggle.addEventListener('click', ()=> setMode(mode==='after'?'before':'after'));
+  setMode('after');
+})();
+
+// ========== PART 3: Phase stepper + animation ==========
+(function(){
+  const tabs = document.querySelectorAll('.phase-tab');
+  const bodies = document.querySelectorAll('.phase-body');
+  const blueRole = document.getElementById('blueRole');
+  const blueCp = document.getElementById('blueCp');
+  const greenRole = document.getElementById('greenRole');
+  const greenCp = document.getElementById('greenCp');
+  const phMain = document.getElementById('ph-main');
+  const phSecond = document.getElementById('ph-second');
+  const phMainLabel = document.getElementById('phMainLabel');
+  const phSecondLabel = document.getElementById('phSecondLabel');
+  const writeState = document.getElementById('writeState');
+  const pkt1 = document.getElementById('ph-pkt1');
+  const pkt2 = document.getElementById('ph-pkt2');
+
+  let animId = null;
+
+  function stopAnim(){ if(animId){ cancelAnimationFrame(animId); animId=null; } pkt1.setAttribute('opacity','0'); pkt2.setAttribute('opacity','0'); }
+
+  function loopPacket(pathId, pkt, color){
+    const path = document.getElementById(pathId);
+    const len = path.getTotalLength();
+    pkt.setAttribute('opacity','1');
+    const dur = 1500;
+    let start = performance.now();
+    function frame(ts){
+      const t = ((ts-start)%dur)/dur;
+      const pt = path.getPointAtLength(t*len);
+      pkt.setAttribute('cx', pt.x);
+      pkt.setAttribute('cy', pt.y);
+      animId = requestAnimationFrame(frame);
+    }
+    animId = requestAnimationFrame(frame);
+  }
+  // multi-packet loop
+  function loopBoth(){
+    const p1 = document.getElementById('ph-main');
+    const p2 = document.getElementById('ph-second');
+    const len1 = p1.getTotalLength(), len2 = p2.getTotalLength();
+    pkt1.setAttribute('opacity','1'); pkt2.setAttribute('opacity','1');
+    const dur=1500; let start=performance.now();
+    function frame(ts){
+      const t1=((ts-start)%dur)/dur;
+      const t2=((ts-start+750)%dur)/dur;
+      const a=p1.getPointAtLength(t1*len1); pkt1.setAttribute('cx',a.x); pkt1.setAttribute('cy',a.y);
+      const b=p2.getPointAtLength(t2*len2); pkt2.setAttribute('cx',b.x); pkt2.setAttribute('cy',b.y);
+      animId=requestAnimationFrame(frame);
+    }
+    animId=requestAnimationFrame(frame);
+  }
+
+  function setPhase(p){
+    stopAnim();
+    tabs.forEach(t=> t.classList.toggle('active', t.dataset.phase===p));
+    bodies.forEach(b=> b.classList.toggle('active', b.dataset.phase===p));
+
+    if(p==='1'){
+      blueRole.textContent='持有 primary shard'; blueCp.textContent='translog checkpoint: T0';
+      greenRole.textContent='接收 segment 文件'; greenCp.textContent='shard: recovering';
+      phMain.setAttribute('opacity','1'); phMain.setAttribute('stroke','var(--blue)');
+      phMainLabel.textContent='Lucene segments（全量）'; phMainLabel.style.opacity='1';
+      phSecond.setAttribute('opacity','0'); phSecondLabel.style.opacity='0';
+      writeState.textContent='✍️ 写入 → 蓝 primary';
+      loopPacket('ph-main', pkt1, 'blue');
+    } else if(p==='2'){
+      blueRole.textContent='primary（持续接收写入）'; blueCp.textContent='translog: T0 → T1 快照';
+      greenRole.textContent='in-sync replica（追赶中）'; greenCp.textContent='replay + 实时复制';
+      phMain.setAttribute('opacity','1');
+      phMainLabel.textContent='translog replay (T0→T1)'; phMainLabel.style.opacity='1';
+      phSecond.setAttribute('opacity','1'); phSecondLabel.textContent='T1 后实时 replica 复制'; phSecondLabel.style.opacity='1';
+      writeState.textContent='✍️ 写入 → 蓝（双轨复制到绿）';
+      loopBoth();
+    } else {
+      blueRole.textContent='旧 primary → 降级 stale'; blueCp.textContent='primary term: N';
+      greenRole.textContent='新 primary（接管写入）'; greenCp.textContent='primary term: N+1 ✓';
+      phMain.setAttribute('opacity','1'); phMain.setAttribute('stroke','var(--green)');
+      phMainLabel.textContent='Primary Context hand-off'; phMainLabel.style.opacity='1';
+      phSecond.setAttribute('opacity','0'); phSecondLabel.style.opacity='0';
+      writeState.textContent='✍️ 写入 → 绿 primary (N+1)';
+      loopPacket('ph-main', pkt1, 'green');
+    }
+  }
+
+  tabs.forEach(t=> t.addEventListener('click', ()=> setPhase(t.dataset.phase)));
+  setPhase('1');
+})();
+</script>
+
+</body></html>
