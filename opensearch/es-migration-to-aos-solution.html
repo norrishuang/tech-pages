@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<!-- saved from url=(0151)file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Amazon OpenSearch Service：Elasticsearch 7.10 升级到 OpenSearch 3.7 技术方案</title>
+  <style>
+    :root {
+      --bg: #f3f6f8;
+      --panel: #ffffff;
+      --panel-2: #f7f9fb;
+      --text: #17202a;
+      --muted: #5f6b76;
+      --line: #d7dee5;
+      --navy: #142d4c;
+      --blue: #1976d2;
+      --cyan: #00a1c9;
+      --green: #147d64;
+      --amber: #b56600;
+      --red: #b42318;
+      --code: #132231;
+      --code-text: #e8f0f6;
+      --shadow: 0 6px 24px rgba(20, 45, 76, .08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0e151c;
+        --panel: #151f28;
+        --panel-2: #1b2731;
+        --text: #edf4f8;
+        --muted: #adbac5;
+        --line: #33414d;
+        --navy: #dceefe;
+        --blue: #70b7ff;
+        --cyan: #55d4ed;
+        --green: #58c9a9;
+        --amber: #ffc067;
+        --red: #ff8a80;
+        --code: #0a1118;
+        --code-text: #e8f0f6;
+        --shadow: none;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font: 15px/1.72 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+    }
+    a { color: var(--blue); }
+    h1, h2, h3, h4 { color: var(--navy); line-height: 1.35; }
+    h1 { margin: 0; font-size: 30px; }
+    h2 { margin: 0 0 16px; font-size: 22px; }
+    h3 { margin: 26px 0 10px; font-size: 18px; }
+    h4 { margin: 20px 0 8px; font-size: 15px; }
+    p { margin: 9px 0; }
+    ul, ol { margin: 8px 0; padding-left: 24px; }
+    li { margin: 4px 0; }
+    code {
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: var(--panel-2);
+      font: 13px/1.5 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+    pre {
+      position: relative;
+      margin: 12px 0;
+      padding: 18px;
+      overflow: auto;
+      border: 1px solid #2e4658;
+      border-radius: 9px;
+      background: var(--code);
+      color: var(--code-text);
+      font: 13px/1.62 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      white-space: pre;
+    }
+    pre code { padding: 0; background: transparent; color: inherit; }
+    .layout { display: grid; grid-template-columns: 270px minmax(0, 1fr); min-height: 100vh; }
+    .toc {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px 16px;
+      overflow: auto;
+      border-right: 1px solid var(--line);
+      background: var(--panel);
+    }
+    .toc .brand { padding: 0 10px 15px; font-weight: 750; color: var(--navy); }
+    .toc a {
+      display: block;
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      text-decoration: none;
+    }
+    .toc a:hover { color: var(--text); background: var(--panel-2); }
+    main { width: min(1160px, 100%); padding: 34px 42px 80px; }
+    .cover, section {
+      margin-bottom: 24px;
+      padding: 27px 32px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+    .cover {
+      color: #fff;
+      border: 0;
+      background: linear-gradient(128deg, #102d4f, #155a82 62%, #0089aa);
+    }
+    .cover h1 { color: #fff; }
+    .cover .sub { margin-top: 8px; color: #d9edf7; font-size: 17px; }
+    .cover .meta { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 18px; color: #c6e0ec; font-size: 13px; }
+    .section-title { padding-bottom: 11px; border-bottom: 1px solid var(--line); }
+    .lead { font-size: 16px; color: var(--muted); }
+    .small { font-size: 13px; color: var(--muted); }
+    .grid { display: grid; gap: 14px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--panel-2);
+    }
+    .card h3, .card h4 { margin-top: 0; }
+    .kpi .label { color: var(--muted); font-size: 12px; }
+    .kpi .value { margin: 3px 0; color: var(--navy); font-size: 24px; font-weight: 800; }
+    .callout {
+      margin: 14px 0;
+      padding: 12px 16px;
+      border-left: 4px solid var(--blue);
+      border-radius: 6px;
+      background: color-mix(in srgb, var(--blue) 8%, var(--panel));
+    }
+    .callout.good { border-left-color: var(--green); background: color-mix(in srgb, var(--green) 9%, var(--panel)); }
+    .callout.warn { border-left-color: var(--amber); background: color-mix(in srgb, var(--amber) 9%, var(--panel)); }
+    .callout.danger { border-left-color: var(--red); background: color-mix(in srgb, var(--red) 8%, var(--panel)); }
+    .tag {
+      display: inline-block;
+      margin: 1px 4px 1px 0;
+      padding: 1px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .tag.good { color: var(--green); border-color: color-mix(in srgb, var(--green) 45%, var(--line)); }
+    .tag.warn { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 45%, var(--line)); }
+    .tag.danger { color: var(--red); border-color: color-mix(in srgb, var(--red) 45%, var(--line)); }
+    table { width: 100%; margin: 13px 0; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 9px 11px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: var(--panel-2); color: var(--navy); }
+    .flow {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      overflow-x: auto;
+      margin: 18px 0;
+      padding-bottom: 5px;
+    }
+    .flow .node {
+      flex: 1 0 150px;
+      min-width: 150px;
+      padding: 13px;
+      border: 2px solid var(--line);
+      border-radius: 9px;
+      background: var(--panel-2);
+      text-align: center;
+    }
+    .flow .node.target { border-color: var(--green); }
+    .flow .node.wait { border-color: var(--cyan); }
+    .flow .ver { color: var(--navy); font-size: 18px; font-weight: 800; }
+    .flow .desc { color: var(--muted); font-size: 12px; }
+    .flow .arrow { display: grid; flex: 0 0 68px; place-items: center; color: var(--muted); font-size: 22px; }
+    .decision { border-left: 5px solid var(--line); }
+    .decision.recommended { border-left-color: var(--green); }
+    .decision.standard { border-left-color: var(--blue); }
+    .decision.parallel { border-left-color: var(--amber); }
+    .gate {
+      margin: 14px 0;
+      padding: 15px 17px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--panel-2);
+    }
+    .gate strong { color: var(--navy); }
+    .checks { list-style: none; padding-left: 0; }
+    .checks li { position: relative; padding-left: 25px; }
+    .checks li::before { content: "□"; position: absolute; left: 2px; color: var(--blue); font-weight: 700; }
+    .timeline { display: grid; gap: 9px; margin: 14px 0; }
+    .timeline .row { display: grid; grid-template-columns: 115px 1fr; gap: 12px; align-items: start; }
+    .timeline .when { color: var(--muted); font-size: 13px; }
+    .timeline .item { padding: 10px 13px; border-left: 4px solid var(--blue); background: var(--panel-2); }
+    .timeline .item.wait { border-left-color: var(--cyan); }
+    .timeline .item.final { border-left-color: var(--green); }
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 4px 8px;
+      border: 1px solid #52697b;
+      border-radius: 5px;
+      color: #dce9f1;
+      background: #22394b;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .sources li { margin-bottom: 7px; }
+    .foot { padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .toc { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      .toc a { display: inline-block; }
+      main { padding: 22px 16px 60px; }
+      .grid.three, .grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 650px) {
+      .cover, section { padding: 21px 18px; }
+      h1 { font-size: 25px; }
+      .grid.two, .grid.three, .grid.four { grid-template-columns: 1fr; }
+      .timeline .row { grid-template-columns: 1fr; gap: 3px; }
+    }
+    @media print {
+      body { background: #fff; color: #111; }
+      .layout { display: block; }
+      .toc, .copy-btn { display: none; }
+      main { width: 100%; max-width: none; padding: 0; }
+      .cover, section { box-shadow: none; break-inside: auto; }
+      .card, table, pre, .gate { break-inside: avoid; }
+      a { color: #111; text-decoration: none; }
+      a::after { content: " (" attr(href) ")"; font-size: 9px; word-break: break-all; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc" aria-label="文档目录">
+    <div class="brand">ES 7.10 → OpenSearch 3.7</div>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#summary">1. 执行摘要</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#scope">2. 范围与关键事实</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#options">3. 路径选择</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#architecture">4. 目标升级链路</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#assessment">5. 升级前评估</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#runbook">6. 分阶段实施</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#wait-ism">7. ISM 等待淘汰方案</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#reindex">8. Reindex 方案</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#compat">9. 应用兼容性</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#monitoring">10. 监控与停止条件</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#rollback">11. 回退与容灾</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#schedule">12. 排期建议</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#risk">13. 风险清单</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#acceptance">14. 验收标准</a>
+    <a href="file:///Users/xiohuang/Codex/2026-11-05/h-ba/outputs/Amazon_OpenSearch_ES7.10_%E5%8D%87%E7%BA%A7%E5%88%B0_3.7_%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88.html#references">15. 参考资料</a>
+  </nav>
+
+  <main>
+    <header class="cover">
+      <h1>Amazon OpenSearch Service<br>Elasticsearch 7.10 升级到 OpenSearch 3.7 技术方案</h1>
+      <p class="sub">原地多跳升级、索引兼容治理与日志场景免 Reindex 路径</p>
+      <div class="meta">
+        <span>文档版本：v1.0</span>
+        <span>编制日期：2026-11-06</span>
+        <span>适用服务：Amazon OpenSearch Service 托管域</span>
+        <span>状态：实施指导稿</span>
+      </div>
+    </header>
+
+    <section id="summary">
+      <h2 class="section-title">1. 执行摘要</h2>
+      <div class="grid four">
+        <div class="card kpi"><div class="label">原地升级次数</div><div class="value">3 次</div><div>7.10 → 1.3 → 2.19 → 3.7</div></div>
+        <div class="card kpi"><div class="label">最终索引门槛</div><div class="value">2.x+</div><div>进入 3.7 前不能遗留 1.x / 7.10 创建的索引</div></div>
+        <div class="card kpi"><div class="label">日志场景选择</div><div class="value">可免重建</div><div>在 2.19 等待旧索引按 ISM 自然淘汰</div></div>
+        <div class="card kpi"><div class="label">原地回退</div><div class="value">不支持</div><div>失败自动回滚；成功后需新建旧版本域恢复</div></div>
+      </div>
+
+      <div class="callout good">
+        <strong>推荐原则：</strong>日志类、时间滚动、保留期明确且允许等待的域，优先采用“升级到 2.19 → 等待旧索引全部自然删除 → 升级到 3.7”的路径；混合业务域只对长期保留索引执行 Reindex；若要求可快速业务回切或需大规模架构改造，选择新建 3.7 域并迁移。
+      </div>
+
+      <ul>
+        <li>Amazon OpenSearch Service 不支持从 Elasticsearch 7.10 直接升级到 OpenSearch 3.7，必须经过 OpenSearch 1.x 和 2.19。</li>
+        <li>OpenSearch 3.x 不能读取由 Elasticsearch 7.10 或 OpenSearch 1.x 创建的索引。仅升级集群版本不会改变索引的创建版本。</li>
+        <li>OpenSearch 2.19 是关键中转站：它既能读取旧索引，也能创建可被 3.7 读取的新索引。</li>
+        <li>原地版本升级为 AWS 托管的蓝绿部署。域通常保持服务，但会消耗额外资源，期间可能出现延迟和拒绝率上升，应安排变更窗口并设置停止条件。</li>
+        <li>版本升级完成后不能原地降级；每一跳都必须完成测试、快照、升级预检查和业务准入。</li>
+      </ul>
+    </section>
+
+    <section id="scope">
+      <h2 class="section-title">2. 范围、假设与关键事实</h2>
+      <h3>2.1 适用范围</h3>
+      <ul>
+        <li>源端为 Amazon OpenSearch Service 托管的 Elasticsearch 7.10 域。</li>
+        <li>目标为同一个域原地升级到 Amazon OpenSearch Service 的 OpenSearch 3.7。</li>
+        <li>覆盖热、UltraWarm、冷存储中的业务索引，以及普通、隐藏和关闭索引的盘点。</li>
+        <li>不包含跨区域迁移、跨账号迁移、Serverless 迁移或自建 Elasticsearch 迁移。</li>
+      </ul>
+
+      <h3>2.2 三条必须接受的技术事实</h3>
+      <table>
+        <thead><tr><th>事实</th><th>对方案的影响</th></tr></thead>
+        <tbody>
+          <tr><td>支持的原地升级链路有版本约束</td><td>采用 ES 7.10 → OS 1.3 → OS 2.19 → OS 3.7，不跳级；每一跳单独发起并观察。</td></tr>
+          <tr><td>3.x 只兼容由 2.x 或 3.x 创建的索引</td><td>进入 3.7 前，所有 7.10 / 1.x 创建的索引必须被删除或在 2.19 上重建。</td></tr>
+          <tr><td>升级成功后不能原地降级</td><td>回退不是“点一下降级”，而是从兼容快照恢复到新建的旧版本域并切换流量。</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout warn">
+        <strong>边界说明：</strong>文档中的命令为模板。域名、索引名、请求速率、分片数、实例规格、维护窗口和报警阈值必须以客户压测结果为准。正式变更前，以 AWS 控制台或 API 返回的升级资格检查结果作为最终依据。
+      </div>
+    </section>
+
+    <section id="options">
+      <h2 class="section-title">3. 路径选择与决策建议</h2>
+      <div class="grid three">
+        <div class="card decision recommended">
+          <h3>方案 A：在 2.19 等待 ISM 淘汰</h3>
+          <p><span class="tag good">日志场景首选</span><span class="tag good">无需业务索引 Reindex</span></p>
+          <p>升级到 2.19 后持续写入新滚动索引，等待所有由 7.10 / 1.x 创建的历史索引按保留策略删除，再升级到 3.7。</p>
+          <p><strong>适合：</strong>时间序列日志、固定保留期、允许在 2.19 停留一个完整保留周期、无必须长期保留的旧索引。</p>
+          <p><strong>主要代价：</strong>项目周期至少增加“最长保留期 + 安全缓冲”；必须严密证明旧索引已清零。</p>
+        </div>
+        <div class="card decision standard">
+          <h3>方案 B：2.19 上选择性 Reindex</h3>
+          <p><span class="tag">通用方案</span><span class="tag warn">消耗 CPU / IO / 存储</span></p>
+          <p>短保留期日志自然淘汰；长期索引、持续读写索引和法规保留数据在 2.19 上逐个 Reindex。</p>
+          <p><strong>适合：</strong>日志与业务索引混合、不能等待完整保留周期、存在长期历史数据。</p>
+          <p><strong>主要代价：</strong>限流、数据一致性处理、容量扩容、别名切换和逐索引验收。</p>
+        </div>
+        <div class="card decision parallel">
+          <h3>方案 C：新建 3.7 域并迁移</h3>
+          <p><span class="tag warn">回切能力更强</span><span class="tag warn">双域成本</span></p>
+          <p>创建独立 3.7 域，通过快照恢复、Migration Assistant、管道或双写搬迁可兼容数据，完成验证后切流。</p>
+          <p><strong>适合：</strong>需要快速业务回切、同时改网络/加密/拓扑、容量重构、无法承受原地升级不确定性。</p>
+          <p><strong>主要代价：</strong>双域费用、迁移链路、增量同步和流量切换设计。</p>
+        </div>
+      </div>
+
+      <h3>3.1 决策表</h3>
+      <table>
+        <thead><tr><th>判断问题</th><th>是</th><th>否</th></tr></thead>
+        <tbody>
+          <tr><td>全部业务数据都是可按时间淘汰的日志，且删除后无需在线查询？</td><td>继续评估方案 A</td><td>评估方案 B 或 C</td></tr>
+          <tr><td>所有历史索引都被可靠 ISM 策略覆盖，并能在可接受时间内删除？</td><td>方案 A 候选</td><td>未覆盖索引需 Reindex 或人工删除</td></tr>
+          <tr><td>能在 2.19 停留“最长保留期 + 至少一个滚动/执行缓冲周期”？</td><td>方案 A 可实施</td><td>方案 B 更合适</td></tr>
+          <tr><td>要求升级成功后分钟级回到旧版本环境？</td><td>选择方案 C</td><td>可继续原地方案</td></tr>
+          <tr><td>同时需要修改 VPC、加密、分片架构或大规模应用接口？</td><td>优先方案 C</td><td>原地方案更简洁</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="architecture">
+      <h2 class="section-title">4. 目标升级链路</h2>
+      <div class="flow" role="img" aria-label="ES 7.10 到 OpenSearch 3.7 的升级链路">
+        <div class="node"><div class="ver">ES 7.10</div><div class="desc">源版本<br>盘点与基线</div></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="ver">OS 1.3</div><div class="desc">第一跳<br>完成客户端去 ES 化</div></div>
+        <div class="arrow">→</div>
+        <div class="node wait"><div class="ver">OS 2.19</div><div class="desc">兼容中转站<br>等待淘汰或 Reindex</div></div>
+        <div class="arrow">→</div>
+        <div class="node target"><div class="ver">OS 3.7</div><div class="desc">目标版本<br>稳定运行与优化</div></div>
+      </div>
+
+      <table>
+        <thead><tr><th>阶段</th><th>主要目标</th><th>数据动作</th><th>准出条件</th></tr></thead>
+        <tbody>
+          <tr><td>阶段 0</td><td>发现、评估、演练</td><td>无</td><td>测试域完整演练通过；生产变更方案获批</td></tr>
+          <tr><td>阶段 1</td><td>7.10 → 1.3</td><td>无 Reindex</td><td>业务回归、监控和插件功能正常</td></tr>
+          <tr><td>阶段 1.5</td><td>应用与采集端兼容改造</td><td>无</td><td>不再依赖 ES 专有客户端行为、类型参数或兼容模式</td></tr>
+          <tr><td>阶段 2</td><td>1.3 → 2.19</td><td>无强制 Reindex</td><td>业务回归通过，新索引确认由 2.19 创建</td></tr>
+          <tr><td>阶段 2.5A</td><td>日志索引自然淘汰</td><td>ISM 删除旧索引</td><td>域内无 7.10 / 1.x 创建索引，升级预检查通过</td></tr>
+          <tr><td>阶段 2.5B</td><td>长期索引重建</td><td>逐索引 Reindex</td><td>数据校验、切换、旧索引处置完成，升级预检查通过</td></tr>
+          <tr><td>阶段 3</td><td>2.19 → 3.7</td><td>无</td><td>72 小时稳定观察和最终验收通过</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="assessment">
+      <h2 class="section-title">5. 升级前评估与基线采集</h2>
+      <h3>5.1 资产清单</h3>
+      <ul class="checks">
+        <li>域配置：区域、VPC、节点类型与数量、专用主节点、多可用区、EBS、UltraWarm、冷存储。</li>
+        <li>安全：细粒度访问控制、IAM 资源策略、SAML/Cognito、TLS 策略、静态加密、KMS 密钥、审计日志。</li>
+        <li>数据：索引创建版本、状态、存储层、大小、主分片/副本、保留期、写入速率、是否可删除。</li>
+        <li>应用：读写客户端、SDK、Dashboards、Logstash、Beats、Fluent Bit、Firehose、CloudWatch Logs、Data Prepper 和自研采集器。</li>
+        <li>功能：ISM、索引模板、组件模板、Ingest Pipeline、告警、异常检测、SQL/PPL、k-NN、跨集群搜索、快照仓库。</li>
+        <li>运维：报警、值班人、变更窗口、业务冻结期、升级失败和升级成功后的回退流程。</li>
+      </ul>
+
+      <h3>5.2 建议采集命令</h3>
+      <pre><code># 集群与节点状态
+GET /
+GET _cluster/health?pretty
+GET _cluster/pending_tasks
+GET _cat/nodes?v
+GET _cat/shards?v&amp;bytes=gb
+
+# 索引清单：务必覆盖 open、closed、hidden
+GET _cat/indices/*?v&amp;expand_wildcards=all&amp;h=health,status,index,pri,rep,docs.count,store.size
+
+# 记录索引创建版本；不同版本返回字段可能略有差异
+GET _settings?expand_wildcards=all&amp;flat_settings=true&amp;filter_path=*.settings.index.version.created,*.settings.index.version.created_string
+
+# 模板、别名、管道和 ISM 策略
+GET _index_template
+GET _template
+GET _cat/aliases?v
+GET _ingest/pipeline
+GET _plugins/_ism/policies</code><button class="copy-btn" type="button">复制</button></pre>
+
+      <h3>5.3 基线数据</h3>
+      <div class="grid two">
+        <div class="card">
+          <h4>平台基线</h4>
+          <ul>
+            <li>CPU、JVM、磁盘空间、节点数、分片数、待处理任务。</li>
+            <li>搜索和写入吞吐、P50/P95/P99 延迟、拒绝数、HTTP 4xx/5xx。</li>
+            <li>快照状态、告警状态、Dashboards 可用性。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>业务基线</h4>
+          <ul>
+            <li>核心查询样本及结果集。</li>
+            <li>日写入文档数与字节数。</li>
+            <li>关键索引文档数、聚合结果和最新时间戳。</li>
+            <li>允许的错误率、延迟和数据延迟目标。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gate">
+        <strong>阶段 0 准出门：</strong>测试域使用生产脱敏数据完成三跳演练；每跳耗时、蓝绿期间性能、应用兼容问题、3.7 预检查问题、回退恢复时间均有实测记录。
+      </div>
+    </section>
+
+    <section id="runbook">
+      <h2 class="section-title">6. 分阶段实施手册</h2>
+
+      <h3>6.1 通用变更前检查（每一跳重复）</h3>
+      <ol>
+        <li>确认集群为绿色，所有主分片和副本已分配，没有长时间 pending task。</li>
+        <li>确认 JVM 和磁盘满足 AWS 升级校验；同时预留蓝绿部署、分片搬迁和写入增长的额外空间。</li>
+        <li>暂停非必要批处理、批量删除、Force Merge、大规模 Reindex 和高负载查询。</li>
+        <li>完成手工快照并验证成功；记录域配置、模板、管道、策略、角色映射和关键 API 输出。</li>
+        <li>执行 AWS 的升级资格检查，清除全部阻断项。</li>
+        <li>确认客户端重试采用指数退避并设置合理超时，值班、监控和业务验证人员已到位。</li>
+      </ol>
+
+      <h3>6.2 第一跳：Elasticsearch 7.10 → OpenSearch 1.3</h3>
+      <ol>
+        <li>在非生产域完成同配置演练，验证 Elasticsearch 兼容模式下现有客户端行为。</li>
+        <li>在变更窗口发起版本升级，持续观察蓝绿部署状态、集群健康和业务指标。</li>
+        <li>升级完成后验证读、写、搜索、聚合、模板、告警、ISM、Dashboards 与安全认证。</li>
+        <li>至少完成一个高峰周期观察，再开始客户端改造和下一跳。</li>
+      </ol>
+      <div class="callout warn">
+        <strong>不要把兼容模式当成长期方案：</strong>OpenSearch 3.0 已移除主版本响应覆盖兼容设置。客户端必须在最终升级前完成 OpenSearch 化，并显式测试 3.7。
+      </div>
+
+      <h3>6.3 中间改造：去除 Elasticsearch 7.x 依赖</h3>
+      <ul>
+        <li>迁移到与目标版本兼容的 OpenSearch 客户端，或经验证的标准 HTTP 调用。</li>
+        <li>移除 mapping type、<code>_type</code>、<code>include_type_name</code> 和类型化 API。</li>
+        <li>关闭节点嗅探，统一访问 Amazon OpenSearch Service 域端点；使用 IAM 时保留 SigV4 签名。</li>
+        <li>通过逻辑别名或数据流访问滚动索引，避免应用绑定物理索引名。</li>
+        <li>检查 3.x 的文档 ID、JSON、嵌套查询、系统索引访问、SQL/PPL、k-NN 和 Dashboards 变更。</li>
+      </ul>
+
+      <h3>6.4 第二跳：OpenSearch 1.3 → OpenSearch 2.19</h3>
+      <ol>
+        <li>确保客户端已通过 2.19 兼容测试，不再依赖 1.x 兼容行为。</li>
+        <li>重复通用变更前检查并执行升级。</li>
+        <li>升级完成后主动触发一次日志 rollover，确认新索引确实在 2.19 创建并正确挂载模板、别名和 ISM 策略。</li>
+        <li>冻结索引创建版本清单，分流进入方案 A（等待淘汰）或方案 B（选择性 Reindex）。</li>
+      </ol>
+
+      <h3>6.5 第三跳：OpenSearch 2.19 → OpenSearch 3.7</h3>
+      <ol>
+        <li>确认不存在任何由 Elasticsearch 7.10 或 OpenSearch 1.x 创建的索引；包括隐藏、关闭、UltraWarm 和冷存储索引。</li>
+        <li>处理 3.x 不兼容索引设置，例如已废弃的部分 k-NN 设置；以 AWS 升级预检查清单为准。</li>
+        <li>清理手工快照仓库中与 3.x 不兼容的旧版本快照；为最终升级保留经验证的 2.19 恢复点。</li>
+        <li>验证 Dashboards 对象和 3.x 行为变化，特别是旧可视化、Notebook、SQL 和系统索引访问。</li>
+        <li>发起升级并观察。完成后执行全套技术和业务验收，持续观察至少 72 小时。</li>
+      </ol>
+      <div class="gate">
+        <strong>最终准入门：</strong>AWS 升级资格检查通过 + 旧创建版本索引为零 + 2.19 快照验证成功 + 应用 3.7 回归通过 + 容量与监控就绪。
+      </div>
+    </section>
+
+    <section id="wait-ism">
+      <h2 class="section-title">7. 日志场景：在 2.19 等待 ISM 淘汰旧索引</h2>
+      <p class="lead">该方案用“时间”替代“重建计算”：让所有旧索引按业务既定保留期自然退出，确保进入 3.7 时只剩由 2.19 创建的索引。</p>
+
+      <h3>7.1 适用条件</h3>
+      <ul class="checks">
+        <li>所有待淘汰数据均为滚动日志或时间序列数据，删除后不再要求在线检索。</li>
+        <li>每个索引模式都有明确、已生效且已验证的 ISM 删除策略。</li>
+        <li>保留期和最长历史索引年龄可准确计算；没有被排除、解绑策略或人工保留的例外索引。</li>
+        <li>允许域在 2.19 停留至少一个最长保留周期，并留出 ISM 作业调度和故障缓冲。</li>
+        <li>不存在必须长期保留的 7.10 / 1.x 业务索引；否则该部分转入方案 B。</li>
+      </ul>
+
+      <h3>7.2 实施步骤</h3>
+      <ol>
+        <li><strong>建立旧索引基线：</strong>在刚升级到 2.19 时导出全部索引创建版本，标记每个旧索引的预计删除日期、ISM 策略和责任人。</li>
+        <li><strong>验证新索引链路：</strong>手工或按计划 rollover，确认模板、映射、别名、ISM policy、分片副本和存储层迁移均正确。</li>
+        <li><strong>持续观察：</strong>每天统计旧创建版本索引数量与容量，监控 ISM 失败、集群红色、策略未附加和删除积压。</li>
+        <li><strong>处理例外：</strong>对到期未删除的索引查明原因；业务批准后人工删除，或转为 Reindex，不得仅从统计表中忽略。</li>
+        <li><strong>双重证明：</strong>旧索引清单为零后，再运行 AWS 3.7 升级预检查。只有两者同时通过才可进入最终升级。</li>
+      </ol>
+
+      <h3>7.3 等待时间计算</h3>
+      <div class="callout good">
+        <strong>最早可升级日期 ≈</strong> 2.19 首个合规新索引创建时间 + 最长在线保留期 + ISM 调度/故障缓冲。<br>
+        例：日志最长保留 90 天，建议计划至少 90 天再加 7 至 14 天缓冲；实际以客户策略和升级预检查为准。
+      </div>
+
+      <h3>7.4 每日/每周检查模板</h3>
+      <table>
+        <thead><tr><th>检查项</th><th>通过标准</th><th>异常动作</th></tr></thead>
+        <tbody>
+          <tr><td>旧创建版本索引数量</td><td>单调下降，最终为 0</td><td>定位索引和策略；确认保留例外或 ISM 失败</td></tr>
+          <tr><td>新滚动索引创建版本</td><td>全部由 2.19 创建</td><td>检查写入别名、rollover、模板优先级和采集端索引名</td></tr>
+          <tr><td>ISM explain 状态</td><td>无长期 failed / retrying</td><td>修复权限、策略条件、集群健康或存储层问题</td></tr>
+          <tr><td>隐藏/关闭索引</td><td>无旧版本遗留</td><td>逐项确认用途；不要盲删托管系统索引</td></tr>
+          <tr><td>业务保留要求</td><td>与实际删除一致</td><td>需要保留则归档或转 Reindex 路径</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code># 示例：查看某个日志模式的 ISM 执行状态
+GET _plugins/_ism/explain/logs-*?show_policy=true
+
+# 示例：再次导出所有索引的创建版本
+GET _settings?expand_wildcards=all&amp;flat_settings=true&amp;filter_path=*.settings.index.version.created,*.settings.index.version.created_string</code><button class="copy-btn" type="button">复制</button></pre>
+
+      <div class="callout danger">
+        <strong>不得直接删除的对象：</strong>名称以点号开头的隐藏/系统索引、OpenSearch Security 相关索引、插件内部索引，以及用途不明的索引。先通过 AWS 文档或 Support 确认处置方法。最终以托管服务升级预检查为准。
+      </div>
+    </section>
+
+    <section id="reindex">
+      <h2 class="section-title">8. 需要保留数据时的 Reindex 方案</h2>
+      <h3>8.1 索引分类</h3>
+      <table>
+        <thead><tr><th>类别</th><th>特征</th><th>处理方式</th></tr></thead>
+        <tbody>
+          <tr><td>A：短保留日志</td><td>按时间滚动、固定保留期</td><td>在 2.19 自然淘汰，通常不 Reindex</td></tr>
+          <tr><td>B：只读历史索引</td><td>长期保留、已停止写入</td><td>低峰批量 Reindex，校验后切别名</td></tr>
+          <tr><td>C：持续写入业务索引</td><td>存在新增、更新或删除</td><td>双写/变更回放，或短暂停写后最终追平与切换</td></tr>
+          <tr><td>D：UltraWarm / 冷索引</td><td>不在热存储</td><td>按服务能力迁回可写层后重建，或归档/删除；先做成本评估</td></tr>
+        </tbody>
+      </table>
+
+      <h3>8.2 标准步骤</h3>
+      <ol>
+        <li>导出源索引 mapping、settings、别名和文档数；在 2.19 创建目标索引。</li>
+        <li>显式配置目标 mapping/settings。<code>_reindex</code> 只复制文档，不会自动复制完整配置。</li>
+        <li>用小索引压测安全吞吐，确定 <code>requests_per_second</code> 和并发任务数。</li>
+        <li>后台执行 Reindex，监控任务、集群资源、拒绝数和业务延迟。</li>
+        <li>对只追加数据执行增量追平；对更新/删除数据使用双写、变更回放或短暂停写完成最终一致性。</li>
+        <li>校验文档数、时间范围、抽样文档、核心聚合和业务查询。</li>
+        <li>原子切换别名或应用配置。保留旧索引到约定回退窗口结束，再删除释放空间。</li>
+      </ol>
+
+      <pre><code># 1. 目标索引需先按已审查的 mapping/settings 创建
+PUT logs-app-2026.10-v2
+{
+  "settings": {
+    "number_of_shards": 6,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "@timestamp": { "type": "date" },
+      "message": { "type": "text" }
+    }
+  }
+}
+
+# 2. 后台、分片并行、限速执行。速率值必须来自压测
+POST _reindex?wait_for_completion=false&amp;slices=auto&amp;requests_per_second=1000
+{
+  "source": { "index": "logs-app-2026.10" },
+  "dest":   { "index": "logs-app-2026.10-v2" }
+}
+
+# 3. 查看任务与按需调整速率
+GET _tasks?detailed=true&amp;actions=*reindex
+POST _reindex/TASK_ID/_rethrottle?requests_per_second=500
+
+# 4. 只追加索引可按时间范围追平；更新/删除型索引不能只靠此步骤
+POST _reindex?wait_for_completion=false&amp;requests_per_second=500
+{
+  "source": {
+    "index": "logs-app-2026.10",
+    "query": { "range": { "@timestamp": { "gte": "LAST_CUTOVER_TIME" } } }
+  },
+  "dest": { "index": "logs-app-2026.10-v2", "op_type": "create" }
+}</code><button class="copy-btn" type="button">复制</button></pre>
+
+      <h3>8.3 容量与性能</h3>
+      <ul>
+        <li>同域重建期间源、目标索引同时存在，必须预留目标数据、段合并、事务日志和蓝绿操作的容量。</li>
+        <li>大型索引优先串行或小并发处理；根据 CPU、JVM、磁盘、拒绝数和 P99 延迟动态调速。</li>
+        <li>不要在版本蓝绿部署、节点替换、大规模分片迁移或快照高峰时同时执行 Reindex。</li>
+        <li>若容量无法支撑同域双份数据，应考虑临时扩容、分批删除旧索引，或采用方案 C。</li>
+      </ul>
+
+      <div class="callout warn">
+        <strong>物理索引名风险：</strong>若应用直接访问物理索引名而非 alias，无法无感原子切换。应先完成应用逻辑名改造，或为切换安排停写和配置发布窗口。
+      </div>
+    </section>
+
+    <section id="compat">
+      <h2 class="section-title">9. 应用、采集端和功能兼容性</h2>
+      <table>
+        <thead><tr><th>检查域</th><th>重点</th><th>验证方法</th></tr></thead>
+        <tbody>
+          <tr><td>SDK / REST</td><td>OpenSearch 客户端、SigV4、超时、重试、Bulk 响应解析、版本识别</td><td>在 1.3、2.19、3.7 测试域逐级回归</td></tr>
+          <tr><td>索引 API</td><td>mapping type、模板优先级、别名、rollover、数据流、动态 mapping</td><td>创建测试索引并比对最终 settings/mappings</td></tr>
+          <tr><td>采集组件</td><td>Logstash/Beats/Fluent Bit/Firehose/Data Prepper 插件与认证</td><td>持续写入、故障重试、积压恢复、重复数据测试</td></tr>
+          <tr><td>查询</td><td>DSL、SQL/PPL、脚本、聚合、Nested、Scroll/PIT</td><td>黄金查询集比对结果与性能</td></tr>
+          <tr><td>Dashboards</td><td>Saved Objects、旧可视化、Notebook、租户和角色映射</td><td>导出备份后在 3.7 测试域导入并人工巡检</td></tr>
+          <tr><td>插件功能</td><td>ISM、告警、异常检测、k-NN、跨集群能力</td><td>执行端到端场景，不只验证页面能打开</td></tr>
+        </tbody>
+      </table>
+
+      <h3>9.1 OpenSearch 3.x 定向检查</h3>
+      <ul>
+        <li>3.0 移除了版本响应兼容设置 <code>compatibility.override_main_response_version</code>。</li>
+        <li>Bulk API 对超长文档 ID 的限制更严格；扫描生成 ID 的所有写入方。</li>
+        <li>系统索引访问控制发生变化；应用不应依赖直接读写系统索引。</li>
+        <li>部分旧 k-NN 索引设置在 3.x 不再支持，需按升级预检查修复。</li>
+        <li>JSON 解析和嵌套查询的安全限制变化可能使边界请求失败，应加入负面测试。</li>
+        <li>部分 Dashboards 旧组件和 API 已移除或迁移，必须验证保存对象而非只验证首页。</li>
+      </ul>
+    </section>
+
+    <section id="monitoring">
+      <h2 class="section-title">10. 监控、变更观察与停止条件</h2>
+      <h3>10.1 重点指标</h3>
+      <div class="grid two">
+        <div class="card">
+          <h4>集群层</h4>
+          <ul>
+            <li>ClusterStatus.red / yellow</li>
+            <li>CPUUtilization、JVMMemoryPressure</li>
+            <li>FreeStorageSpace、节点与分片分配</li>
+            <li>ThreadpoolSearchRejected、ThreadpoolWriteRejected</li>
+            <li>MasterCPUUtilization、MasterJVMMemoryPressure</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>业务层</h4>
+          <ul>
+            <li>HTTP 4xx/5xx、客户端超时和重试率</li>
+            <li>读写吞吐、P95/P99 延迟</li>
+            <li>采集积压、最新日志时间戳、丢失/重复</li>
+            <li>核心查询正确率和 Dashboards 可用性</li>
+            <li>业务 SLA/SLO 与错误预算</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>10.2 停止或降载条件</h3>
+      <ul>
+        <li>集群进入红色、出现未分配主分片，或节点异常持续扩大。</li>
+        <li>可用磁盘跌破客户预设安全水位，预计无法容纳分片搬迁或新写入。</li>
+        <li>搜索/写入拒绝持续上升，P99 或业务错误率超过变更阈值。</li>
+        <li>Reindex 导致线上 SLA 受损：立即 rethrottle、暂停任务或取消任务，并保留现场指标。</li>
+        <li>关键业务验证失败：停止后续跳转，保持当前已成功版本并执行问题修复。</li>
+      </ul>
+      <div class="callout">
+        <strong>说明：</strong>版本升级已进入 AWS 托管蓝绿阶段后，不应通过高风险人工操作干预。升级失败通常由服务自动回滚；如状态异常或长时间无进展，联系 AWS Support。
+      </div>
+    </section>
+
+    <section id="rollback">
+      <h2 class="section-title">11. 回退、快照与容灾设计</h2>
+      <table>
+        <thead><tr><th>场景</th><th>回退策略</th></tr></thead>
+        <tbody>
+          <tr><td>升级资格检查失败</td><td>不发起升级；修复阻断项后重跑检查。</td></tr>
+          <tr><td>升级执行失败</td><td>AWS 通常自动回滚到原版本；保持业务观察并联系 Support。</td></tr>
+          <tr><td>升级成功但应用不兼容</td><td>优先回滚应用版本或关闭新功能；域不能原地降级。</td></tr>
+          <tr><td>必须回到旧引擎版本</td><td>新建兼容旧版本域，从该版本可用快照恢复，验证后通过 DNS/应用配置切流。</td></tr>
+          <tr><td>Reindex 切换失败</td><td>别名切回源索引；因此旧索引应保留到回退窗口结束。</td></tr>
+        </tbody>
+      </table>
+
+      <h3>11.1 快照原则</h3>
+      <ul>
+        <li>每一跳前创建并验证手工快照，不只依赖自动快照。</li>
+        <li>记录快照所需的目标引擎版本和恢复演练结果；快照兼容性受版本约束。</li>
+        <li>最终升到 3.7 前，按 AWS 要求清理手工仓库中的 7.10 / 1.x 不兼容快照，并保留可用于 2.19 回退的新恢复点。</li>
+        <li>域配置、IAM/角色映射、Dashboards 对象和应用配置应另行导出，因为数据快照不是完整环境备份。</li>
+      </ul>
+    </section>
+
+    <section id="schedule">
+      <h2 class="section-title">12. 排期建议</h2>
+      <p>以下为相对排期。实际时间由数据规模、测试覆盖、变更审批和方案 A 的最长保留期决定。</p>
+      <div class="timeline">
+        <div class="row"><div class="when">第 1–3 周</div><div class="item"><strong>发现与方案设计：</strong>资产盘点、创建版本清单、应用扫描、容量评估、基线和回退设计。</div></div>
+        <div class="row"><div class="when">第 2–5 周</div><div class="item"><strong>非生产演练：</strong>三跳完整演练、客户端改造、3.7 回归、故障和恢复测试。</div></div>
+        <div class="row"><div class="when">第 6 周</div><div class="item"><strong>生产第一跳：</strong>7.10 → 1.3，业务验证和稳定观察。</div></div>
+        <div class="row"><div class="when">第 6–9 周</div><div class="item"><strong>客户端灰度：</strong>OpenSearch 客户端、采集端、查询与 Dashboards 改造上线。</div></div>
+        <div class="row"><div class="when">第 10 周</div><div class="item"><strong>生产第二跳：</strong>1.3 → 2.19，触发新 rollover 并确认创建版本。</div></div>
+        <div class="row"><div class="when">保留期 + 缓冲</div><div class="item wait"><strong>方案 A：</strong>等待 ISM 自然删除全部旧索引；或<strong>方案 B：</strong>分批 Reindex 长期索引。</div></div>
+        <div class="row"><div class="when">最终窗口</div><div class="item final"><strong>生产第三跳：</strong>2.19 → 3.7，全量验收并观察至少 72 小时。</div></div>
+      </div>
+
+      <div class="callout warn">
+        <strong>排期控制：</strong>不要把 OpenSearch 2.19 当作长期终态。AWS 在 2026 年 8 月公告中为 Elasticsearch 7.10、OpenSearch 1.3 和 2.19 等版本提供了额外升级缓冲，并说明相关安全与操作系统补丁覆盖延续至 2027-11-07、按更新后的支持费率计费。项目不应把该日期当作目标完成日，而应预留组织冻结期和至少一次延期缓冲。
+      </div>
+    </section>
+
+    <section id="risk">
+      <h2 class="section-title">13. 风险清单与缓解措施</h2>
+      <table>
+        <thead><tr><th>风险</th><th>影响</th><th>缓解措施</th></tr></thead>
+        <tbody>
+          <tr><td>遗漏旧隐藏/关闭索引</td><td>3.7 预检查失败，计划延期</td><td>使用 expand_wildcards=all 盘点；以 AWS 预检查做第二道门。</td></tr>
+          <tr><td>ISM 未实际删除</td><td>方案 A 等待后仍无法升级</td><td>逐索引记录 policy、状态和预计日期；报警 failed/retrying；保留方案 B 兜底。</td></tr>
+          <tr><td>客户端依赖兼容模式</td><td>3.7 后写入或监控中断</td><td>在 1.3/2.19 阶段完成 OpenSearch 化；3.7 测试域全链路压测。</td></tr>
+          <tr><td>Reindex 资源争用</td><td>查询延迟和拒绝上升</td><td>小流量标定、限速、低峰运行、串行大索引、必要时临时扩容。</td></tr>
+          <tr><td>持续写索引数据不一致</td><td>丢更新、删除未同步</td><td>双写/变更回放或短暂停写；只追加索引才使用时间戳追平。</td></tr>
+          <tr><td>蓝绿部署容量不足</td><td>升级失败或耗时显著增加</td><td>提前清理空间、降低分片压力、扩容并等待稳定后再升级。</td></tr>
+          <tr><td>版本成功后无法原地降级</td><td>恢复时间较长</td><td>完整演练、手工快照、新域恢复流程和 DNS/配置切流预案。</td></tr>
+          <tr><td>旧快照与 3.x 不兼容</td><td>最终升级被阻断或恢复误判</td><td>仓库分阶段治理；记录兼容矩阵；最终使用 2.19 恢复点。</td></tr>
+          <tr><td>Dashboards/插件对象不兼容</td><td>运维能力或用户功能受损</td><td>保存对象导出、测试域升级、逐看板和逐工作流验收。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="acceptance">
+      <h2 class="section-title">14. 验收标准与交付物</h2>
+      <h3>14.1 最终验收标准</h3>
+      <ul class="checks">
+        <li>域版本为 OpenSearch 3.7，配置变更状态正常，集群持续绿色。</li>
+        <li>所有主分片与副本正常，节点、磁盘、JVM、拒绝数和业务延迟处于批准范围。</li>
+        <li>核心读写、Bulk、查询、聚合、ISM、告警、Dashboards、认证授权和采集链路通过。</li>
+        <li>文档数、时间范围、核心聚合和抽样数据校验通过，无未解释的数据缺口。</li>
+        <li>没有遗留临时扩容、临时白名单、测试角色、孤立目标索引或未关闭的迁移任务。</li>
+        <li>3.7 运行手册、报警、值班、容量计划、快照恢复与后续补丁升级流程已移交。</li>
+      </ul>
+
+      <h3>14.2 建议交付物</h3>
+      <div class="grid two">
+        <div class="card">
+          <ul>
+            <li>域与索引资产清单</li>
+            <li>索引创建版本分类表</li>
+            <li>应用/采集端兼容矩阵</li>
+            <li>测试域三跳演练报告</li>
+          </ul>
+        </div>
+        <div class="card">
+          <ul>
+            <li>ISM 淘汰或 Reindex 追踪表</li>
+            <li>生产变更与回退手册</li>
+            <li>升级前后性能对比报告</li>
+            <li>最终验收与遗留问题清单</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="references">
+      <h2 class="section-title">15. 参考资料</h2>
+      <ol class="sources">
+        <li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/version-migration.html">AWS：Upgrading Amazon OpenSearch Service domains</a> - 支持升级路径、升级前检查、回退限制和 3.x 索引要求。</li>
+        <li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/handling-errors.html">AWS：Handling errors in Amazon OpenSearch Service</a> - 升级校验常见阻断项和处理方向。</li>
+        <li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/managedomains-snapshots.html">AWS：Creating index snapshots in Amazon OpenSearch Service</a> - 自动/手工快照、恢复和权限。</li>
+        <li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/ism.html">AWS：Index State Management in Amazon OpenSearch Service</a> - ISM 支持和托管服务注意事项。</li>
+        <li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/bp.html">AWS：Operational best practices for Amazon OpenSearch Service</a> - 分片、容量、监控和运维建议。</li>
+        <li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/supported-operations.html">AWS：Supported operations and plugins</a> - 托管服务 API 与插件差异。</li>
+        <li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/release-notes.html">AWS：Amazon OpenSearch Service document history</a> - OpenSearch 3.7 在托管服务中的支持记录。</li>
+        <li><a href="https://aws.amazon.com/about-aws/whats-new/2026/08/amazon-opensearch-service-additional-upgrade-runway-support-dates/">AWS What's New：Additional upgrade runway and support dates</a> - 7.10、1.3、2.19 等版本的支持时间与额外升级缓冲。</li>
+        <li><a href="https://docs.opensearch.org/docs/3.0/breaking-changes/">OpenSearch：Breaking changes in OpenSearch 3.0</a> - 3.x 破坏性变更和索引兼容要求。</li>
+        <li><a href="https://docs.opensearch.org/docs/3.0/install-and-configure/upgrade-opensearch/compatibility/">OpenSearch：Version compatibility</a> - 版本与索引兼容原则。</li>
+        <li><a href="https://docs.opensearch.org/latest/im-plugin/reindex-data/">OpenSearch：Reindex data</a> - Reindex API、任务和限流。</li>
+        <li><a href="https://docs.opensearch.org/latest/api-reference/document-apis/reindex/">OpenSearch：Reindex API</a> - 请求参数和行为说明。</li>
+        <li><a href="https://opensearch.org/docs/latest/im-plugin/ism/index/">OpenSearch：Index State Management</a> - 策略、执行状态和 Explain API。</li>
+        <li><a href="https://aws.amazon.com/blogs/big-data/upgrade-to-opensearch-3-1-using-the-new-opensearch-migration-assistant/">AWS Big Data Blog：Upgrade using OpenSearch Migration Assistant</a> - 并行域迁移路径参考。</li>
+      </ol>
+      <p class="foot">
+        资料核对日期：2026-11-06。Amazon OpenSearch Service 的可用版本、区域覆盖、升级校验和支持政策可能变化，正式实施时应再次核对目标区域控制台、AWS 官方文档和 Support 建议。
+      </p>
+    </section>
+  </main>
+</div>
+
+<script>
+  document.querySelectorAll("pre").forEach(function (block) {
+    var button = document.createElement("button");
+    button.className = "copy-btn";
+    button.type = "button";
+    button.textContent = "复制";
+    button.addEventListener("click", function () {
+      navigator.clipboard.writeText(block.querySelector("code").innerText).then(function () {
+        button.textContent = "已复制";
+        window.setTimeout(function () { button.textContent = "复制"; }, 1500);
+      });
+    });
+    block.appendChild(button);
+  });
+</script>
+
+
+</body></html>
